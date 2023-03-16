@@ -21,8 +21,8 @@ namespace carbon_cruncher_api.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/visu3/Events
-        [HttpGet("events")]
+        // GET: api/visu3/Event
+        [HttpGet("event")]
         public IEnumerable<string> Events()
         {
             return new string[] { "value1", "value2" };

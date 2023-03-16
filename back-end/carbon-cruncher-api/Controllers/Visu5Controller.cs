@@ -7,8 +7,8 @@ namespace carbon_cruncher_api.Controllers
     [ApiController]
     public class Visu5Controller : ControllerBase
     {
-        // GET: api/visu5/CO2Sectors
-        [HttpGet("co2sectors")]
+        // GET: api/visu5/CO2Sector
+        [HttpGet("co2sector")]
         public IEnumerable<string> CO2Sectors()
         {
             return new string[] { "value1", "value2" };

@@ -34,7 +34,14 @@ namespace carbon_cruncher_api.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/user/visualization
+        // GET: api/user/visualization/:stringId
+        [HttpGet("visualization/{stringId}")]
+        public IEnumerable<string> GetSingleVisualization(string stringId)
+        {
+            return new string[] { "value1", "value2" };
+        }
+
+        // POST: api/user/visualization
         [HttpPost("visualization")]
         public IEnumerable<string> PostVisualization([FromBody] string value)
         {
