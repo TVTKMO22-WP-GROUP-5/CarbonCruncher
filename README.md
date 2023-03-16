@@ -1,5 +1,5 @@
 # CarbonCruncher
-## Group 5 Project
+## TVT22KMO Group 5 
 
 #### Github-tunnus/oikea nimi
 esalminen = Esa Salminen
