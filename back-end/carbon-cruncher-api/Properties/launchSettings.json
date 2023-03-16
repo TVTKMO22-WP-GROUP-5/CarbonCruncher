@@ -12,9 +12,9 @@
     "carbon_cruncher_api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": true, // prevent chrome opening
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7266;http://localhost:5298",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
