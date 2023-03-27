@@ -24,8 +24,9 @@ namespace carbon_cruncher_api.Controllers
 
         // POST api/<ExampleController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public string Post([FromBody] string value)
         {
+            return value + value;
         }
 
         // PUT api/<ExampleController>/5
