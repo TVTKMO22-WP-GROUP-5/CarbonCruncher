@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using carbon_cruncher_api.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace carbon_cruncher_api.Controllers
 {
@@ -7,11 +9,21 @@ namespace carbon_cruncher_api.Controllers
     [ApiController]
     public class Visu5Controller : ControllerBase
     {
-        // GET: api/visu5/CO2Sector
-        [HttpGet("co2sector")]
-        public IEnumerable<string> CO2Sectors()
+        private readonly CarbonCruncherContext _context;
+
+        public Visu5Controller(CarbonCruncherContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
+        }
+
+        // GET: api/visu5/co2sector
+        [HttpGet("co2sector")]
+        public IEnumerable<Visu5Co2sector> CO2Sector()
+        {
+            var sectorsList = _context.Visu5Co2sectors
+                .Include(s => s.Visu5Co2subs)
+                .ToList();
+            return sectorsList;
         }
     }
 }
