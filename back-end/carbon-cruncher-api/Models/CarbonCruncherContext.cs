@@ -229,10 +229,10 @@ public partial class CarbonCruncherContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("user_nick");
-            entity.Property(e => e.UserPass)
-                .HasMaxLength(30)
+            entity.Property(e => e.UserPassHash)
+                .HasMaxLength(128)
                 .IsUnicode(false)
-                .HasColumnName("user_pass");
+                .HasColumnName("user_pass_hash");
         });
 
         modelBuilder.Entity<VisuUserVisual>(entity =>

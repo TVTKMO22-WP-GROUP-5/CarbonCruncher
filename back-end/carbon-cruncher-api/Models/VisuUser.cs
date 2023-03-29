@@ -9,7 +9,7 @@ public partial class VisuUser
 
     public string UserNick { get; set; } = null!;
 
-    public string UserPass { get; set; } = null!;
+    public string UserPassHash { get; set; } = null!;
 
     public string UserEmail { get; set; } = null!;
 
