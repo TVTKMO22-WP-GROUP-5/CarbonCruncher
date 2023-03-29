@@ -4,6 +4,7 @@ using carbon_cruncher_api.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Get documentation from endpoint comments
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 // Add DbContext using SQL Server Provider and connection string from appsettings.json (or resource that overrides it)
 builder.Services.AddDbContext<CarbonCruncherContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
