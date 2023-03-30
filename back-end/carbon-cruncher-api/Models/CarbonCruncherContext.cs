@@ -35,6 +35,8 @@ public partial class CarbonCruncherContext : DbContext
 
     public virtual DbSet<Visu5Co2sub> Visu5Co2subs { get; set; }
 
+    public virtual DbSet<VisuInfo> VisuInfos { get; set; }
+
     public virtual DbSet<VisuUser> VisuUsers { get; set; }
 
     public virtual DbSet<VisuUserVisual> VisuUserVisuals { get; set; }
@@ -212,6 +214,27 @@ public partial class CarbonCruncherContext : DbContext
                 .HasForeignKey(d => d.SectorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_sector_id_subsector_id");
+        });
+
+        modelBuilder.Entity<VisuInfo>(entity =>
+        {
+            entity.ToTable("visu_info");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DataLink)
+                .HasMaxLength(255)
+                .HasColumnName("data_link");
+            entity.Property(e => e.DescriptionLink)
+                .HasMaxLength(255)
+                .HasColumnName("description_link");
+            entity.Property(e => e.DescriptionText)
+                .HasMaxLength(2000)
+                .HasColumnName("description_text");
+            entity.Property(e => e.Title)
+                .HasMaxLength(255)
+                .HasColumnName("title");
+            entity.Property(e => e.VisuChartNumber).HasColumnName("visu_chart_number");
+            entity.Property(e => e.VisuNumber).HasColumnName("visu_number");
         });
 
         modelBuilder.Entity<VisuUser>(entity =>
