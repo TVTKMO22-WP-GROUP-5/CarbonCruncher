@@ -244,10 +244,6 @@ public partial class CarbonCruncherContext : DbContext
             entity.ToTable("visu_user");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.UserEmail)
-                .HasMaxLength(30)
-                .IsUnicode(false)
-                .HasColumnName("user_email");
             entity.Property(e => e.UserNick)
                 .HasMaxLength(20)
                 .IsUnicode(false)

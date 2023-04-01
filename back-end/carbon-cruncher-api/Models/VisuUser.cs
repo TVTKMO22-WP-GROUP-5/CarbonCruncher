@@ -11,7 +11,5 @@ public partial class VisuUser
 
     public string UserPassHash { get; set; } = null!;
 
-    public string UserEmail { get; set; } = null!;
-
     public virtual ICollection<VisuUserVisual> VisuUserVisuals { get; } = new List<VisuUserVisual>();
 }
