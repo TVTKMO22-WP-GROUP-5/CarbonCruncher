@@ -1,31 +1,84 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿// Import necessary namespaces
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using carbon_cruncher_api.Models;
+using Microsoft.EntityFrameworkCore;
 namespace carbon_cruncher_api.Controllers
+
+
+// Set the base URL for this controller to /api/visu1/Annual
 {
-    [Route("api/visu1")]
+    [Route("api/visu1/Annual")]
+
+ // Use ApiController attribute to indicate that this controller should follow conventions of an API controller
+
     [ApiController]
     public class Visu1Controller : ControllerBase
     {
-        // GET: api/visu1/Annual
+        // Declare private variable to store database context
+
+        private readonly CarbonCruncherContext _context;
+
+        // Initialize the controller with the CarbonCruncherContext object through dependency injection
+        public Visu1Controller(CarbonCruncherContext context)
+        {
+            _context = context;
+        }
+        // GET endpoint to retrieve annual data from the database
+
         [HttpGet("annual")]
-        public IEnumerable<string> Annual()
+        public async Task<ActionResult> GetAnnualData()
         {
-            return new string[] { "value1", "value2" };
-        }
+            try
+            {
+                // Retrieve annual data from the database
 
-        // GET: api/visu1/Monthly
+                var data = await _context.Visu1Annuals.ToListAsync();
+                // If there is no data, return a 404 Not Found response
+
+                if (data == null || !data.Any())
+                {
+                    return NotFound();
+                } 
+                // If data is retrieved successfully, return an HTTP 200 OK response with the data
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                // If there is an exception, log the error and return a 500 Internal Server Error response with the error message
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        // GET endpoint to retrieve monthly data from the database
         [HttpGet("monthly")]
-        public IEnumerable<string> Monthly()
+        public async Task<IActionResult> GetMonthlyData()
         {
-            return new string[] { "value1", "value2" };
-        }
+            try
+            {
+                // Retrieve monthly data from the database
 
-        // GET: api/visu1/TempReconstruction
-        [HttpGet("temprec")]
-        public IEnumerable<string> TempReconstruction()
-        {
-            return new string[] { "value1", "value2" };
+                var data = await _context.Visu1Monthlies.ToListAsync();
+
+                // If there is no data, return a 404 Not Found response
+
+                if (data == null || !data.Any())
+                {
+                    return NotFound();
+                }
+                // If data is retrieved successfully, return an HTTP 200 OK response with the data
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                // If there is an exception, log the error and return a 500 Internal Server Error response with the error message
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
+        
+        
     }
 }
