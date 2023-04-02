@@ -15,25 +15,25 @@ public partial class CarbonCruncherContext : DbContext
     {
     }
 
-    public virtual DbSet<Visu1Annual> Visu1Annuals { get; set; }
+    public virtual DbSet<Visu1Annual> Visu1Annual { get; set; }
 
-    public virtual DbSet<Visu1Monthly> Visu1Monthlies { get; set; }
+    public virtual DbSet<Visu1Monthly> Visu1Monthly { get; set; }
 
-    public virtual DbSet<Visu2Annual> Visu2Annuals { get; set; }
+    public virtual DbSet<Visu2Annual> Visu2Annual { get; set; }
 
-    public virtual DbSet<Visu2Icecore> Visu2Icecores { get; set; }
+    public virtual DbSet<Visu2Icecore> Visu2Icecore { get; set; }
 
-    public virtual DbSet<Visu2Monthly> Visu2Monthlies { get; set; }
+    public virtual DbSet<Visu2Monthly> Visu2Monthly { get; set; }
 
-    public virtual DbSet<Visu3Event> Visu3Events { get; set; }
+    public virtual DbSet<Visu3Event> Visu3Event { get; set; }
 
-    public virtual DbSet<Visu3Global> Visu3Globals { get; set; }
+    public virtual DbSet<Visu3Global> Visu3Global { get; set; }
 
     public virtual DbSet<Visu4Co2> Visu4Co2 { get; set; }
 
-    public virtual DbSet<Visu5Co2sector> Visu5Co2sectors { get; set; }
+    public virtual DbSet<Visu5Co2sector> Visu5Co2sector { get; set; }
 
-    public virtual DbSet<Visu5Co2sub> Visu5Co2subs { get; set; }
+    public virtual DbSet<Visu5Co2sub> Visu5Co2sub { get; set; }
 
     public virtual DbSet<VisuInfo> VisuInfos { get; set; }
 

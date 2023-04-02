@@ -24,7 +24,6 @@ namespace carbon_cruncher_api.Controllers
         /// Sample request: Get /api/visu2/Annual
         /// </remarks>
         /// <response code="200">Returns annual data </response>
-        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
@@ -42,7 +41,6 @@ namespace carbon_cruncher_api.Controllers
         /// Sample request: Get /api/visu2/Monthly
         /// </remarks>
         /// <response code="200">Returns monthly data </response>
-        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Visu2Monthly>), StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
@@ -60,7 +58,6 @@ namespace carbon_cruncher_api.Controllers
         /// Sample request: Get /api/visu2/Icecore
         /// </remarks>
         /// <response code="200">Returns atmospheric co2 ratios data </response>
-        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Visu2Icecore>), StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]

@@ -34,7 +34,7 @@ namespace carbon_cruncher_api.Controllers
         [HttpGet]
         public IEnumerable<Visu5Co2sector> CO2Sector()
         {
-            var sectorsList = _context.Visu5Co2sectors
+            var sectorsList = _context.Visu5Co2sector
                 .Include(s => s.Visu5Co2subs)
                 .ToList();
             return sectorsList;

@@ -34,7 +34,7 @@ namespace carbon_cruncher_api.Controllers
             {
                 // Retrieve annual data from the database
 
-                var data = await _context.Visu1Annuals.ToListAsync();
+                var data = await _context.Visu1Annual.ToListAsync();
                 // If there is no data, return a 404 Not Found response
 
                 if (data == null || !data.Any())
@@ -60,7 +60,7 @@ namespace carbon_cruncher_api.Controllers
             {
                 // Retrieve monthly data from the database
 
-                var data = await _context.Visu1Monthlies.ToListAsync();
+                var data = await _context.Visu1Monthly.ToListAsync();
 
                 // If there is no data, return a 404 Not Found response
 
