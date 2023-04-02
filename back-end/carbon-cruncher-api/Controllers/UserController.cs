@@ -1,7 +1,13 @@
-﻿using carbon_cruncher_api.Models;
+﻿using BC = BCrypt.Net.BCrypt;
+using carbon_cruncher_api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace carbon_cruncher_api.Controllers
 {
@@ -11,11 +17,13 @@ namespace carbon_cruncher_api.Controllers
     {
         // Database context
         private readonly CarbonCruncherContext _context;
+        private readonly IConfiguration _configuration;
 
         // Database context set with dependency injection
-        public UserController(CarbonCruncherContext context)
+        public UserController(CarbonCruncherContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -38,23 +46,33 @@ namespace carbon_cruncher_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Consumes("application/json")]
-        [Produces("text/plain")]
+        [Produces("application/json")]
         [HttpPost]
         [Route("register")]
-        public ActionResult<string> Register([FromBody] VisuRegLoginUser user)
+        public ActionResult<VisuUser> Register([FromBody] VisuRegLoginUser user)
         {
             try
             {
-                VisuUser regUser = new VisuUser() { UserNick = user.UserNick, UserPassHash = "jfo93jf39" };   
+                // Check if there is already a user with given usernick
+                VisuUser? existingUser = _context.VisuUsers.SingleOrDefault(u => u.UserNick.ToLower() == user.UserNick.ToLower());
+                if (existingUser != null)
+                {
+                    return Conflict("Usernick already exists");
+                }
                 
+                // Create registered user object with hashed password
+                VisuUser regUser = new VisuUser() { UserNick = user.UserNick, UserPassHash = BC.HashPassword(user.UserPassword) };
+
+                // Save user
                 _context.VisuUsers.Add(regUser);
                 _context.SaveChanges();  
                 
-                return Ok($"User {regUser.UserNick} registered succesfully with id {regUser.Id}");
+                // Return response and user object
+                return Ok(regUser);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -81,9 +99,18 @@ namespace carbon_cruncher_api.Controllers
         [Produces("text/plain")]
         [HttpPost]
         [Route("login")]
-        public string Login([FromBody] VisuRegLoginUser user)
+        public ActionResult<string> Login([FromBody] VisuRegLoginUser user)
         {
-            return "token";
+            // Create token for user if user exists and password matches saved hash. Otherwise, return unauthorized result
+            VisuUser? userDb = _context.VisuUsers.SingleOrDefault(u => u.UserNick == user.UserNick);
+            if (userDb == null || !BC.Verify(user.UserPassword, userDb.UserPassHash))
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok(CreateToken(userDb));
+            }
         }
 
         // DELETE api/user/:id
@@ -122,6 +149,33 @@ namespace carbon_cruncher_api.Controllers
         [Route("visualization/{id}")]
         public void DeleteVisualization(int id)
         {
+        }
+
+        /// <summary>
+        /// Creates token for user
+        /// </summary>
+        /// <param name="user">User to generate token</param>
+        /// <returns>Token string</returns>
+        private string CreateToken(VisuUser user)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserNick)
+            };
+            string defaultToken = _configuration.GetSection("Tokens:DefaultToken").Value!;
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(defaultToken));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: creds
+                );
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
     }
 }
