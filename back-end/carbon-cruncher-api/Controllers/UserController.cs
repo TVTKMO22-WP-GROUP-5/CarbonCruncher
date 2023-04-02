@@ -156,6 +156,7 @@ namespace carbon_cruncher_api.Controllers
         /// </summary>
         /// <param name="user">User to generate token</param>
         /// <returns>Token string</returns>
+        /// https://www.youtube.com/watch?v=UwruwHl3BlU ref video
         private string CreateToken(VisuUser user)
         {
             List<Claim> claims = new List<Claim>
