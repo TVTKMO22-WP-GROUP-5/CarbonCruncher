@@ -1,10 +1,13 @@
-using carbon_cruncher_api.Extensions;
 using carbon_cruncher_api.Extensions.ServiceExtensions;
 using carbon_cruncher_api.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +21,37 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
-    // Get documentation from endpoint comments
+    // Swagger generate documentation from comments
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+    // Swagger authentication configuration
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme 
+    { 
+        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+// Authentication scheme
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration["Tokens:DefaultToken"])),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 
 // Add DbContext using SQL Server Provider and connection string from appsettings.json (or resource that overrides it)
 builder.Services.AddDbContext<CarbonCruncherContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
@@ -49,6 +77,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions // Forward proxy headers to 
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
+app.UseAuthentication(); // Middleware for authentication.
 app.UseAuthorization(); // Adds authorization middleware.
 app.MapControllers(); // Adds endpoints from controller actions.
 app.Run();

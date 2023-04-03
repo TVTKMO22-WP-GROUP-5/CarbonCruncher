@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace carbon_cruncher_api.Controllers
 {
@@ -116,27 +117,31 @@ namespace carbon_cruncher_api.Controllers
         /// <summary>
         /// Delete a user
         /// </summary>
-        /// <param name="usernick">Deleted users usernick</param>
         /// <remarks>
         /// Sample request:
         ///
         ///     Delete /api/user/testguy
-        ///     {
-        ///         bearer: token
-        ///     }
         ///
         /// </remarks>
-        /// <response code="200">User logged in succesfully</response>
-        /// <response code="401">Unauthorized login attempt</response>
-        [HttpDelete]
-        [Route("{id}")]
-        public ActionResult Delete(string usernick)
+        /// <response code="204">User deleted succesfully</response>
+        /// <response code="401">Unauthorized delete attempt</response>
+        [HttpDelete, Authorize]
+        public ActionResult Delete()
         {
-            return Ok();
+            // Get user identity from controllerbase User
+            var currentUser = User?.Identity?.Name;
+            if (currentUser is null) return BadRequest();
+
+            // Remove currentuser and save changes
+            var removeUser = _context.VisuUsers
+                .Where(u => u.UserNick.ToLower().Equals(currentUser.ToLower())).FirstOrDefault();
+            if (removeUser is null) return BadRequest();
+            _context.VisuUsers.Remove(removeUser);
+            return NoContent();
         }
 
         // GET: api/user/visualization
-        [HttpGet]
+        [HttpGet, Authorize]
         [Route("visualization")]
         public IEnumerable<string> GetVisualization()
         {
@@ -144,7 +149,7 @@ namespace carbon_cruncher_api.Controllers
         }
 
         // GET: api/user/visualization/:stringId
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         [Route("visualization/{stringId}")]
         public IEnumerable<string> GetSingleVisualization(string stringId)
         {
@@ -152,7 +157,7 @@ namespace carbon_cruncher_api.Controllers
         }
 
         // POST: api/user/visualization
-        [HttpPost]
+        [HttpPost, Authorize]
         [Route("visualization")]
         public IEnumerable<string> PostVisualization([FromBody] string value)
         {
@@ -160,8 +165,8 @@ namespace carbon_cruncher_api.Controllers
         }
 
         // DELETE api/visualization/:id
-        [HttpDelete]
-        [Route("visualization/{id}")]
+        [HttpDelete, Authorize]
+        [Route("visualization/{stringId}")]
         public void DeleteVisualization(int id)
         {
         }
@@ -174,12 +179,13 @@ namespace carbon_cruncher_api.Controllers
         /// https://www.youtube.com/watch?v=UwruwHl3BlU ref video
         private string CreateToken(VisuUser user)
         {
+            // Claims list holds information that we encode to token
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserNick)
             };
             
-            // Default token is read from secrets.json
+            // Secret default key token is read from secrets.json
             string defaultToken = _configuration.GetSection("Tokens:DefaultToken").Value!;
             
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(defaultToken));
