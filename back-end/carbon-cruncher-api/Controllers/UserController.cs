@@ -178,17 +178,17 @@ namespace carbon_cruncher_api.Controllers
             {
                 new Claim(ClaimTypes.Name, user.UserNick)
             };
+            
+            // Default token is read from secrets.json
             string defaultToken = _configuration.GetSection("Tokens:DefaultToken").Value!;
+            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(defaultToken));
-
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
             var token = new JwtSecurityToken(
                     claims: claims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: creds
                 );
-
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;

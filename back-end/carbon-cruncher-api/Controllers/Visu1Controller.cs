@@ -25,8 +25,14 @@ namespace carbon_cruncher_api.Controllers
         {
             _context = context;
         }
-        // GET endpoint to retrieve annual data from the database
-
+        
+        /// <summary>
+        /// Get a collection of annual global historical surface temperature anomalies from January 1850 onwards
+        /// </summary>
+        /// <remarks>
+        /// Sample request: Get /api/visu1/Annual
+        /// </remarks>
+        /// <response code="200">Returns annual data </response>
         [HttpGet("annual")]
         public async Task<ActionResult> GetAnnualData()
         {
@@ -52,7 +58,14 @@ namespace carbon_cruncher_api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        // GET endpoint to retrieve monthly data from the database
+        
+        /// <summary>
+        /// Get a collection of monthly global historical surface temperature anomalies from January 1850 onwards
+        /// </summary>
+        /// <remarks>
+        /// Sample request: Get /api/visu1/Monthly
+        /// </remarks>
+        /// <response code="200">Returns monthly data </response>
         [HttpGet("monthly")]
         public async Task<IActionResult> GetMonthlyData()
         {
@@ -77,8 +90,7 @@ namespace carbon_cruncher_api.Controllers
                 // If there is an exception, log the error and return a 500 Internal Server Error response with the error message
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-        }
-        
+        }      
         
     }
 }

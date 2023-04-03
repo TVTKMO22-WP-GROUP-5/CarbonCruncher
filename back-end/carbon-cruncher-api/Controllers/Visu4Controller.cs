@@ -28,11 +28,10 @@ namespace carbon_cruncher_api.Controllers
         ///
         /// </remarks>
         /// <response code="200">Returns a collection of CO2 data from different countries</response>
-        [HttpGet]
-        [Route("co2country")]
         [ProducesResponseType(typeof(IEnumerable<Visu4Co2>), StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
+        [Route("co2country")]
         public IEnumerable<Visu4Co2> CO2()
         {
             return _context.Visu4Co2.ToList();
