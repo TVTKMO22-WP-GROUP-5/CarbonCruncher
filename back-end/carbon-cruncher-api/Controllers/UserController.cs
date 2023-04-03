@@ -33,7 +33,7 @@ namespace carbon_cruncher_api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Post /api/user
+        ///     Post /api/user/register
         ///     {
         ///        "usernick":"testguy",
         ///        "userpassword":"R4nd0mP4ssw0rd!"
@@ -83,7 +83,7 @@ namespace carbon_cruncher_api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Post /api/login
+        ///     Post /api/user/login
         ///     {
         ///        "usernick":"testguy",
         ///        "userpassword":"R4nd0mP4ssw0rd!"
@@ -91,10 +91,10 @@ namespace carbon_cruncher_api.Controllers
         ///
         /// </remarks>
         /// <response code="200">User logged in succesfully</response>
-        /// <response code="400">Error while user login</response>
+        /// <response code="401">Unauthorized login attempt</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Consumes("application/json")]
         [Produces("text/plain")]
         [HttpPost]
@@ -113,11 +113,26 @@ namespace carbon_cruncher_api.Controllers
             }
         }
 
-        // DELETE api/user/:id
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="usernick">Deleted users usernick</param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     Delete /api/user/testguy
+        ///     {
+        ///         bearer: token
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">User logged in succesfully</response>
+        /// <response code="401">Unauthorized login attempt</response>
         [HttpDelete]
         [Route("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(string usernick)
         {
+            return Ok();
         }
 
         // GET: api/user/visualization

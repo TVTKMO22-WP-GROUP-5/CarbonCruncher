@@ -9,10 +9,10 @@ namespace carbon_cruncher_api.Controllers
 
 // Set the base URL for this controller to /api/visu1/Annual
 {
-    [Route("api/visu1/Annual")]
 
  // Use ApiController attribute to indicate that this controller should follow conventions of an API controller
 
+    [Route("api/visu1")]
     [ApiController]
     public class Visu1Controller : ControllerBase
     {

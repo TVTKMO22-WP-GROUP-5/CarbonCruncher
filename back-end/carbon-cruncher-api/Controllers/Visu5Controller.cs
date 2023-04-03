@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace carbon_cruncher_api.Controllers
 {
-    [Route("api/visu5/co2sector")]
+    [Route("api/visu5")]
     [ApiController]
     public class Visu5Controller : ControllerBase
     {
@@ -28,10 +28,10 @@ namespace carbon_cruncher_api.Controllers
         ///
         /// </remarks>
         /// <response code="200">Returns a collection of CO2 data from different sectors</response>
-        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Visu5Co2sector>), StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
+        [Route("co2sector")]
         public IEnumerable<Visu5Co2sector> CO2Sector()
         {
             var sectorsList = _context.Visu5Co2sector
