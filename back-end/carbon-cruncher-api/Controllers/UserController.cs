@@ -63,14 +63,14 @@ namespace carbon_cruncher_api.Controllers
                 ValidationResult result = _userValidator.Validate(user);
                 if (!result.IsValid)
                 {
-                    return BadRequest("User data is invalid");
+                    return BadRequest();
                 }
 
                 // Check if there is already a user with given usernick
                 VisuUser? existingUser = _context.VisuUsers.SingleOrDefault(u => u.UserNick.ToLower() == user.UserNick.ToLower());
                 if (existingUser != null)
                 {
-                    return Conflict("Usernick already exists");
+                    return Conflict();
                 }
 
                 // Create registered user object with hashed password
