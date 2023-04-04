@@ -91,7 +91,7 @@ namespace carbon_cruncher_api.tests
                 if (!_databaseInitialized)
                 {
                     using (var context = CreateContext())
-                    {
+        {
                         context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
                         context.AddRange(
@@ -100,9 +100,6 @@ namespace carbon_cruncher_api.tests
                         context.SaveChanges();
                     }
 
-                    _databaseInitialized = true;
-                }
-            }
         }
 
         public CarbonCruncherContext CreateContext()
