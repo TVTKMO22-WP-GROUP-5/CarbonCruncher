@@ -59,11 +59,40 @@ namespace carbon_cruncher_api.tests
             Assert.IsType<BadRequestResult>(actionResult.Result);
         }
 
-        private void EmptyDatabase()
+        [Theory]
+        [InlineData("TestGuyExists", "R4nd0mP4ssw0rd!", "Username exists")]
+        public void TestUserRegisterConflict(string nick, string password, string testName)
         {
+            // Arrange
+            _output.WriteLine($"TestUserRegisterConflict Testname: {testName}");
             using var context = Fixture.CreateContext();
-            context.Database.ExecuteSqlRaw("DELETE FROM VisuUsers");
-            context.Database.ExecuteSqlRaw("DBCC CHECKIDENT (visu_user, RESEED, 0)");
+            var controller = new UserController(context, _configuration);
+
+            // Act
+            var actionResult = controller.Register(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
+            _output.WriteLine($"TestUserRegisterConflict Result: {actionResult.Result}");
+
+            // Assert
+            Assert.IsType<ConflictResult>(actionResult.Result);
+        }
+
+        [Theory]
+        [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username 1 registered succesfully")]
+        [InlineData("TestGuy3", "123asdASD1!", "Username 2 registered succesfully")]
+        [InlineData("TestGuy4", "48dsaDSDS!", "Username 3 registered succesfully")]
+        public void TestUserRegisterSuccess(string nick, string password, string testName)
+        {
+            // Arrange
+            _output.WriteLine($"TestUserRegisterSuccess Testname: {testName}");
+            using var context = Fixture.CreateContext();
+            var controller = new UserController(context, _configuration);
+
+            // Act
+            var actionResult = controller.Register(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
+            _output.WriteLine($"TestUserRegisterSuccess Result: {actionResult.Result}");
+
+            // Assert
+            Assert.IsType<OkObjectResult>(actionResult.Result);
         }
     }
 
@@ -81,7 +110,7 @@ namespace carbon_cruncher_api.tests
                 if (!_databaseInitialized)
                 {
                     using (var context = CreateContext())
-                    {
+        {
                         context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
                         context.AddRange(
