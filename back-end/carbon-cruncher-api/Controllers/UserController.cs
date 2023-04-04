@@ -2,13 +2,16 @@
 using carbon_cruncher_api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
+using FluentValidation;
+using FluentValidation.Results;
+using carbon_cruncher_api.Validators;
 
 namespace carbon_cruncher_api.Controllers
 {
@@ -19,12 +22,14 @@ namespace carbon_cruncher_api.Controllers
         // Database context
         private readonly CarbonCruncherContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IValidator<VisuRegLoginUser> _userValidator;
 
         // Database context set with dependency injection
         public UserController(CarbonCruncherContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
+            _userValidator = new UserValidator();
         }
 
         /// <summary>
@@ -54,13 +59,20 @@ namespace carbon_cruncher_api.Controllers
         {
             try
             {
+                // Validate user object
+                ValidationResult result = _userValidator.Validate(user);
+                if (!result.IsValid)
+                {
+                    return BadRequest("User data is invalid");
+                }
+
                 // Check if there is already a user with given usernick
                 VisuUser? existingUser = _context.VisuUsers.SingleOrDefault(u => u.UserNick.ToLower() == user.UserNick.ToLower());
                 if (existingUser != null)
                 {
                     return Conflict("Usernick already exists");
                 }
-                
+
                 // Create registered user object with hashed password
                 VisuUser regUser = new VisuUser() { UserNick = user.UserNick, UserPassHash = BC.HashPassword(user.UserPassword) };
 
@@ -76,7 +88,6 @@ namespace carbon_cruncher_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         /// <summary>
         /// Login a user
         /// </summary>
@@ -169,6 +180,7 @@ namespace carbon_cruncher_api.Controllers
         [Route("visualization/{stringId}")]
         public void DeleteVisualization(int id)
         {
+            
         }
 
         /// <summary>
