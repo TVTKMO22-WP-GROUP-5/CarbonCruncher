@@ -81,7 +81,7 @@ namespace carbon_cruncher_api.tests
                 if (!_databaseInitialized)
                 {
                     using (var context = CreateContext())
-                    {
+        {
                         context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
                         context.AddRange(
