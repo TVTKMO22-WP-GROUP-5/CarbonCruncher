@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using Xunit.Abstractions;
 
 namespace carbon_cruncher_api.tests
@@ -21,7 +22,7 @@ namespace carbon_cruncher_api.tests
             // Create and build test configuration
             var myConfiguration = new Dictionary<string, string>
                 {
-                    {"Tokens:DefaultToken", "TestTokenValue"}
+                    {"Tokens:DefaultToken", "TestTokenValueForUnitTests"}
                 };
             _configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(myConfiguration)
@@ -48,6 +49,7 @@ namespace carbon_cruncher_api.tests
         {
             // Arrange
             _output.WriteLine($"TestUserRegister Testname: {testName}");
+            
             using var context = Fixture.CreateContext();
             var controller = new UserController(context, _configuration);
             
@@ -61,12 +63,17 @@ namespace carbon_cruncher_api.tests
 
         [Theory]
         [InlineData("TestGuyExists", "R4nd0mP4ssw0rd!", "Username exists")]
+        [InlineData("TestGuy2", "R4nd0mP4ssw0rd!", "Username exists")]
         public void TestUserRegisterConflict(string nick, string password, string testName)
         {
             // Arrange
             _output.WriteLine($"TestUserRegisterConflict Testname: {testName}");
+
+            // Changes to datacontext are made inside transaction and are
+            // rolled back after test to prevent conflict with other tests
             using var context = Fixture.CreateContext();
             var controller = new UserController(context, _configuration);
+            context.Database.BeginTransaction();
 
             // Act
             var actionResult = controller.Register(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
@@ -77,22 +84,83 @@ namespace carbon_cruncher_api.tests
         }
 
         [Theory]
-        [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username 1 registered succesfully")]
-        [InlineData("TestGuy3", "123asdASD1!", "Username 2 registered succesfully")]
-        [InlineData("TestGuy4", "48dsaDSDS!", "Username 3 registered succesfully")]
+        [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username TestGuy1 registered succesfully")]
+        [InlineData("TestGuy3", "123asdASD1!", "Username TestGuy3 registered succesfully")]
+        [InlineData("TestGuy4", "48dsaDSDS!", "Username TestGuy4 registered succesfully")]
         public void TestUserRegisterSuccess(string nick, string password, string testName)
         {
             // Arrange
             _output.WriteLine($"TestUserRegisterSuccess Testname: {testName}");
+
+            // Changes to datacontext are made inside transaction and are
+            // rolled back after test to prevent conflict with other tests
             using var context = Fixture.CreateContext();
             var controller = new UserController(context, _configuration);
+            context.Database.BeginTransaction();
 
             // Act
             var actionResult = controller.Register(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
             _output.WriteLine($"TestUserRegisterSuccess Result: {actionResult.Result}");
-
+            
             // Assert
             Assert.IsType<OkObjectResult>(actionResult.Result);
+        }
+
+        [Theory]
+        [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username TestGuy1 logged in succesfully")]
+        [InlineData("TestGuy3", "123asdASD1!", "Username TestGuy3 logged in succesfully")]
+        [InlineData("TestGuy4", "48dsaDSDS!", "Username TestGuy4 logged in succesfully")]
+        public void TestUserLoginSuccess(string nick, string password, string testName)
+        {
+            // Arrange
+            _output.WriteLine($"TestUserLoginSuccess Testname: {testName}");
+
+            // Changes to datacontext are made inside transaction and are
+            // rolled back after test to prevent conflict with other tests
+            using var context = Fixture.CreateContext();
+            context.Database.BeginTransaction();
+            var controller = new UserController(context, _configuration);
+            controller.Register(new VisuRegLoginUser { UserNick = nick, UserPassword = password });            
+            context.ChangeTracker.Clear();
+            
+            // Act
+            var loginResult = controller.Login(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
+            _output.WriteLine($"TestUserLoginSuccess Result: {loginResult.Result}");
+            
+            // Assert
+            Assert.IsType<OkObjectResult>(loginResult.Result);
+        }
+
+        [Theory]
+        [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username TestGuy1 deleted succesfully")]
+        public void TestUserDeleteSuccess(string nick, string password, string testName)
+        {
+            // Arrange
+            _output.WriteLine($"TestUserDeleteSuccess Testname: {testName}");
+
+            // Changes to datacontext are made inside transaction and are
+            // rolled back after test to prevent conflict with other tests
+            using var context = Fixture.CreateContext();
+            context.Database.BeginTransaction();
+            var controller = new UserController(context, _configuration);
+
+            // Register and login user to get token
+            controller.Register(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
+            var loginResult = controller.Login(new VisuRegLoginUser { UserNick = nick, UserPassword = password });
+            context.ChangeTracker.Clear();
+
+            // Get token from login result and extract username from token
+            var token = ((ObjectResult)loginResult.Result!).Value!.ToString();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+            string username = jwtSecurityToken.Claims.FirstOrDefault()!.Value;
+
+            // Act
+            var deleteResult = controller.Delete(username);
+            _output.WriteLine($"TestUserDeleteSuccess Result: {loginResult}");
+
+            // Assert
+            Assert.IsType<NoContentResult>(deleteResult);
         }
     }
 

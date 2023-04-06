@@ -1,17 +1,14 @@
-﻿using BC = BCrypt.Net.BCrypt;
-using carbon_cruncher_api.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authorization;
-using System.Text.RegularExpressions;
+﻿using carbon_cruncher_api.Models;
+using carbon_cruncher_api.Validators;
 using FluentValidation;
 using FluentValidation.Results;
-using carbon_cruncher_api.Validators;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using BC = BCrypt.Net.BCrypt;
 
 namespace carbon_cruncher_api.Controllers
 {
@@ -137,17 +134,21 @@ namespace carbon_cruncher_api.Controllers
         /// <response code="204">User deleted succesfully</response>
         /// <response code="401">Unauthorized delete attempt</response>
         [HttpDelete, Authorize]
-        public ActionResult Delete()
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Route("{usernick}")]
+        public ActionResult Delete(string usernick)
         {
             // Get user identity from controllerbase User
             var currentUser = User?.Identity?.Name;
-            if (currentUser is null) return BadRequest();
+            if (currentUser != null && !currentUser.ToLower().Equals(usernick.ToLower())) return Unauthorized();
 
             // Remove currentuser and save changes
             var removeUser = _context.VisuUsers
-                .Where(u => u.UserNick.ToLower().Equals(currentUser.ToLower())).FirstOrDefault();
+                .Where(u => u.UserNick.ToLower().Equals(usernick.ToLower())).FirstOrDefault();
             if (removeUser is null) return BadRequest();
             _context.VisuUsers.Remove(removeUser);
+            _context.SaveChanges();
             return NoContent();
         }
 
