@@ -19,7 +19,6 @@ namespace carbon_cruncher_api.Controllers
             _context = context;
         }
 
-        //GET: api/visu3/Global
         /// <summary>
         /// Get evolution of global temperature over the past two million years.
         /// </summary>
@@ -30,11 +29,8 @@ namespace carbon_cruncher_api.Controllers
         /// <response code="200">
         /// Returns evolution of global temperature over the past two million years.
         /// </response>
-        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Visu3Global>), StatusCodes.Status200OK)]
         [Produces("application/json")]
-
-        //[HttpGet("global")]
         [HttpGet]
         [Route("global")]
         public IEnumerable<Visu3Global> Global()
@@ -42,15 +38,6 @@ namespace carbon_cruncher_api.Controllers
             return _context.Visu3Global.ToList();
         }
 
-        // GET: api/visu3/CO2
-        /*[HttpGet("co2")]
-        public IEnumerable<string> CO2()
-        {
-            return new string[] { "value1", "value2" };
-        }
-        */
-
-        // GET: api/visu3/Event
         /// <summary>
         /// Get milestones in human evolution and culture events over the past two million years.
         /// </summary>
@@ -61,11 +48,8 @@ namespace carbon_cruncher_api.Controllers
         /// <response code="200">
         /// Returns milestones in human evolution and culture events over the past two million years.
         /// </response>
-        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Visu3Event>), StatusCodes.Status200OK)]
         [Produces("application/json")]
-
-        //[HttpGet("event")]
         [HttpGet]
         [Route("event")]
         public IEnumerable<Visu3Event> Events()
