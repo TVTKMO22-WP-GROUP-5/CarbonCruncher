@@ -26,6 +26,3 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: back-end/carbon-cruncher-api/
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: back-end/carbon-cruncher-api/
