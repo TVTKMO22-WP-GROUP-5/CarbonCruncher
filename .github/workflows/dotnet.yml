@@ -26,3 +26,11 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: back-end/carbon-cruncher-api/
+    - name: Publish
+      run: dotnet publish back-end/carbon-cruncher-api/carbon-cruncher-api.csproj -c Release -o webapibuild
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: webapibuild
+        path: back-end/carbon-cruncher-api/webapibuild/**
+        if-no-files-found: error
