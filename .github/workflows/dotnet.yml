@@ -22,7 +22,10 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: back-end/carbon-cruncher-api/
     - name: Build
       run: dotnet build --no-restore
+      working-directory: back-end/carbon-cruncher-api/
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: back-end/carbon-cruncher-api/
