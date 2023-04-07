@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace carbon_cruncher_api.Controllers
 {
-    [Route("api/[controller]/info")]
+    [Route("api/visuutils")]
     [ApiController]
     public class VisuUtilsController : ControllerBase
     {
@@ -29,11 +29,11 @@ namespace carbon_cruncher_api.Controllers
         /// </remarks>
         /// <response code="200">Returns a collection of CO2 data from different sectors</response>
         /// <response code="404">Not found with any visualization information</response>
-        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<VisuInfo>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces("application/json")]
         [HttpGet]
+        [Route("info")]
         public ActionResult<IEnumerable<VisuInfo>> CO2Sector(int? visuNumber)
         {
             var resultInfo = _context.VisuInfos.Where(v => visuNumber == null || v.VisuNumber == visuNumber).ToList();

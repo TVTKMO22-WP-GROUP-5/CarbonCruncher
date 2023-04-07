@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace carbon_cruncher_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/visu2")]
     [ApiController]
     public class Visu2Controller : ControllerBase
     {
@@ -16,7 +16,6 @@ namespace carbon_cruncher_api.Controllers
             _context = context;
         }
 
-        // GET: api/visu2/Annual
         /// <summary>
         /// Get a collection of annual atmospheric co2 concentrations from Mauna Loa measurements, starting from 1959
         /// </summary>
@@ -27,13 +26,12 @@ namespace carbon_cruncher_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
-        [Route("Annual")]
+        [Route("annual")]
         public IEnumerable<Visu2Annual> Annual()
         {
             return _context.Visu2Annual.ToList();
         }
 
-        // GET: api/visu2/Monthly
         /// <summary>
         /// Get a collection of monthly atmospheric co2 concentrations from Mauna Loa measurements, starting from 03/1958
         /// </summary>
@@ -44,13 +42,12 @@ namespace carbon_cruncher_api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Visu2Monthly>), StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
-        [Route("Monthly")]
+        [Route("monthly")]
         public IEnumerable<Visu2Monthly> Monthly()
         {
             return _context.Visu2Monthly.ToList();
         }
 
-        // GET: api/visu2/IceCore
         /// <summary>
         /// Get a collection of Antarctic ice core records of atmospheric co2 ratios
         /// </summary>
@@ -61,7 +58,7 @@ namespace carbon_cruncher_api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Visu2Icecore>), StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
-        [Route("Icecore")]
+        [Route("icecore")]
         public IEnumerable<Visu2Icecore> IceCore()
         {
             return _context.Visu2Icecore.ToList();
