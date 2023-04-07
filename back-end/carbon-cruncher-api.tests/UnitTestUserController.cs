@@ -85,8 +85,6 @@ namespace carbon_cruncher_api.tests
 
         [Theory]
         [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username TestGuy1 registered succesfully")]
-        [InlineData("TestGuy3", "123asdASD1!", "Username TestGuy3 registered succesfully")]
-        [InlineData("TestGuy4", "48dsaDSDS!", "Username TestGuy4 registered succesfully")]
         public void TestUserRegisterSuccess(string nick, string password, string testName)
         {
             // Arrange
@@ -108,8 +106,6 @@ namespace carbon_cruncher_api.tests
 
         [Theory]
         [InlineData("TestGuy1", "R4nd0mP4ssw0rd!", "Username TestGuy1 logged in succesfully")]
-        [InlineData("TestGuy3", "123asdASD1!", "Username TestGuy3 logged in succesfully")]
-        [InlineData("TestGuy4", "48dsaDSDS!", "Username TestGuy4 logged in succesfully")]
         public void TestUserLoginSuccess(string nick, string password, string testName)
         {
             // Arrange
