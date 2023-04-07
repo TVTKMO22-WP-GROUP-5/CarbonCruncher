@@ -1,8 +1,7 @@
 name: Build and deploy .NET Core application to Web App carbon-cruncher-api-group5 with API Management Service carbon-cruncher-api-managment-carbon-cruncher-api
 on:
   push:
-    branches:
-    - branch-esa
+    branches: [ main ]
 env:
   AZURE_WEBAPP_NAME: carbon-cruncher-api-group5
   AZURE_WEBAPP_PACKAGE_PATH: .\publish
