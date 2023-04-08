@@ -32,6 +32,12 @@ namespace carbon_cruncher_api.Controllers
             _visuValidator = new VisuUserVisualValidator();
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<VisuUser>> GetUsers()
+        {
+            return Ok(_context.VisuUsers.ToList());
+        }
+
         /// <summary>
         /// Register a user
         /// </summary>
