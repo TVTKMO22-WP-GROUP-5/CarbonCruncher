@@ -1,4 +1,3 @@
-using carbon_cruncher_api.Extensions.ServiceExtensions;
 using carbon_cruncher_api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -12,7 +11,15 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.ConfigureCors();
+var corsName = "carbon-cruncher-origins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsName,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin();
+                      });
+});
 
 // Prevent recursive data fetching
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -77,6 +84,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions // Forward proxy headers to 
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
+
+app.UseCors(corsName);
 app.UseAuthentication(); // Middleware for authentication.
 app.UseAuthorization(); // Adds authorization middleware.
 app.MapControllers(); // Adds endpoints from controller actions.
