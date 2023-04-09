@@ -1,11 +1,11 @@
-import './IconButton.css'
-const IconButton = ( { icon, text, onClick } ) => {
+import styles from "./IconButton.module.css";
+const IconButton = ({ icon, altText, text, onClick }) => {
   return (
-    <div className='icon-button'>
-      <p className='icon-button-text'>{ text }</p>
-      <img src={ icon } className='icon-button-icon'></img>
+    <div className={styles.iconButton}>
+      <p className={styles.iconButtonText}>{text}</p>
+      <img src={icon} className={styles.iconButtonIcon} alt={altText} />
     </div>
-  )
-}
+  );
+};
 
-export default IconButton
+export default IconButton;
