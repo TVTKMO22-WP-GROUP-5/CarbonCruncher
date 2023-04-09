@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+  width: 100%;
+  min-width: 600px;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.main-container {
+  background: rgb(60, 122, 119);
+  background: linear-gradient(180deg, rgba(60, 122, 119, 1) 0%, rgba(237, 200, 71, 1) 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar {
+  height: 100%;
+  width: 190px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.left-section {
+  align-self: flex-start;
+  width: 250px;
+}
+
+.right-section {
+  align-self: flex-end;
+}
+
+.middle-section {
+  background-color: rgba(0, 0, 0, 0);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.middle-content {
+  background-color: #ffffff;
+  flex: 1;
+}
+
+.navbar {
+  color: #ffffff;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px;
+  gap: 0 5%;
+  height: 80px;
+}
+
+.navbar a:last-child {
+  margin-left: auto;
+}
+
+.navbar a,
+a:visited,
+a:active {
+  color: inherit;
+}
+
+.navbar a:hover {
+  color: #1f3c38;
+}
+
+.side-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+  .sidebar {
+    display: none;
+  }
+}
