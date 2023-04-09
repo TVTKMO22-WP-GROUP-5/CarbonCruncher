@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
     onLogout: handleLogout,
   };
 
-  return <AuthContext.Provider value={"fee"}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
