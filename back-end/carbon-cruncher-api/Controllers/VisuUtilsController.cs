@@ -24,7 +24,7 @@ namespace carbon_cruncher_api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/visuUtils/info
+        ///     Get /api/visuUtils/info(?visunumber=1)    () = Optional part, leave paranthesis out
         ///
         /// </remarks>
         /// <response code="200">Returns a collection of CO2 data from different sectors</response>

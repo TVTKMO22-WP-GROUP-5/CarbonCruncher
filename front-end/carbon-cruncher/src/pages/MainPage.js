@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export const MainPage = () => {
   return (
@@ -8,6 +8,7 @@ export const MainPage = () => {
       <Link to="/login">
         <button>login</button>
       </Link>
+      <Outlet />
     </div>
   );
 };

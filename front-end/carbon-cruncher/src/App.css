@@ -15,6 +15,10 @@ body {
   height: 100%;
 }
 
+.link {
+  margin-right: 20px;
+}
+
 .loginPage {
   display: flex;
   flex-direction: column;
