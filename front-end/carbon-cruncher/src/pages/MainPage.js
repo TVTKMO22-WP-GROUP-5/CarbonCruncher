@@ -1,6 +1,9 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import React from "react"
+import { Link, Outlet } from "react-router-dom"
 
+/**
+ * Layout for chart pages
+ */
 export const MainPage = () => {
   return (
     <div className="mainPage">
@@ -10,5 +13,5 @@ export const MainPage = () => {
       </Link>
       <Outlet />
     </div>
-  );
-};
+  )
+}

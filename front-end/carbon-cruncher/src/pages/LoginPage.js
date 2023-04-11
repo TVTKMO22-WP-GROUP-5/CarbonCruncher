@@ -1,5 +1,9 @@
 import React from "react"
 import { Link, Outlet } from "react-router-dom"
+
+/**
+ * Layout for login and registering pages
+ */
 export const LoginPage = () => {
   return (
     <div className="loginPage">
