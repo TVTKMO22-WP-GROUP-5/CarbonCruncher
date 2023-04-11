@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@500&family=Roboto:wght@100;300;400;500;700;900&display=swap');
 html,
 body {
   width: 100%;
@@ -9,6 +8,10 @@ body {
   margin: 0;
   
   font-family: 'Roboto', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #root {
@@ -25,16 +28,76 @@ body {
 
   height: 100%;
 
+  color: #f5f5f5;
   background: rgb(60, 122, 119);
   background: linear-gradient(270deg, rgba(60, 122, 119, 1) 0%, rgba(60, 122, 119, 1) 50%, rgba(19, 17, 95, 1) 100%);
 }
 
+.loginPage img {
+  width: 400px;
+  height: 400px;
+}
+
+.loginTitleText {
+  text-align: center;
+  text-shadow: 2px 2px 5px #000000;
+}
+
+.loginTitleText > h1 {
+  font-family: 'Roboto Serif';
+  font-size: 64px;
+  margin-top: 80px;
+  margin-bottom: 10px;
+}
+
+.loginTitleText > h2 {
+  margin-top: 10px;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.loginView {
+  display: none;
+  background-color: aqua;
+  width: 30%;
+}
+
 .mainPage {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
 
   height: 100%;
   
   background: rgb(60, 122, 119);
   background: linear-gradient(180deg, rgba(60, 122, 119, 1) 0%, rgba(237, 200, 71, 1) 100%);
+}
+
+.mainPage img {
+  position: absolute;
+  
+  width: 200px;  
+  top: 20px;
+  left: 0px;
+}
+
+.userCustomView,
+.tempCo2View,
+.emissionView {
+  width: calc((100% - 200px*2));
+  height: 100%;
+
+  background-color: #f5f5f5;
+}
+
+@media only screen and (max-width: 1200px) {
+  .userCustomView,
+  .tempCo2View,
+  .emissionView {
+    width: 100%;
+  }
+
+  .mainPage img {
+    display: none;
+  }
 }

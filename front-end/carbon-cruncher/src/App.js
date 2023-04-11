@@ -16,31 +16,6 @@ function App() {
 
   return (
     <AuthProvider>
-      <div>
-        <button onClick={() => setToken(1)}>set fake token</button>
-        <button onClick={() => setToken(null)}>remove fake token</button>
-        <Link className="link" to="/">
-          root
-        </Link>
-        <Link className="link" to="/login">
-          login
-        </Link>
-        <Link className="link" to="/register">
-          register
-        </Link>
-        <Link className="link" to="/tempco2">
-          tempco2
-        </Link>
-        <Link className="link" to="/emissions">
-          emissions
-        </Link>
-        <Link className="link" to="/usercustom">
-          usercustom
-        </Link>
-        <Link className="link" to="/usercustom/jfieowFEW">
-          usercustom route view
-        </Link>
-      </div>
       <Routes>
         <Route
           path="/"

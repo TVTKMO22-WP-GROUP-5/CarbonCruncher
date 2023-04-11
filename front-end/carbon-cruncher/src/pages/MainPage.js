@@ -1,5 +1,7 @@
 import React from "react"
-import { Link, Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom"
+import { Assets } from "../assets/Assets"
+import Navbar from "../components/Navbar/Navbar"
 
 /**
  * Layout for chart pages
@@ -7,10 +9,8 @@ import { Link, Outlet } from "react-router-dom"
 export const MainPage = () => {
   return (
     <div className="mainPage">
-      <h1>MainPage (protected)</h1>
-      <Link to="/login">
-        <button>login</button>
-      </Link>
+      <Navbar />
+      <img src={Assets.logo.text} alt="logo"></img>
       <Outlet />
     </div>
   )

@@ -1,5 +1,9 @@
-import React from "react";
+import React from "react"
 
 export const LoginView = () => {
-  return <div>LoginView</div>;
-};
+  return (
+    <div className="loginView">
+      <h1>Login Form</h1>
+    </div>
+  )
+}
