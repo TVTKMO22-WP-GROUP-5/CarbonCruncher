@@ -1,0 +1,7 @@
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.csproj.AssemblyReference.cache
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.AssemblyInfoInputs.cache
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.AssemblyInfo.cs
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.csproj.CoreCompileInputs.cache
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Anssi\OneDrive\Asiakirjat\GitHub\CarbonCruncheri\back-end\carbon-cruncher-api\obj\Debug\net6.0\carbon-cruncher-api.MvcApplicationPartsAssemblyInfo.cache
