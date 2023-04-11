@@ -23,7 +23,7 @@ namespace carbon_cruncher_api.Controllers
         private readonly IValidator<VisuRegLoginUser> _userValidator;
         private readonly IValidator<VisuUserVisual> _visuValidator;
 
-        // Database context set with dependency injection
+        // Database context set with dependency injection.
         public UserController(CarbonCruncherContext context, IConfiguration configuration)
         {
             _context = context;

@@ -1,14 +1,16 @@
 .iconButton {
-  align-items: center;
-  background-color: #ABC4A2;
-  border-radius: 20px;
-  border: 5px solid #095D51;
   display: flex;
   flex-direction: row;
-  gap: 10px;
-  padding: 5px;
-  height: 60px;
+  align-items: center;
+  
   width: 160px;
+  height: 60px;
+  padding: 5px;
+  gap: 10px;
+  
+  background-color: #ABC4A2;
+  border: 5px solid #095D51;
+  border-radius: 20px;
 }
 
 .iconButton:hover {
@@ -17,9 +19,10 @@
 
 .iconButtonText {
   width: 80%;
+  margin: 0px;
+  
   font-size: 16px;
   font-weight: bold;
-  margin: 0px;
 }
 
 .iconButtonIcon {
