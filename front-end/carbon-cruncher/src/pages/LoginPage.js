@@ -1,5 +1,6 @@
 import React from "react"
-import { Link, Outlet } from "react-router-dom"
+import { Assets } from "../assets/Assets"
+import { Outlet } from "react-router-dom"
 
 /**
  * Layout for login and registering pages
@@ -7,11 +8,14 @@ import { Link, Outlet } from "react-router-dom"
 export const LoginPage = () => {
   return (
     <div className="loginPage">
-      <h1>Loginpage (public)</h1>
-      <Link to="/main">
-        <button>main</button>
-      </Link>
-      <Outlet />
+      <div className="loginTitleText">
+        <h1>Carbon Cruncher</h1>
+        <h2>Climate Data Visualizations</h2>
+      </div>
+      <div className="loginLogoForm">
+        <img src={Assets.logo.noText} alt="logo"></img>
+        <Outlet />
+      </div>
     </div>
   )
 }
