@@ -1,10 +1,6 @@
+import axios from "axios"
 import React from "react"
-
-// Fake token createor. Replaced with real one later
-const fakeAuth = () =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve("2342f2f1d131rf12"), 250)
-  })
+import { useNavigate } from "react-router-dom"
 
 const AuthContext = React.createContext()
 
@@ -12,11 +8,17 @@ const AuthContext = React.createContext()
  * User login, logout and token context for components
  */
 const AuthProvider = ({ children }) => {
+  const navigate = useNavigate()
   const [token, setToken] = React.useState(null)
 
-  const handleLogin = async () => {
-    const token = await fakeAuth()
+  const handleLogin = async ({ usernick, userpassword }) => {
+    const token = await axios.post("/api/user/login", {
+      usernick,
+      userpassword,
+    })
+    console.log(token)
     setToken(token)
+    navigate("/tempco2")
   }
 
   const handleLogout = () => {

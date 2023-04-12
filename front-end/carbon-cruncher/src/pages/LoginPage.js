@@ -12,8 +12,10 @@ export const LoginPage = () => {
         <h1>Carbon Cruncher</h1>
         <h2>Climate Data Visualizations</h2>
       </div>
-      <img src={Assets.logo.noText} alt="logo"></img>
-      <Outlet />
+      <div className="loginLogoForm">
+        <img src={Assets.logo.noText} alt="logo"></img>
+        <Outlet />
+      </div>
     </div>
   )
 }
