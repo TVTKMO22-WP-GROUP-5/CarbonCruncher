@@ -1,8 +1,11 @@
 import React from "react"
 import styles from "./Navbar.module.css"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../AuthProvider"
 
 const Navbar = () => {
+  const { onLogout } = React.useContext(AuthContext)
+
   return (
     <div className={styles.container}>
       <Link className={styles.link} to="/tempco2">
@@ -14,7 +17,7 @@ const Navbar = () => {
       <Link className={styles.link} to="/usercustom">
         User Custom View
       </Link>
-      <Link className={styles.link} to="/usercustom">
+      <Link className={styles.link} onClick={onLogout}>
         Logout
       </Link>
     </div>
