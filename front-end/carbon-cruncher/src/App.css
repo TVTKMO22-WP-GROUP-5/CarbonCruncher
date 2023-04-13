@@ -76,11 +76,11 @@ body {
 
 .loginPage input::placeholder {
   font-size: inherit;
-  color: inherit;
+  color: rgba(255,255,255,0.6);
 }
 
 .loginPage button {
-  background-color: rgb(60, 122, 119);
+  background-color: rgba(60, 122, 119, 0);
   border-style: none;
   border-radius: 5px;
   font-size: 1.5em;
@@ -123,6 +123,7 @@ a:active {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 10px;
   margin-bottom: 50px;
 }
@@ -140,6 +141,7 @@ a:active {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 10px;
   margin-bottom: 50px;
 }
@@ -152,6 +154,32 @@ a:active {
 
 .registerView a:active {
   scale: 0.95;
+}
+
+.registerView .tooltip {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.registerView .tooltip .tooltipText {
+  visibility: hidden;
+  width: 200px;
+  background-color: #075a52;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px 10px;
+
+  /* Position the tooltip */
+  position: absolute;
+  left: 5em;
+  top: -12em;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltipText {
+  visibility: visible;
 }
 /*#endregion*/
 
