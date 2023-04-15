@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 // Import the data parsing function from the utils folder
-const Visualization1 = () => {
+const Visu1 = () => {
   const [data, setData] = useState(null);
   const [mobergData, setMobergData] = useState(null);
   const [timePeriod, setTimePeriod] = useState('monthly');
@@ -122,3 +122,4 @@ const Visualization1 = () => {
     </div>
   );
 }
+export default Visu1
