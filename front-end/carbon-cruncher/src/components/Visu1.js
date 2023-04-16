@@ -1,41 +1,51 @@
-// This file contains the code for the first visualization component. The component fetches the data from the API endpoints and renders the chart using the react-chartjs-2 library. The component also contains the logic for the time period selection and the checkbox for the 2,000-year temperature reconstruction. The data parsing function is implemented in the fetch
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-// Import the data parsing function from the utils folder
+import Chart from 'chart.js/auto';
+
+(async () => {
+  const dateAdapter = await import('chartjs-adapter-date-fns');
+  Chart.register(dateAdapter.default);
+})();
+
 const Visu1 = () => {
   const [data, setData] = useState(null);
   const [mobergData, setMobergData] = useState(null);
   const [timePeriod, setTimePeriod] = useState('monthly');
   const [showReconstruction, setShowReconstruction] = useState(false);
 
-  // Fetch temperature data from the provided API endpoints for the selected time period (monthly or yearly)
   const fetchData = async (period) => {
     const response = await fetch(`https://carbon-cruncher.azurewebsites.net/api/visu1/${period}`);
     const data = await response.json();
-    // Parse data and update state 
     setData(data);
   };
 
-  // Fetch Moberg dataset for the reconstruction
   const fetchMobergData = async () => {
     const response = await fetch('https://www.ncei.noaa.gov/pub/data/paleo/contributions_by_author/moberg2005/nhtempmoberg2005.txt');
     const data = await response.text();
-    // Parse data and update state 
-    // Implement the data parsing and formatting here 
+
+    const parsedData = data
+      .trim()
+      .split('\n')
+      .slice(2)
+      .map((line) => {
+        const [year, temp] = line.trim().split(/\s+/);
+        return {
+          x: new Date(parseInt(year, 10), 0),
+          y: parseFloat(temp),
+        };
+      });
+    setMobergData(parsedData);
   };
 
-  // Fetch data when the component mounts or time period changes 
   useEffect(() => {
     fetchData(timePeriod);
     fetchMobergData();
   }, [timePeriod]);
 
-  // Handle time period change 
   const handleChange = (event) => {
     setTimePeriod(event.target.value);
   };
 
-  // Configure chart data 
   const chartData = {
     labels: data?.years,
     datasets: [
@@ -70,10 +80,13 @@ const Visu1 = () => {
     ].filter(Boolean),
   };
 
-  // Configure chart options 
   const chartOptions = {
     scales: {
       x: {
+        type: 'time',
+        time: {
+          unit: 'year',
+        },
         title: {
           display: true,
           text: 'Years',
@@ -87,7 +100,6 @@ const Visu1 = () => {
       },
     },
   };
-
   return (
     // Render the chart 
     <div>

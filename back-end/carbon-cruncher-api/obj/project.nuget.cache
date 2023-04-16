@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "frAYtAWIvmDSBrBs9rTAwqDG0pfPvezwg9S7Kax+b2NeJpZy6BhaC4dTr4UM8XJ9zcetWWT/Ys/A9InbjvZgRA==",
+  "dgSpecHash": "qSEIOhGEgf9cvmE/zrY17HnAZydJG5ZmnI8tBPahW/Msc6MD+YzXk9TF3+6Cz5j1FmuS0W3f3XrxcL+d4TZ1Eg==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj",
+  "projectFilePath": "C:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anssi\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Anssi\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

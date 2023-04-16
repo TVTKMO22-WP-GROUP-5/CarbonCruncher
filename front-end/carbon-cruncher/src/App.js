@@ -10,6 +10,7 @@ import { RegisterView } from "./views/RegisterView"
 import { LoginView } from "./views/LoginView"
 import { EmissionsView } from "./views/EmissionsView"
 import { UserCustomView } from "./views/UserCustomView"
+import Visu1 from "./components/Visu1"
 
 function App() {
   const { token } = React.useContext(AuthContext)
@@ -27,7 +28,7 @@ function App() {
         <Route index element={<RegisterView />} />
       </Route>
       <Route element={<MainPage />}>
-        <Route path="/tempco2" element={<TempCO2View />} />
+        <Route path="/tempco2" element={<Visu1 />} />
         <Route path="/emissions" element={<EmissionsView />} />
         <Route path="/usercustom">
           <Route index element={<UserCustomView loggedIn={true} />} />

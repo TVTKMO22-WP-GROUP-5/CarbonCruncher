@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj": {}
+    "C:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj": {
+    "C:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj",
+        "projectUniqueName": "C:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj",
         "projectName": "carbon-cruncher-api",
-        "projectPath": "c:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj",
+        "projectPath": "C:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\carbon-cruncher-api.csproj",
         "packagesPath": "C:\\Users\\Anssi\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\obj\\",
+        "outputPath": "C:\\Users\\Anssi\\OneDrive\\Asiakirjat\\GitHub\\CarbonCruncheri\\back-end\\carbon-cruncher-api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Anssi\\AppData\\Roaming\\NuGet\\NuGet.Config",
