@@ -7,6 +7,9 @@ export const RegisterView = () => {
   const { onRegister } = React.useContext(AuthContext)
   const [loading, setLoading] = useState(false)
 
+  /**
+   * Handle user registration
+   */
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { usernick, userpassword, userpasswordconfirm } = e.target.elements
@@ -28,6 +31,9 @@ export const RegisterView = () => {
       switch (error.response.status) {
         case 400:
           alert(`Error: Invalid credentials. Please try again.`)
+          break
+        case 409:
+          alert(`Error: Username already exists. Please pick another one.`)
           break
         default:
           alert(`Error: ${error.response.status} ${error.response.statusText}`)
