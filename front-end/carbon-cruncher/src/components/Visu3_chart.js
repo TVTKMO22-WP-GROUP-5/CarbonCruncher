@@ -89,7 +89,7 @@ const Visu3_chart = () => {
             console.log("result",res)
             for (const val of res){
                 dataSet1.push(val);
-                labelSet.push(val.year);
+                labelSet.push(val);
 
         }
         
@@ -97,16 +97,27 @@ const Visu3_chart = () => {
             labels: labels,   
             datasets: [           
                 {
-                    label: "Temp change globally",
+                    label: "Temp change",
                     data:dataSet1,
                     borderColor: "rgb(255, 99, 132)",
                     backgroundColor: "rgb(255, 99, 132, 0.5)",
                     pointRadius: 0,
                     parsing: {
-                        xAxisValue: "Year",
-                        yAxisValue: "Mean",
+                        xAxisValue: "year_kbp",
+                        yAxisValue: "global_temp_change",
                     }
-                },      
+                },     
+                {
+                    label: "Carbon change",
+                    data:dataSet1,
+                    borderColor: "rgb(0, 100, 200)",
+                    backgroundColor: "rgb(0, 100, 200, 0.5)",
+                    pointRadius: 0,
+                    parsing: {
+                        xAxisValue: "year_kbp",
+                        yAxisValue: "co2_ppm",
+                    }
+                },       
             ]
         })
         console.log("testData", dataSet1)
