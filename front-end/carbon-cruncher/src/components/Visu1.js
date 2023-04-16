@@ -1,3 +1,4 @@
+// Import the necessary libraries and components
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
@@ -6,19 +7,28 @@ import Chart from 'chart.js/auto';
   const dateAdapter = await import('chartjs-adapter-date-fns');
   Chart.register(dateAdapter.default);
 })();
-
+// Create the component
 const Visu1 = () => {
   const [data, setData] = useState(null);
   const [mobergData, setMobergData] = useState(null);
   const [timePeriod, setTimePeriod] = useState('monthly');
   const [showReconstruction, setShowReconstruction] = useState(false);
 
+  // Fetch temperature data from the provided API endpoints for the selected time period (monthly or yearly)
   const fetchData = async (period) => {
     const response = await fetch(`https://carbon-cruncher.azurewebsites.net/api/visu1/${period}`);
-    const data = await response.json();
-    setData(data);
+    const responseData = await response.json();
+    const parsedData = {
+      years: responseData.map((item) => new Date(item.timeYear, 0)),
+      global: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.anomalyGlobal })),
+      northernHemisphere: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.anomalyNorthern })),
+      southernHemisphere: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.anomalySouthern })),
+    };
+    setData(parsedData);
   };
+  
 
+  // Fetch Moberg dataset for the reconstruction
   const fetchMobergData = async () => {
     const response = await fetch('https://www.ncei.noaa.gov/pub/data/paleo/contributions_by_author/moberg2005/nhtempmoberg2005.txt');
     const data = await response.text();
@@ -34,9 +44,11 @@ const Visu1 = () => {
           y: parseFloat(temp),
         };
       });
+
     setMobergData(parsedData);
   };
 
+  // Fetch data when the component mounts or time period changes
   useEffect(() => {
     fetchData(timePeriod);
     fetchMobergData();
@@ -45,9 +57,8 @@ const Visu1 = () => {
   const handleChange = (event) => {
     setTimePeriod(event.target.value);
   };
-
+// Create the chart
   const chartData = {
-    labels: data?.years,
     datasets: [
       {
         label: 'Global (NH+SH)/2',
@@ -79,7 +90,8 @@ const Visu1 = () => {
       },
     ].filter(Boolean),
   };
-
+  
+// Set the chart options
   const chartOptions = {
     scales: {
       x: {
@@ -87,6 +99,8 @@ const Visu1 = () => {
         time: {
           unit: 'year',
         },
+        min: '1850-01-01',
+        max: '2023-12-31',
         title: {
           display: true,
           text: 'Years',
