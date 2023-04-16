@@ -1,0 +1,37 @@
+.iconButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  width: 160px;
+  height: 60px;
+  padding: 5px;
+  gap: 10px;
+  
+  background-color: #ABC4A2;
+  border: 5px solid #095D51;
+  border-radius: 20px;
+}
+
+.iconButton:hover {
+  background-color: #deffd2;
+}
+
+.iconButtonText {
+  width: 80%;
+  margin: 0px;
+  
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.iconButtonIcon {
+  width: 50px;
+  margin: 0px;
+}
+
+@media screen and (max-width: 1000px) {
+  .iconButtonText {
+    display: none;
+  }
+}
