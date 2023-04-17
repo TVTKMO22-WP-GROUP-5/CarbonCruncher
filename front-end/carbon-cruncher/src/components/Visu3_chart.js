@@ -12,7 +12,7 @@ import {
     Legend,
   } from 'chart.js';
   import { Line } from 'react-chartjs-2';
-  //import faker from 'faker';
+  //import faker from 'faker'; // not needed in this project
 
   ChartJS.register(
     CategoryScale,
@@ -24,100 +24,114 @@ import {
     Legend
   );
 
-  const labels = ['2000k BC', '1000k BC', '100k BC', '500k BC', '100k BC', '0 AD', '100k AD'];
-
-const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: "top",
+const config = {
+    type: 'line',
+    options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
         },
-    title: {
-        display: true,
-        text: "Evolution of global temperature over the past two million years",
-        font: {
-            size: 14
-            }
-        },
+        stacked: false,
         scales: {
-            x: {
-                type: "linear",
+          'left-y-axis': {
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },
+          'right-y-axis': {
+            type: 'linear',
+            display: true,
+            position: 'right',
+    
+            // grid line settings
+            grid: {
+              drawOnChartArea: false, // only want the grid lines for one axis to show up
             },
-            y: {
-                type: "linear",
-            },
-            
-        },
-    }
+          },
+        }
+      },
     
 }
+// horizonal axis of chart
+const yearLabels = Array.from(Array(2000+1).keys()).slice(1);
 
-const Visu3_chart = () => {
-    const [data, setData] = useState({
-        labels: labels,
+export const Visu3_chart = () => {
+    const [tempData, setTempData] = useState({
         datasets: [
-    
-            {
-                label: "Global data",
+     
+/*              {
+                label: "Temperature change",
                 data: [], 
+                yAxisID: 'left-y-axis'
             },
     
-            {
-                label: "Carbon data",
+             {
+                label: "CO2 change",
                 data: [],
-            },
+                yAxisID: 'right-y-axis'
+            }, 
     
-            //{
-            //    label: "Events",
-            //    data: [],
-            //},
+             {
+                label: "Events",
+                data: [],
+            },   */
     
-            
+             
         ]
     });
     useEffect(() => {
         const fetchData=async()=> {
             const url_1 = "https://carbon-cruncher.azurewebsites.net/api/visu3/global";
-            const url_2 = "https://carbon-cruncher.azurewebsites.net/api/visu3/events";
-            const labelSet = [];
+            //const url_2 = "https://carbon-cruncher.azurewebsites.net/api/visu3/event";
             const dataSet1 = [];
-        await fetch(url_1).then((data)=> {
-            console.log("data", data)
-            const res = data.json();
+            const dataSet2 = [];
+            const dataSet3 = [];
+        await fetch(url_1).then((tempData)=> {
+            console.log("data", tempData)
+            const res = tempData.json();
             return res
         }).then((res)=> {
             console.log("result",res)
             for (const val of res){
-                dataSet1.push(val);
-                labelSet.push(val);
-
+                dataSet1.push(val.globalTempChange);
+                dataSet2.push(val.co2Ppm);
+               // dataSet3.push(val.yearsAgo);
         }
+
         
-        setData ({
-            labels: labels,   
+        setTempData ({
+            labels: yearLabels,   
             datasets: [           
                 {
-                    label: "Temp change",
+                    type: 'line',
+                    label: "Temperature change",
                     data:dataSet1,
-                    borderColor: "rgb(255, 99, 132)",
-                    backgroundColor: "rgb(255, 99, 132, 0.5)",
+                    borderColor: "rgb(200, 0, 0)",
+                    backgroundColor: "rgb(200, 0, 0, 0.5)",
                     pointRadius: 0,
-                    parsing: {
-                        xAxisValue: "year_kbp",
-                        yAxisValue: "global_temp_change",
-                    }
+                    yAxisID:'left-y-axis',
+                    
                 },     
-                {
-                    label: "Carbon change",
-                    data:dataSet1,
+                 {
+                    type: 'line',
+                    label: "co2 change",
+                    data:dataSet2,
                     borderColor: "rgb(0, 100, 200)",
                     backgroundColor: "rgb(0, 100, 200, 0.5)",
                     pointRadius: 0,
-                    parsing: {
-                        xAxisValue: "year_kbp",
-                        yAxisValue: "co2_ppm",
-                    }
-                },       
+                    yAxisID:'right-y-axis',
+                },  
+                {
+                    type: 'line',
+                    label: "Events",
+                    data:dataSet3,
+                    borderColor: "rgb(255, 165, 0)",
+                    backgroundColor: "rgb(255, 165, 0, 0.5)",
+                    pointRadius: 0,
+                    showLine:false,
+                    //yAxisID:'right-y-axis',
+                },      
             ]
         })
         console.log("testData", dataSet1)
@@ -130,12 +144,9 @@ const Visu3_chart = () => {
 
     return (
     <div style={{width: "1000px", height: "500px"}}>
-        {
-            console.log("dataa", data)
-        }
-     <Line data={data} options={options}></Line>;
+     <Line data={tempData} options={config}></Line>;
     </div>
     )
 }
 
-export default Visu3_chart;
+export default Visu3_chart
