@@ -1,37 +1,40 @@
-// Import the necessary libraries and components
+//Importing the required libraries and components
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-
+//Importing the date-fns adapter for chart.js
 (async () => {
   const dateAdapter = await import('chartjs-adapter-date-fns');
   Chart.register(dateAdapter.default);
 })();
-
-// Create the component
+//Defining the Visu1 component
 const Visu1 = () => {
-  const [data, setData] = useState(null);
-  const [timePeriod, setTimePeriod] = useState('monthly');
-
-  // Fetch temperature data from the provided API endpoints for the selected time period (monthly or yearly)
+  const [monthlyData, setMonthlyData] = useState(null);
+  const [annualData, setAnnualData] = useState(null);
+  const [timePeriod, setTimePeriod] = useState('annual');
+//Fetching the data from the API 
   const fetchData = async (period) => {
     const response = await fetch(`https://carbon-cruncher.azurewebsites.net/api/visu1/${period}`);
     const responseData = await response.json();
-
+  //Parsing the data
     const parsedData = {
-      years: responseData.map((item) => new Date(item.timeYear, 0)),
-      global: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.anomalyGlobal })),
-      northernHemisphere: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.anomalyNorthern })),
-      southernHemisphere: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.anomalySouthern })),
-      reconstruction: responseData.map((item) => ({ x: new Date(item.timeYear, 0), y: item.tempReconstruction })),
-      startYear: responseData[0]?.timeYear,
-      endYear: responseData[responseData.length - 1]?.timeYear,
+      global: responseData.map((item) => ({ x: new Date(period === 'monthly' ? item.timeYearMonth : `${item.timeYear}-01-01`), y: item.anomalyGlobal })),
+      northernHemisphere: responseData.map((item) => ({ x: new Date(period === 'monthly' ? item.timeYearMonth : `${item.timeYear}-01-01`), y: item.anomalyNorthern })),
+      southernHemisphere: responseData.map((item) => ({ x: new Date(period === 'monthly' ? item.timeYearMonth : `${item.timeYear}-01-01`), y: item.anomalySouthern })),
+      reconstruction: responseData
+  .filter((item) => item.tempReconstruction !== null)
+  .map((item) => ({ x: new Date(period === 'monthly' ? item.timeYearMonth : `${item.timeYear}-01-01`), y: item.tempReconstruction })),
+
     };
 
-    setData(parsedData);
+    if (period === 'monthly') {
+      setMonthlyData(parsedData);
+    } else {
+      setAnnualData(parsedData);
+    }
   };
-
-  // Fetch data when the component mounts or time period changes
+  
+//Using the useEffect hook to fetch the data from the API and display it in the chart 
   useEffect(() => {
     fetchData(timePeriod);
   }, [timePeriod]);
@@ -39,42 +42,48 @@ const Visu1 = () => {
   const handleChange = (event) => {
     setTimePeriod(event.target.value);
   };
-
-  // Create the chart
+//Defining the chart data and options 
   const chartData = {
     datasets: [
       {
         label: 'Global (NH+SH)/2',
-        data: data?.global,
+        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.global,
         borderColor: 'red',
         borderWidth: 1,
         fill: false,
+        pointRadius: 0,
+        pointHitRadius: 0,
       },
       {
         label: 'Northern Hemisphere',
-        data: data?.northernHemisphere,
+        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.northernHemisphere,
         borderColor: 'green',
         borderWidth: 1,
         fill: false,
+        pointRadius: 0,
+        pointHitRadius: 0,
       },
       {
         label: 'Southern Hemisphere',
-        data: data?.southernHemisphere,
+        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.southernHemisphere,
         borderColor: 'orange',
         borderWidth: 1,
         fill: false,
+        pointRadius: 0,
+        pointHitRadius: 0,
       },
       {
         label: 'Northern Hemisphere 2,000-year temperature reconstruction',
-        data: data?.reconstruction,
+        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.reconstruction,
         borderColor: 'blue',
         borderWidth: 1,
         fill: false,
+        pointRadius: 0,
+        pointHitRadius: 0,
       },
     ],
   };
-
-  // Set the chart options
+//Defining the chart options 
   const chartOptions = {
     scales: {
       x: {
@@ -82,8 +91,6 @@ const Visu1 = () => {
         time: {
           unit: 'year',
         },
-        min: data?.startYear ? `${data.startYear}-01-01` : undefined,
-        max: data?.endYear ? `${data.endYear}-12-31` : undefined,
         title: {
           display: true,
           text: 'Years',
@@ -97,8 +104,9 @@ const Visu1 = () => {
       },
     },
   };
+
+//Returning the chart and the data to be displayed in the chart 
   return (
-    // Render the chart
     <div>
       <h2>Global Historical Surface Temperature Anomalies</h2>
       <p>from January 1850 onwards</p>
@@ -114,11 +122,15 @@ const Visu1 = () => {
       <p>
         This chart displays global historical surface temperature anomalies from January 1850 onwards, including the
         HadCRUT5 dataset and the 2,000-year Northern Hemisphere temperature reconstruction by Moberg et al. (2005). The
-        study describing the data measurement for the Moberg dataset can be found{' '}
-        <a href="https://www.nature.com/articles/nature03265" target="_blank" rel="noopener noreferrer">here</a>.
+        data can be visualized in monthly or annual intervals, providing insights into the
+        temperature changes over time.
       </p>
-      {data ? <Line data={chartData} options={chartOptions} /> : <p>Loading data...</p>}
+      <div>
+      {(timePeriod === 'monthly' ? monthlyData : annualData) ? <Line data={chartData} options={chartOptions} /> : <p>Loading data...</p>}
+
+      </div>
     </div>
   );
-}
-export default Visu1
+};
+//Exporting the Visu1 component
+export default Visu1;
