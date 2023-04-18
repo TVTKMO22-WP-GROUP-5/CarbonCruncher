@@ -9,7 +9,7 @@ import iconSectorCo2 from "./sector_co2.svg"
 import logoText from "./cc_logo_text.svg"
 import logoNoText from "./cc_logo_no_text.svg"
 
-export const Assets = {
+export const imageAssets = {
   logo: {
     text: logoText,
     noText: logoNoText,
@@ -23,5 +23,48 @@ export const Assets = {
     histTemp: iconHistTemp,
     saveCustView: iconSaveCustView,
     sectorCo2: iconSectorCo2,
+  },
+}
+
+export const buttonAssets = {
+  btnAtmCo2: {
+    icon: iconAtmCo2,
+    altText: "atmco2",
+    buttonText: "Atmospheric & Antarctic Concentrations",
+  },
+  btnCountryCo2: {
+    icon: iconCountryCo2,
+    altText: "countryco2",
+    buttonText: "CO2 Emissions by Country",
+  },
+  btnNewCustView: {
+    icon: iconCreateNewCustview,
+    altText: "create new view",
+    buttonText: "Create New Customized View",
+  },
+  btnDelete: {
+    icon: iconDeleteIcon,
+    altText: "delete",
+    buttonText: "Delete",
+  },
+  btnEvoGlobalTemp: {
+    icon: iconEvoGlobalTemp,
+    altText: "global temp evolution",
+    buttonText: "Evolution of Global Temperature",
+  },
+  btnHistTemp: {
+    icon: iconHistTemp,
+    altText: "hist temp",
+    buttonText: "Historic Temperatures",
+  },
+  btnSaveCustView: {
+    icon: iconSaveCustView,
+    altText: "save custom view",
+    buttonText: "Save Customized View",
+  },
+  btnSectorCo2: {
+    icon: iconSectorCo2,
+    altText: "sectorco2",
+    buttonText: "CO2 Emissions by Sector",
   },
 }

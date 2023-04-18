@@ -7,8 +7,12 @@ export const VisuInfo = ({ info }) => {
       <h1>{info.title}</h1>
       <p>{info.descriptionText}</p>
       <div className={styles.links}>
-        <a href={info.dataLink}>Link to Data</a>
-        <a href={info.descriptionLink}>Link to Description</a>
+        <a href={info.dataLink} target="_blank" rel="noreferrer">
+          Link to Data
+        </a>
+        <a href={info.descriptionLink} target="_blank" rel="noreferrer">
+          Link to Description
+        </a>
       </div>
     </div>
   )

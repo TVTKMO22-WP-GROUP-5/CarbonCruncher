@@ -1,5 +1,6 @@
 .container {
   margin: 10px;
+  flex: 1 1 0px;
 }
 
 .links {

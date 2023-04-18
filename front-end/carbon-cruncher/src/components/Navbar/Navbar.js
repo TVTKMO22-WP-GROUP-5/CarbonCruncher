@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <div className={styles.container}>
-      <p id="loggedUser">{user}</p>
+      <p id="loggedUser">User: {user}</p>
       <div className={styles.linkContainer}>
         <Link className={styles.link} to="/tempco2">
           Temperature & CO2 Data
