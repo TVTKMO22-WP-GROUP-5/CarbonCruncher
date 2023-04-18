@@ -22,9 +22,12 @@ ChartJS.register(
     Legend,
 )
 
+//set labels for xAxes to Co2 data
 const labels = Array.from(Array(2023+1).keys()).slice(1958);
+//set labels for xAxes to ice core data
 const labels2 = Array.from(Array(1966+1).keys()).slice(1006);
 
+//set chart options
 const options = {
     responsive: true,
     plugins: {
@@ -51,9 +54,25 @@ const options = {
     
 }
 
-//const ctx = document.getElementById("visu2");
-
 export const Visu2 = () => {
+
+    /*const url1 = "https://carbon-cruncher.azurewebsites.net/api/visu2/annual"; 
+    const url2 = "https://carbon-cruncher.azurewebsites.net/api/visu2/monthly";
+
+    // store promise to data from url1
+    const data1 = fetch(url1)
+              .then(result => result.json())
+              .then(annualCo2 => annualCo2.data);
+
+    // store promise to data from url2
+    const data2 = fetch(url2)
+              .then(result => result.json())
+              .then(monthlyCo2 => monthlyCo2.data);
+
+    
+    const data = data1.data.concat(data2.data);
+        console.log(data); */
+
     const [annualCo2, setAnnualCo2] = useState ({
         labels: labels,
         datasets: [
@@ -105,6 +124,7 @@ export const Visu2 = () => {
         ]
     });
 
+    //fetch annualCo2 data
     useEffect(() => {
         const fetchData=async()=> {
             const url_1 = "https://carbon-cruncher.azurewebsites.net/api/visu2/annual";
@@ -145,6 +165,7 @@ export const Visu2 = () => {
         fetchData();
     },[])
 
+    //fetch monthlyCo2 data
     useEffect(() => {
         const fetchData=async()=> {
             const url_2 = "https://carbon-cruncher.azurewebsites.net/api/visu2/monthly";
@@ -185,7 +206,8 @@ export const Visu2 = () => {
         fetchData();
     },[])
 
-    useEffect(() => {
+    //fetch ice core data
+    /*useEffect(() => {
         const fetchData=async()=> {
             const url_3 = "https://carbon-cruncher.azurewebsites.net/api/visu2/icecore";
             const dataSet3 = [];
@@ -223,21 +245,17 @@ export const Visu2 = () => {
         })  
         }
         fetchData();
-    },[])
+    },[])*/
+     
+    //const data = dataSet1.data.concat(dataSet2.data);
 
-    /*const dataSet1 = _(annualCo2);
-    const dataSet2 = _(monthlyCo2);
-    const combinedData = _.mergeWith(dataSet1, dataSet2, (objValue, srcValue) => {
-        if (_.isArray(objValue)) {
-          return objValue.concat(srcValue);
-        }
-      });*/
-
-
+    //render the chart visualization
     return (
     <div style={{width: "1000px", height: "500px"}}>
         <h2>Atmospheric CO2 concentrations from Mauna Loa measurements starting 1958</h2>
      <Line data={annualCo2} options={options}></Line>
+     <Line data={monthlyCo2} options={options}></Line>
     </div>
     )
 }
+
