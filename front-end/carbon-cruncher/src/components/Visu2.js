@@ -146,13 +146,13 @@ export const Visu2 = () => {
                 {
                     label: "CO2 Annual",
                     data:dataSet1,
-                    borderColor: "rgb(0, 0, 0)",
-                    backgroundColor: "rgb(0, 0, 0)",
-                    pointRadius: 0,
-                    parsing: {
-                        xAxisValue: "Year",
-                        yAxisValue: "Mean",
-                    }
+                    //borderColor: "rgb(0, 0, 0)",
+                    //backgroundColor: "rgb(0, 0, 0)",
+                    //pointRadius: 0,
+                    //parsing: {
+                        //xAxisValue: "Year",
+                        //yAxisValue: "Mean",
+                    //}
                 },
                     
             ]
@@ -187,13 +187,13 @@ export const Visu2 = () => {
                 {
                     label: "CO2 Monthly",
                     data:dataSet2,
-                    borderColor: "rgb(240, 150, 15)",
-                    backgroundColor: "rgb(240, 150, 15)",
-                    pointRadius: 0,
-                    parsing: {
-                        xAxisValue: "Time",
-                        yAxisValue: "Average",
-                    }
+                    //borderColor: "rgb(240, 150, 15)",
+                    //backgroundColor: "rgb(240, 150, 15)",
+                    //pointRadius: 0,
+                    //parsing: {
+                        //xAxisValue: "Time",
+                        //yAxisValue: "Average",
+                    //}
                 },
                     
             ]
@@ -207,7 +207,7 @@ export const Visu2 = () => {
     },[])
 
     //fetch ice core data
-    /*useEffect(() => {
+    useEffect(() => {
         const fetchData=async()=> {
             const url_3 = "https://carbon-cruncher.azurewebsites.net/api/visu2/icecore";
             const dataSet3 = [];
@@ -228,13 +228,13 @@ export const Visu2 = () => {
                 {
                     label: "Ice Core 1",
                     data:dataSet3,
-                    borderColor: "rgb(160, 60, 240)",
-                    backgroundColor: "rgb(160, 60, 240)",
-                    pointRadius: 0,
-                    parsing: {
-                        xAxisValue: "Time",
-                        yAxisValue: "Average",
-                    }
+                    //borderColor: "rgb(160, 60, 240)",
+                    //backgroundColor: "rgb(160, 60, 240)",
+                    //pointRadius: 0,
+                    //parsing: {
+                        //xAxisValue: "Time",
+                        //yAxisValue: "Average",
+                    //}
                 },
                     
             ]
@@ -245,16 +245,45 @@ export const Visu2 = () => {
         })  
         }
         fetchData();
-    },[])*/
+    },[])
      
-    //const data = dataSet1.data.concat(dataSet2.data);
+    const combinedData = {
+        labels: monthlyCo2.labels,
+        datasets: [
+          {
+            label: "Monthly CO2",
+            data: monthlyCo2.datasets[0].data,
+            borderColor: "rgb(240, 150, 15)",
+            backgroundColor: "rgb(240, 150, 15)",
+            pointRadius: 0,
+            //fill: false,
+            //borderColor: "#f44336",
+          },
+          {
+            label: "Annual CO2",
+            data: annualCo2.datasets[0].data,
+            //fill: false,
+            //borderColor: "#2196f3",
+            borderColor: "rgb(0, 0, 0)",
+            backgroundColor: "rgb(0, 0, 0)",
+            pointRadius: 0,
+          },
+          {
+            label: "Ice Core 1",
+            data: icecore1.datasets[0].data,
+            borderColor: "rgb(160, 60, 240)",
+            backgroundColor: "rgb(160, 60, 240)",
+            pointRadius: 0,
+
+          }
+        ],
+      };
 
     //render the chart visualization
     return (
     <div style={{width: "1000px", height: "500px"}}>
         <h2>Atmospheric CO2 concentrations from Mauna Loa measurements starting 1958</h2>
-     <Line data={annualCo2} options={options}></Line>
-     <Line data={monthlyCo2} options={options}></Line>
+     <Line data={combinedData} options={options}></Line>
     </div>
     )
 }
