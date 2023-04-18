@@ -223,7 +223,7 @@ a:active {
     width: 100%;
   }
 
-  .mainPage, .loginPage img {
+  .mainPage img, .loginPage img {
     display: none;
   }
 }
