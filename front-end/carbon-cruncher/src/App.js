@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import "./App.css"
 import { AuthContext } from "./components/AuthProvider"
 import { Routes, Route, Navigate } from "react-router-dom"
@@ -10,10 +10,13 @@ import { RegisterView } from "./views/RegisterView"
 import { LoginView } from "./views/LoginView"
 import { EmissionsView } from "./views/EmissionsView"
 import { UserCustomView } from "./views/UserCustomView"
+import ProtectedRoute from "./components/ProtectedRoute"
+
+const jwtFromStorage = window.localStorage.getItem("appToken")
 
 function App() {
-  const { token } = React.useContext(AuthContext)
-
+  // const { token } = React.useContext(AuthContext)
+  const [token, setToken] = useState(jwtFromStorage)
   return (
     <Routes>
       <Route
@@ -26,7 +29,13 @@ function App() {
       <Route path="/register" element={<LoginPage />}>
         <Route index element={<RegisterView />} />
       </Route>
-      <Route element={<MainPage />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <MainPage />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/tempco2" element={<TempCO2View />} />
         <Route path="/emissions" element={<EmissionsView />} />
         <Route path="/usercustom">

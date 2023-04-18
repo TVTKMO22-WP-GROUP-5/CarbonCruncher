@@ -7,7 +7,7 @@ import {
   CapitalizeFirstLetter,
   AddSpaceBetweenCapitalizedWords,
 } from "../../utilities/Utilities"
-import { GET_VISU4_URL } from "../../utilities/Config"
+import { GET_VISU4_URL, GET_VISU_INFO } from "../../utilities/Config"
 import Select from "react-select"
 import { Line } from "react-chartjs-2"
 import {
@@ -20,6 +20,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js"
+import { VisuInfo } from "../VisuInfo/VisuInfo"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -34,6 +35,22 @@ const options = {
       text: "CO2 Emissions by Country",
     },
   },
+  scales: {
+    x: {
+      display: true,
+      title: {
+        display: true,
+        text: "Year",
+      },
+    },
+    y: {
+      display: true,
+      title: {
+        display: true,
+        text: "CO2 [Mton]",
+      },
+    },
+  },
 }
 
 export const Visu4 = () => {
@@ -44,8 +61,9 @@ export const Visu4 = () => {
   // Load CO2 data from api
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get(GET_VISU4_URL)
-      parseData(res.data)
+      const dataRes = await axios.get(GET_VISU4_URL)
+      const infoRes = await axios.get(GET_VISU_INFO + "?visunumber=4")
+      parseData(dataRes.data, infoRes.data)
     }
     getData()
   }, [])
@@ -53,9 +71,9 @@ export const Visu4 = () => {
   /**
    * Parses API data to chart form
    */
-  const parseData = (data) => {
+  const parseData = (chartData, info) => {
     // Chart labels from years
-    const labels = data.map((d) => d.mtCo2Yr)
+    const labels = chartData.map((d) => d.mtCo2Yr)
 
     // Array for keys that we exclude from country dataset
     const skipDataFromKeys = ["id", "mtCo2Yr"]
@@ -63,7 +81,7 @@ export const Visu4 = () => {
     let countryOptions = []
 
     // Create dataset for each key in API data except the excluded ones
-    const keys = Object.keys(data[0])
+    const keys = Object.keys(chartData[0])
     keys.forEach((element) => {
       if (skipDataFromKeys.includes(element)) {
         return
@@ -78,7 +96,7 @@ export const Visu4 = () => {
       // Create dataset for country
       datasets.push({
         label: countryNameWithSpaces,
-        data: data.map((d) => d[element]),
+        data: chartData.map((d) => d[element]),
         backgroundColor: GenerateColorFromName(countryNameWithSpaces),
       })
 
@@ -91,10 +109,14 @@ export const Visu4 = () => {
 
     // Combine labels and datasets and return results
     const co2Data = {
-      labels,
-      datasets,
+      chartData: {
+        labels,
+        datasets,
+      },
+      info: info,
     }
 
+    // Set usestate variables
     setco2data(co2Data)
     setSelectCountries(countryOptions)
     setFilteredData({
@@ -107,19 +129,26 @@ export const Visu4 = () => {
    * Refreshes chart data when countries are selected
    */
   const handleChange = (selectedOptions) => {
-    console.log(selectedOptions)
     let newDatasets = []
     selectedOptions.forEach((element) => {
+      // Capitalize and add spaces to countryname
       const countryName = CapitalizeFirstLetter(element.value)
       const countryNameWithSpaces = AddSpaceBetweenCapitalizedWords(countryName)
+      const color = GenerateColorFromName(countryNameWithSpaces)
+
+      // Push data to filtered data array
       newDatasets.push({
         label: countryNameWithSpaces,
-        data: co2data.datasets.find((d) => d.label === countryNameWithSpaces).data,
-        backgroundColor: GenerateColorFromName(countryNameWithSpaces),
+        data: co2data.chartData.datasets.find((d) => d.label === countryNameWithSpaces).data,
+        backgroundColor: color,
+        borderColor: color,
+        pointRadius: 1,
       })
     })
+
+    // Set usestate variable
     setFilteredData({
-      labels: co2data.labels,
+      labels: co2data.chartData.labels,
       datasets: newDatasets,
     })
   }
@@ -129,17 +158,20 @@ export const Visu4 = () => {
     return (
       <div className={styles.loading}>
         <Spinner />
-        <p>Loading data...</p>
+        <p className="">Loading data...</p>
       </div>
     )
   }
 
   return (
     <div className={styles.container}>
-      <Select options={selectCountries} isMulti onChange={handleChange} />
-      <div>
-        <Line options={options} data={filteredData}></Line>
+      <div className={styles.info}>
+        {co2data.info.map((i) => (
+          <VisuInfo info={i} />
+        ))}
       </div>
+      <Select options={selectCountries} isMulti onChange={handleChange} />
+      <Line options={options} data={filteredData}></Line>
     </div>
   )
 }
