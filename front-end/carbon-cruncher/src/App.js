@@ -12,11 +12,8 @@ import { EmissionsView } from "./views/EmissionsView"
 import { UserCustomView } from "./views/UserCustomView"
 import ProtectedRoute from "./components/ProtectedRoute"
 
-const jwtFromStorage = window.localStorage.getItem("appToken")
-
 function App() {
-  // const { token } = React.useContext(AuthContext)
-  const [token, setToken] = useState(jwtFromStorage)
+  const { token } = React.useContext(AuthContext)
   return (
     <Routes>
       <Route
