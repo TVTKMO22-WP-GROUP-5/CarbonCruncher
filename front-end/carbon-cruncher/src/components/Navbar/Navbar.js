@@ -2,23 +2,13 @@ import React from "react"
 import styles from "./Navbar.module.css"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../AuthProvider"
-import { imageAssets } from "../../assets/Assets"
 
 const Navbar = () => {
-  const { onLogout, onDelete, user } = React.useContext(AuthContext)
+  const { onLogout, user } = React.useContext(AuthContext)
 
   return (
     <div className={styles.container}>
-      <p id="loggedUser" className={styles.user}>
-        {user}
-        <img
-          src={imageAssets.icon.deleteIcon}
-          alt="delete"
-          id="deleteUser"
-          className={styles.delete}
-          onClick={onDelete}
-        ></img>
-      </p>
+      <p id="loggedUser">User: {user}</p>
       <div className={styles.linkContainer}>
         <Link className={styles.link} to="/tempco2">
           Temperature & CO2 Data

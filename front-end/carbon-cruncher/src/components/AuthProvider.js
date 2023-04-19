@@ -2,7 +2,7 @@ import axios from "axios"
 import React, { useState } from "react"
 import jwtDecode from "jwt-decode"
 import { useNavigate } from "react-router-dom"
-import { DELETE_USER_URL, LOGIN_USER_URL, NAME_CLAIM, REGISTER_USER_URL } from "../utilities/Config"
+import { LOGIN_USER_URL, NAME_CLAIM, REGISTER_USER_URL } from "../utilities/Config"
 
 export const AuthContext = React.createContext()
 const jwtFromStorage = window.localStorage.getItem("appToken")
@@ -61,25 +61,6 @@ export const AuthProvider = ({ children }) => {
       console.log(response)
       navigate("/")
     } catch (error) {
-      console.log(error)
-    }
-  }
-
-  /**
-   * User delete method
-   */
-  const handleDelete = async () => {
-    // eslint-disable-next-line no-restricted-globals
-    confirm(`User ${user} will be deleted. Press OK to confirm.`)
-    try {
-      await axios.delete(DELETE_USER_URL + "/" + user, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      window.localStorage.removeItem("appToken")
-      setToken(null)
-      setUser(null)
-      navigate("/")
-    } catch (error) {
       // On error throw it to caller to handle
       throw error
     }
@@ -91,7 +72,6 @@ export const AuthProvider = ({ children }) => {
     onLogin: handleLogin,
     onLogout: handleLogout,
     onRegister: handleRegister,
-    onDelete: handleDelete,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
