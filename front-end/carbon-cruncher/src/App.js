@@ -34,7 +34,6 @@ function App() {
         }
       >
         <Route path="/tempco2" element={<TempCO2View />} />
-        
         <Route path="/emissions" element={<EmissionsView />} />
         <Route path="/usercustom">
           <Route index element={<UserCustomView loggedIn={true} />} />
