@@ -7,13 +7,21 @@
   width: calc(100% - 200px * 2);
   height: 80px;
   gap: 20px;
-  /* padding: 0px 20px; */
+  padding: 0px 20px;
 
   background-color: rgba(0, 0, 0, 0);
 }
 
-.container p {
+.user {
   color: #ffffff;
+}
+
+.delete {
+  height: 30px;
+}
+
+.delete:hover {
+  cursor: pointer;
 }
 
 .linkContainer {
