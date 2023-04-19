@@ -203,7 +203,7 @@ body {
   /* background-attachment: fixed; */
 }
 
-.mainPage img {
+.mainPage > img {
   position: absolute;
 
   width: 200px;
@@ -230,8 +230,8 @@ body {
     width: 100%;
   }
 
-  .mainPage img,
-  .loginPage img {
+  .mainPage > img,
+  .loginPage > img {
     display: none;
   }
 }
