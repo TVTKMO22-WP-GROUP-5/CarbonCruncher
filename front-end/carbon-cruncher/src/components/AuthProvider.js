@@ -70,7 +70,9 @@ export const AuthProvider = ({ children }) => {
    */
   const handleDelete = async () => {
     // eslint-disable-next-line no-restricted-globals
-    confirm(`User ${user} will be deleted. Press OK to confirm.`)
+    if (!confirm(`User ${user} will be deleted. Press OK to confirm.`)) {
+      return
+    }
     try {
       await axios.delete(DELETE_USER_URL + "/" + user, {
         headers: { Authorization: `Bearer ${token}` },
