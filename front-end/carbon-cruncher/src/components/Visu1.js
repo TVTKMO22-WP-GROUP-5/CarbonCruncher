@@ -48,45 +48,50 @@ const Visu1 = () => {
     setTimePeriod(event.target.value);
   };
 //define the chart data and options
-  const chartData = {
-    datasets: [
-      {
-        label: 'Global (NH+SH)/2',
-        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.global,
-        borderColor: 'red',
-        borderWidth: 1,
-        fill: false,
-        pointRadius: 0,
-        pointHitRadius: 0,
-      },
-      {
-        label: 'Northern Hemisphere',
-        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.northernHemisphere,
-        borderColor: 'green',
-        borderWidth: 1,
-        fill: false,
-        pointRadius: 0,
-        pointHitRadius: 0,
-      },
-      {
-        label: 'Southern Hemisphere',
-        data: (timePeriod === 'monthly' ? monthlyData : annualData)?.southernHemisphere,
-        borderColor: 'orange',
-        borderWidth: 1,
-        fill: false,
-        pointRadius: 0,
-        pointHitRadius: 0,
-      },
-      {
-        label: 'Northern Hemisphere 2,000 year temperature reconstruction',
-data: (timePeriod === 'monthly' ? monthlyData : annualData)?.reconstruction,
-borderColor: 'blue',
-borderWidth: 1,
-fill: false,
-pointRadius: 0,
-pointHitRadius: 0,
-},
-],
+const chartData = {
+  datasets: [
+    {
+      label: 'Global (NH+SH)/2',
+      data: (timePeriod === 'monthly' ? monthlyData : annualData)?.global,
+      borderColor: 'red',
+      borderWidth: 1,
+      fill: false,
+      pointRadius: 0,
+      pointHitRadius: 0,
+    },
+    {
+      label: 'Northern Hemisphere',
+      data: (timePeriod === 'monthly' ? monthlyData : annualData)?.northernHemisphere,
+      borderColor: 'green',
+      borderWidth: 1,
+      fill: false,
+      pointRadius: 0,
+      pointHitRadius: 0,
+    },
+    {
+      label: 'Southern Hemisphere',
+      data: (timePeriod === 'monthly' ? monthlyData : annualData)?.southernHemisphere,
+      borderColor: 'orange',
+      borderWidth: 1,
+      fill: false,
+      pointRadius: 0,
+      pointHitRadius: 0,
+    },
+    //only show the reconstruction data if the time period is annual
+    ...(timePeriod === 'annual' 
+      ? [
+          {
+            label: 'Northern Hemisphere 2,000 year temperature reconstruction',
+            data: annualData?.reconstruction,
+            borderColor: 'blue',
+            borderWidth: 1,
+            fill: false,
+            pointRadius: 0,
+            pointHitRadius: 0,
+          },
+        ]
+      : []),
+  ],
 };
 
 const chartOptions = {
