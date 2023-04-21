@@ -88,12 +88,18 @@ export const Visu3 = () => {
       label: 'global Temperature Change',
       data: chart.map((data) => data['globalTempChange']),
       yAxisID: 'left-y-axis',
+      borderColor: "rgb(200, 0, 0)",
+      backgroundColor: "rgb(200, 0, 0, 0.5)",
+      pointRadius: 0,
     }
 
     const co2Data = {
       label: 'Carbon data',
       data: chart.map((data) => data['co2Ppm']),
-      yAxisID: 'right-y-axis'
+      yAxisID: 'right-y-axis',
+      borderColor: "rgb(0, 100, 200)",
+      backgroundColor: "rgb(0, 100, 200, 0.5)",
+      pointRadius: 0,
     }
 
     const eventData = {
