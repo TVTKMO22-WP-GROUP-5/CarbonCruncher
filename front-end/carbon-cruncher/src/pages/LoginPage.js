@@ -13,7 +13,7 @@ export const LoginPage = () => {
         <h2>Climate Data Visualizations</h2>
       </div>
       <div className="loginLogoForm">
-        <img src={imageAssets.logo.noText} alt="logo"></img>
+        <img src={imageAssets.logo.noText} alt="logo" id="logo"></img>
         <Outlet />
       </div>
     </div>

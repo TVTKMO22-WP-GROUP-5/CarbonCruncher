@@ -10,7 +10,7 @@ export const MainPage = () => {
   return (
     <div className="mainPage">
       <Navbar />
-      <img src={imageAssets.logo.text} alt="logo"></img>
+      <img src={imageAssets.logo.text} alt="logo" id="logo"></img>
       <Outlet />
     </div>
   )
