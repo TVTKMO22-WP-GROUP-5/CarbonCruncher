@@ -45,7 +45,9 @@ export const LoginView = () => {
         )}
       </form>
       <p>Don't have an account yet?</p>
-      <Link to="/register">Sign up!</Link>
+      <Link to="/register" id="registerUser">
+        Sign up!
+      </Link>
     </div>
   )
 }
