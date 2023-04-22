@@ -1,1 +1,11 @@
-/*To be completed*/
+.container {
+    padding: 10px;
+}
+
+.info {
+    display: flex;
+}
+.pie{
+    width: 30px;
+    height: 20px;
+}

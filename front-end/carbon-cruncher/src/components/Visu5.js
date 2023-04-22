@@ -13,7 +13,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 //import faker from 'faker'; // not needed in this project
 import { GET_VISU5_URL, GET_VISU_INFO } from "../utilities/Config"
 import { VisuInfo } from "./VisuInfo/VisuInfo"
@@ -30,10 +30,11 @@ ChartJS.register(
 );
 
 const options = {
-    type: 'pie',
+    type: 'Doughnut',
     //data: data,
     options: {
         responsive: true,
+        
         plugins: {
             legend: {
                 position: 'top',
@@ -68,11 +69,12 @@ export const Visu5 = () => {
             label: 'Sectors',
             data: chart.map((data) => data['emissionsSharePer']),
             backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)',
-                'rgb(100, 50, 50)'
+                'rgb(255, 200, 80)',
+                'rgb(200, 0, 0)',
+                'rgb(0, 0, 200)',
+                'rgb(0, 200, 0)'
               ],
+              borderWidth: 3,
         }
 
 /*         const subData = {
@@ -84,11 +86,11 @@ export const Visu5 = () => {
             pointRadius: 0,
         } */
 
-      //  const datasets = [sectordata /* subData */]
+        const datasets = [sectordata /* subData */]
         const combData = {
             chart: {
                 labels,
-                sectordata,
+                datasets,
             },
             info: info,
         }
@@ -113,7 +115,7 @@ export const Visu5 = () => {
                     <VisuInfo info={i} />
                 ))}
             </div>
-            <Pie options={options} data={sectorData}></Pie>
+            <Doughnut className={styles.pie} options={options} data={sectorData.chart}></Doughnut>
         </div>
     )
 };
