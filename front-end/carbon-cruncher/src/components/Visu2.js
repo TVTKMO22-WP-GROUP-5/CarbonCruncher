@@ -253,10 +253,15 @@ export const Visu2 = () => {
       };
 
     //render the chart visualization
-    return (
+    return (  
     <div style={{width: "1000px", height: "500px"}}>
         <h2>Atmospheric CO2 concentrations from Mauna Loa measurements starting 1958</h2>
      <Line data={combinedData} options={options}></Line>
+     <div className="visu-info">
+        {visuInfo?.map((info) => (
+        <VisuInfo key={info.id} info={info} />
+        ))}
+        </div>   
     </div>
     )
 }
