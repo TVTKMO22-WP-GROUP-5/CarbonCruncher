@@ -30,7 +30,7 @@ ChartJS.register(
 );
 
 const options = {
-    type: 'Doughnut',
+    
     //data: data,
     options: {
         responsive: true,
@@ -75,6 +75,8 @@ export const Visu5 = () => {
                 'rgb(0, 200, 0)'
               ],
               borderWidth: 3,
+
+              
         }
 
 /*         const subData = {
@@ -97,7 +99,9 @@ export const Visu5 = () => {
 
         setSectorData(combData)
 
+
     };
+
 
     if (!sectorData) {
         return (
@@ -115,7 +119,9 @@ export const Visu5 = () => {
                     <VisuInfo info={i} />
                 ))}
             </div>
-            <Doughnut className={styles.pie} options={options} data={sectorData.chart}></Doughnut>
+            <div className={styles.pie}>
+            <Doughnut options={options} data={sectorData.chart} /* onClick={onClick} */></Doughnut>
+            </div>
         </div>
     )
 };
