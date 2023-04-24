@@ -3,10 +3,13 @@
 }
 
 .loading {
+  /*Display stuff*/
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  /*Box model stuff*/
   margin-top: 20%;
+  /*Miscellaneous*/
   gap: 20px;
 }
 
