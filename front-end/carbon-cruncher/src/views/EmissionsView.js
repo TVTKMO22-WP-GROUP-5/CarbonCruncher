@@ -1,10 +1,10 @@
 import React from "react"
+import { Visu4 } from "../components/Visu4/Visu4"
 
 export const EmissionsView = () => {
   return (
     <div className="emissionView">
-      <div>stuff</div>
-      Emission View
+      <Visu4 />
     </div>
   )
 }

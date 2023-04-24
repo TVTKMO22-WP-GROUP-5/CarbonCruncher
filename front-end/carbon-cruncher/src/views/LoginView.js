@@ -7,6 +7,9 @@ export const LoginView = () => {
   const { onLogin } = React.useContext(AuthContext)
   const [loading, setLoading] = useState(false)
 
+  /**
+   * Handle user login
+   */
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { usernick, userpassword } = e.target.elements
@@ -42,7 +45,9 @@ export const LoginView = () => {
         )}
       </form>
       <p>Don't have an account yet?</p>
-      <Link to="/register">Sign up!</Link>
+      <Link to="/register" id="registerUser">
+        Sign up!
+      </Link>
     </div>
   )
 }

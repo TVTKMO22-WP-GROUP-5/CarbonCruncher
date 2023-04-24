@@ -1,5 +1,5 @@
 import React from "react"
-import { Assets } from "../assets/Assets"
+import { imageAssets } from "../assets/Assets"
 import { Outlet } from "react-router-dom"
 
 /**
@@ -13,7 +13,7 @@ export const LoginPage = () => {
         <h2>Climate Data Visualizations</h2>
       </div>
       <div className="loginLogoForm">
-        <img src={Assets.logo.noText} alt="logo"></img>
+        <img src={imageAssets.logo.noText} alt="logo" id="logo"></img>
         <Outlet />
       </div>
     </div>

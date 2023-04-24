@@ -1,6 +1,6 @@
 import React from "react"
 import { Outlet } from "react-router-dom"
-import { Assets } from "../assets/Assets"
+import { imageAssets } from "../assets/Assets"
 import Navbar from "../components/Navbar/Navbar"
 
 /**
@@ -10,7 +10,7 @@ export const MainPage = () => {
   return (
     <div className="mainPage">
       <Navbar />
-      <img src={Assets.logo.text} alt="logo"></img>
+      <img src={imageAssets.logo.text} alt="logo" id="logo"></img>
       <Outlet />
     </div>
   )

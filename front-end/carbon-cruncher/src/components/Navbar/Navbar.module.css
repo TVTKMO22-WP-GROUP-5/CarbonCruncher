@@ -1,21 +1,43 @@
 .container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
-  width: calc(100% - 200px*2) ;
+  width: calc(100% - 200px * 2);
   height: 80px;
+  gap: 20px;
+  padding: 0px 20px;
+
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.user {
+  color: #ffffff;
+}
+
+.delete {
+  height: 30px;
+}
+
+.delete:hover {
+  cursor: pointer;
+}
+
+.linkContainer {
+  display: flex;
+  width: 70%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 30px;
-  
-  background-color: rgba(0,0,0,0);
 }
 
 .link,
 .link:link,
 .link:visited,
 .link:active {
-  font-size: 20px;
+  font-size: 1.1rem;
   color: #ffffff;
   text-decoration: none;
 }
@@ -25,7 +47,7 @@
 }
 
 .link:last-child {
-  margin-left: 100px;
+  margin-left: auto;
 }
 
 @media only screen and (max-width: 1200px) {

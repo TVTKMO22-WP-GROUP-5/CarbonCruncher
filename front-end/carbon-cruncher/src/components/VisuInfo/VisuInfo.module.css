@@ -1,0 +1,10 @@
+.container {
+  margin: 10px;
+  flex: 1 1 0px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

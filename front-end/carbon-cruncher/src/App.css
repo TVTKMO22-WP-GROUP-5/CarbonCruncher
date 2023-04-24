@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@500&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@500&family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
 /*#region General CSS*/
 html,
@@ -8,8 +8,8 @@ body {
   height: 100%;
 
   margin: 0;
-  
-  font-family: 'Roboto', sans-serif;
+
+  font-family: "Roboto", sans-serif;
 }
 
 * {
@@ -30,11 +30,16 @@ body {
 .loginPage {
   display: flex;
   flex-direction: column;
-  
+
   min-height: 100%;
   color: #f5f5f5;
   background: rgb(60, 122, 119);
-  background: linear-gradient(270deg, rgba(60, 122, 119, 1) 0%, rgba(60, 122, 119, 1) 50%, rgba(19, 17, 95, 1) 100%);
+  background: linear-gradient(
+    270deg,
+    rgba(60, 122, 119, 1) 0%,
+    rgba(60, 122, 119, 1) 50%,
+    rgba(19, 17, 95, 1) 100%
+  );
 }
 
 .loginPage img {
@@ -48,7 +53,7 @@ body {
 }
 
 .loginTitleText > h1 {
-  font-family: 'Roboto Serif';
+  font-family: "Roboto Serif";
   font-size: 64px;
   margin-top: 80px;
   margin-bottom: 10px;
@@ -61,7 +66,7 @@ body {
 }
 
 .loginPage input {
-  text-indent: .5em;
+  text-indent: 0.5em;
   height: 2em;
   font-size: 1.5em;
   color: #f5f5f5;
@@ -76,7 +81,7 @@ body {
 
 .loginPage input::placeholder {
   font-size: inherit;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .loginPage button {
@@ -98,8 +103,7 @@ body {
   text-decoration: none;
 }
 
-.loginPage
-a:active {
+.loginPage a:active {
   scale: 0.95;
 }
 
@@ -113,7 +117,7 @@ a:active {
 .loginView {
   display: flex;
   flex-direction: column;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   height: 500px;
   justify-content: center;
   text-align: center;
@@ -131,7 +135,7 @@ a:active {
 .registerView {
   display: flex;
   flex-direction: column;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   height: 500px;
   justify-content: center;
   text-align: center;
@@ -187,19 +191,22 @@ a:active {
 
 .mainPage {
   display: flex;
+  /* flex: 1 1 auto; */
+  overflow-y: auto;
   flex-direction: column;
   align-items: center;
-  
-  height: 100%;
-  
+
+  min-height: calc(100% - 80px);
+
   background: rgb(60, 122, 119);
   background: linear-gradient(180deg, rgba(60, 122, 119, 1) 0%, rgba(237, 200, 71, 1) 100%);
+  /* background-attachment: fixed; */
 }
 
-.mainPage img {
+.mainPage > img {
   position: absolute;
-  
-  width: 200px;  
+
+  width: 200px;
   top: 20px;
   left: 0px;
 }
@@ -207,8 +214,8 @@ a:active {
 .userCustomView,
 .tempCo2View,
 .emissionView {
-  width: calc((100% - 200px*2));
-  height: 100%;
+  width: calc((100% - 200px * 2));
+  min-height: 100%;
 
   background-color: #f5f5f5;
 }
@@ -223,7 +230,7 @@ a:active {
     width: 100%;
   }
 
-  .mainPage, .loginPage img {
+  #logo {
     display: none;
   }
 }

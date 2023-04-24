@@ -7,6 +7,9 @@ export const RegisterView = () => {
   const { onRegister } = React.useContext(AuthContext)
   const [loading, setLoading] = useState(false)
 
+  /**
+   * Handle user registration
+   */
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { usernick, userpassword, userpasswordconfirm } = e.target.elements
@@ -27,7 +30,12 @@ export const RegisterView = () => {
     } catch (error) {
       switch (error.response.status) {
         case 400:
-          alert(`Error: Invalid credentials. Please try again.`)
+          alert(
+            `Error: Credentials break validation rules. Please read the username and password info.`
+          )
+          break
+        case 409:
+          alert(`Error: Username already exists. Please pick another one.`)
           break
         default:
           alert(`Error: ${error.response.status} ${error.response.statusText}`)
@@ -39,7 +47,7 @@ export const RegisterView = () => {
   return (
     <div className="registerView">
       <div className="tooltip">
-        Username and password info (hover over this text)
+        Username and password info <br /> (hover over this text)
         <span className="tooltipText">
           A username and a password must be 3-20 characters long.
           <br />
