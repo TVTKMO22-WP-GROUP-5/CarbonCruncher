@@ -56,23 +56,6 @@ const options = {
 
 export const Visu2 = () => {
 
-    /*const url1 = "https://carbon-cruncher.azurewebsites.net/api/visu2/annual"; 
-    const url2 = "https://carbon-cruncher.azurewebsites.net/api/visu2/monthly";
-
-    // store promise to data from url1
-    const data1 = fetch(url1)
-              .then(result => result.json())
-              .then(annualCo2 => annualCo2.data);
-
-    // store promise to data from url2
-    const data2 = fetch(url2)
-              .then(result => result.json())
-              .then(monthlyCo2 => monthlyCo2.data);
-
-    
-    const data = data1.data.concat(data2.data);
-        console.log(data); */
-
     const [annualCo2, setAnnualCo2] = useState ({
         labels: labels,
         datasets: [
@@ -146,13 +129,6 @@ export const Visu2 = () => {
                 {
                     label: "CO2 Annual",
                     data:dataSet1,
-                    //borderColor: "rgb(0, 0, 0)",
-                    //backgroundColor: "rgb(0, 0, 0)",
-                    //pointRadius: 0,
-                    //parsing: {
-                        //xAxisValue: "Year",
-                        //yAxisValue: "Mean",
-                    //}
                 },
                     
             ]
@@ -187,13 +163,6 @@ export const Visu2 = () => {
                 {
                     label: "CO2 Monthly",
                     data:dataSet2,
-                    //borderColor: "rgb(240, 150, 15)",
-                    //backgroundColor: "rgb(240, 150, 15)",
-                    //pointRadius: 0,
-                    //parsing: {
-                        //xAxisValue: "Time",
-                        //yAxisValue: "Average",
-                    //}
                 },
                     
             ]
@@ -228,13 +197,6 @@ export const Visu2 = () => {
                 {
                     label: "Ice Core 1",
                     data:dataSet3,
-                    //borderColor: "rgb(160, 60, 240)",
-                    //backgroundColor: "rgb(160, 60, 240)",
-                    //pointRadius: 0,
-                    //parsing: {
-                        //xAxisValue: "Time",
-                        //yAxisValue: "Average",
-                    //}
                 },
                     
             ]
@@ -247,6 +209,7 @@ export const Visu2 = () => {
         fetchData();
     },[])
      
+    //combine data in same chart
     const combinedData = {
         labels: monthlyCo2.labels,
         datasets: [
@@ -256,14 +219,10 @@ export const Visu2 = () => {
             borderColor: "rgb(240, 150, 15)",
             backgroundColor: "rgb(240, 150, 15)",
             pointRadius: 0,
-            //fill: false,
-            //borderColor: "#f44336",
           },
           {
             label: "Annual CO2",
             data: annualCo2.datasets[0].data,
-            //fill: false,
-            //borderColor: "#2196f3",
             borderColor: "rgb(0, 0, 0)",
             backgroundColor: "rgb(0, 0, 0)",
             pointRadius: 0,
@@ -274,8 +233,22 @@ export const Visu2 = () => {
             borderColor: "rgb(160, 60, 240)",
             backgroundColor: "rgb(160, 60, 240)",
             pointRadius: 0,
-
+          },
+          {
+            label: "Ice Core 2",
+            //data: icecore2.datasets[0].data,  //doesn't work yet
+            borderColor: "rgb(250, 100, 220)",
+            backgroundColor: "rgb(250, 100, 220)",
+            pointRadius: 0,
+          },
+          {
+            label: "Ice Core 3",
+            //data: icecore3.datasets[0].data, //doesn't work yet
+            borderColor: "rgb(230, 15, 15)",
+            backgroundColor: "rgb(230 , 15, 15)",
+            pointRadius: 0,
           }
+
         ],
       };
 
@@ -287,4 +260,3 @@ export const Visu2 = () => {
     </div>
     )
 }
-
