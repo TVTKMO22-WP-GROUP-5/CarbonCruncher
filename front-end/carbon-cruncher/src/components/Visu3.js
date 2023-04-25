@@ -1,5 +1,7 @@
 import React from "react"
 import { useEffect, useState } from "react"
+import styles from "./Visu3.css"
+import { Spinner } from "./Spinner/Spinner"
 //lines 4-25 copy pasted from: https://react-chartjs-2.js.org/examples/multiaxis-line-chart/
 import {
   Chart as ChartJS,
@@ -13,10 +15,14 @@ import {
 } from "chart.js"
 import { Line } from "react-chartjs-2"
 //import faker from 'faker'; // not needed in this project
+import { GET_VISU3_GLOBAL_URL, GET_VISU3_EVENT_URL, GET_VISU_INFO } from "../utilities/Config"
+import { VisuInfo } from "./VisuInfo/VisuInfo"
+import axios from "axios"
+import { GenerateColorFromName } from "../utilities/Utilities"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const config = {
+const options = {
   type: "line",
   options: {
     responsive: true,
@@ -44,186 +50,78 @@ const config = {
     },
   },
 }
-// horizonal axis of chart
-const yearLabels = Array.from(Array(2000 + 1).keys()).slice(1)
 
 export const Visu3 = () => {
-  const [tempData, setTempData] = useState({
-    datasets: [
-      /*              {
-                label: "Temperature change",
-                data: [], 
-                yAxisID: 'left-y-axis'
-            },
-    
-             {
-                label: "CO2 change",
-                data: [],
-                yAxisID: 'right-y-axis'
-            }, 
-    
-             {
-                label: "Events",
-                data: [],
-            },   */
-    ],
-  })
+  /*   const [globalData, setGlobalData] = useState ([]);
+    const [co2Data, setco2Data] = useState([]);
+    const [eventData, setEventData] = useState([]); */
+  const [combinedData, setCombinedData] = useState(null)
+
   useEffect(() => {
-    const fetchData = async () => {
-      const url_1 = "https://carbon-cruncher.azurewebsites.net/api/visu3/global"
-      const url_2 = "https://carbon-cruncher.azurewebsites.net/api/visu3/event"
-
-      const res_1 = await fetch(url_1)
-      const res_2 = await fetch(url_2)
-      const dataset_1 = await res_1.json()
-      const dataset_2 = await res_2.json()
-
-      // Make new dataset with year. Count year from yearsago and yearkbp value
-      const years_1 = dataset_1.map((d) => ({
-        year: 2023 - d.yearKbp * 1000,
-        globalTempChange: d.globalTempChange,
-        co2Ppm: d.co2Ppm,
-      }))
-      const years_2 = dataset_2.map((d) => ({
-        year: 2023 - d.yearsAgo,
-        description: d.description,
-      }))
-
-      // Get all yearlabels to an array and remove duplicates
-      const yearLabels = years_1.map((d) => d.year).concat(years_2.map((d) => d.year))
-      const yearLabelsUnique = [...new Set(yearLabels)]
-
-      // Add data to each year from two separate datasets
-      let mergedDataset = []
-      yearLabelsUnique.forEach((y) => {
-        const global = years_1.filter((d) => d.year === y)[0]
-        //console.log(global)
-        const event = years_2.filter((d) => d.year === y)[0]
-        //console.log(event)
-        const newDataCell = {
-          year: y,
-          globalTempChange: global ? global.globalTempChange : null,
-          co2Ppm: global ? global.co2Ppm : null,
-          event: event ? event.description : null,
-        }
-        mergedDataset.push(newDataCell)
-      })
-      const sortedMergedDataset = mergedDataset.sort((a, b) => (a.year > b.year ? 1 : -1))
-      console.log(sortedMergedDataset)
-      // console.log(years_1)
-      // console.log(years_2)
-      // const yearLabels = years_1.concat(years_2)
-      // const yearLabelsUnique = [...new Set(yearLabels)]
-      // console.log(yearLabels)
-      // console.log(yearLabelsUnique)
-
-      // .then((tempData) => {
-      //   console.log("data", tempData)
-      //   const res = tempData.json()
-      //   return res
-      // })
-      // .then((res) => {
-      //   console.log("result", res)
-      //   for (const val of res) {
-      //     dataSet1.push(val.globalTempChange)
-      //     dataSet2.push(val.co2Ppm)
-      //     // dataSet3.push(val.yearsAgo);
-      //   }
-
-      //   setTempData({
-      //     labels: yearLabels,
-      //     datasets: [
-      //       {
-      //         type: "line",
-      //         label: "Temperature change",
-      //         data: dataSet1,
-      //         borderColor: "rgb(200, 0, 0)",
-      //         backgroundColor: "rgb(200, 0, 0, 0.5)",
-      //         pointRadius: 0,
-      //         yAxisID: "left-y-axis",
-      //       },
-      //       {
-      //         type: "line",
-      //         label: "co2 change",
-      //         data: dataSet2,
-      //         borderColor: "rgb(0, 100, 200)",
-      //         backgroundColor: "rgb(0, 100, 200, 0.5)",
-      //         pointRadius: 0,
-      //         yAxisID: "right-y-axis",
-      //       },
-      //       {
-      //         type: "line",
-      //         label: "Events",
-      //         data: dataSet3,
-      //         borderColor: "rgb(255, 165, 0)",
-      //         backgroundColor: "rgb(255, 165, 0, 0.5)",
-      //         pointRadius: 0,
-      //         showLine: false,
-      //         //yAxisID:'right-y-axis',
-      //       },
-      //     ],
-      //   })
-      //   console.log("testData", dataSet1)
-      // })
-      // .catch((e) => {
-      //   console.log("error", e)
-      // })
+    const getData = async () => {
+      const dataRes = await axios.get(GET_VISU3_GLOBAL_URL)
+      const dataRes2 = await axios.get(GET_VISU3_EVENT_URL)
+      const infoRes = await axios.get(GET_VISU_INFO + "?visunumber=3")
+      parseData(dataRes.data, infoRes.data)
     }
-    const fetchData2 = async () => {
-      const url_1 = "https://carbon-cruncher.azurewebsites.net/api/visu2/monthly"
-      const url_2 = "https://carbon-cruncher.azurewebsites.net/api/visu2/annual"
-      const url_3 = "https://carbon-cruncher.azurewebsites.net/api/visu2/icecore"
-
-      const res_1 = await fetch(url_1)
-      const res_2 = await fetch(url_2)
-      const res_3 = await fetch(url_3)
-      const dataset_1 = await res_1.json()
-      const dataset_2 = await res_2.json()
-      const dataset_3 = await res_3.json()
-      console.log(dataset_1)
-      console.log(dataset_2)
-      console.log(dataset_3)
-
-      // // Make new dataset with year. Count year from yearsago and yearkbp value
-      // const years_1 = dataset_1.map((d) => ({
-      //   year: 2023 - d.yearKbp * 1000,
-      //   globalTempChange: d.globalTempChange,
-      //   co2Ppm: d.co2Ppm,
-      // }))
-      // const years_2 = dataset_2.map((d) => ({
-      //   year: 2023 - d.yearsAgo,
-      //   description: d.description,
-      // }))
-
-      // // Get all yearlabels to an array and remove duplicates
-      // const yearLabels = years_1.map((d) => d.year).concat(years_2.map((d) => d.year))
-      // const yearLabelsUnique = [...new Set(yearLabels)]
-
-      // // Add data to each year from two separate datasets
-      // let mergedDataset = []
-      // yearLabelsUnique.forEach((y) => {
-      //   const global = years_1.filter((d) => d.year === y)[0]
-      //   //console.log(global)
-      //   const event = years_2.filter((d) => d.year === y)[0]
-      //   //console.log(event)
-      //   const newDataCell = {
-      //     year: y,
-      //     globalTempChange: global ? global.globalTempChange : null,
-      //     co2Ppm: global ? global.co2Ppm : null,
-      //     event: event ? event.description : null,
-      //   }
-      //   mergedDataset.push(newDataCell)
-      // })
-      // const sortedMergedDataset = mergedDataset.sort((a, b) => (a.year > b.year ? 1 : -1))
-      // console.log(sortedMergedDataset)
-    }
-    //fetchData()
-    fetchData2()
+    getData()
   }, [])
 
+  const parseData = (chart, info) => {
+    // horizonal axis of chart
+    const labels = chart.map((d) => d["yearKbp"])
+
+    const globalData = {
+      label: "global Temperature Change",
+      data: chart.map((data) => data["globalTempChange"]),
+      yAxisID: "left-y-axis",
+      borderColor: "rgb(200, 0, 0)",
+      backgroundColor: "rgb(200, 0, 0, 0.5)",
+      pointRadius: 0,
+    }
+
+    const co2Data = {
+      label: "Carbon data",
+      data: chart.map((data) => data["co2Ppm"]),
+      yAxisID: "right-y-axis",
+      borderColor: "rgb(0, 100, 200)",
+      backgroundColor: "rgb(0, 100, 200, 0.5)",
+      pointRadius: 0,
+    }
+
+    const eventData = {
+      label: "Events",
+      data: 280,
+    }
+    const datasets = [globalData, co2Data, eventData]
+    const combData = {
+      chart: {
+        labels,
+        datasets,
+      },
+      info: info,
+    }
+
+    setCombinedData(combData)
+  }
+
+  if (!combinedData) {
+    return (
+      <div className={styles.loading}>
+        <Spinner />
+        <p className="">Loading data...</p>
+      </div>
+    )
+  }
+
   return (
-    <div style={{ width: "1000px", height: "500px" }}>
-      <Line data={tempData} options={config}></Line>;
+    <div className={styles.container}>
+      <div className={styles.info}>
+        {combinedData.info.map((i) => (
+          <VisuInfo info={i} />
+        ))}
+      </div>
+      <Line options={options} data={combinedData.chart}></Line>
     </div>
   )
 }

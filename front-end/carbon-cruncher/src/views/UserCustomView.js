@@ -1,39 +1,13 @@
 import React, { useEffect, useState } from "react"
-import { Rnd } from "react-rnd"
 import { AuthContext } from "../components/AuthProvider"
 import { buttonAssets } from "../assets/Assets"
 import IconButton from "../components/IconButton/IconButton"
 import Visu1 from "../components/Visu1"
+import Visu2 from "../components/Visu2"
 import Visu3 from "../components/Visu3"
 import { Visu4 } from "../components/Visu4/Visu4"
 
-//https://github.com/bokuweb/react-rnd
-
-const style = {
-  height: "auto",
-  width: "auto",
-  border: "solid 1px #ddd",
-  background: "#f0f0f0",
-}
-
 export const UserCustomView = () => {
-  const [userVisus, setUserVisus] = useState([])
-  const [state, setState] = useState([
-    {
-      visu: 4,
-      width: 200,
-      height: 200,
-      x: 10,
-      y: 10,
-    },
-    {
-      visu: 1,
-      width: 200,
-      height: 200,
-      x: 600,
-      y: 10,
-    },
-  ])
   const [isEdit, setIsEdit] = useState(false)
   const { user, token } = React.useContext(AuthContext)
 
@@ -46,6 +20,8 @@ export const UserCustomView = () => {
     switch (number) {
       case 1:
         return <Visu1 />
+      case 2:
+        return <Visu2 />
       case 3:
         return <Visu3 />
       case 4:
@@ -73,7 +49,11 @@ export const UserCustomView = () => {
    * Handle create new view -click
    */
   const handleCreateNew = () => {
-    setIsEdit(!isEdit)
+    setIsEdit(true)
+  }
+
+  const handleCancelChanges = () => {
+    setIsEdit(false)
   }
 
   const handleShowSelectedView = () => {}
@@ -83,45 +63,31 @@ export const UserCustomView = () => {
   return (
     <div className="userCustomView">
       <div className="viewButtons">
-        <IconButton buttonAsset={buttonAssets.btnNewCustView} onClick={handleCreateNew} />
-        {isEdit ? <IconButton buttonAsset={buttonAssets.btnSaveCustView} /> : null}
-        <div style={{ margin: "20px 0px" }} />
-        <IconButton buttonAsset={buttonAssets.btnHistTemp} />
-        <IconButton buttonAsset={buttonAssets.btnEvoGlobalTemp} />
-        <IconButton buttonAsset={buttonAssets.btnAtmCo2} />
-        <IconButton buttonAsset={buttonAssets.btnCountryCo2} />
-        <IconButton buttonAsset={buttonAssets.btnSectorCo2} />
+        {isEdit ? (
+          <>
+            <IconButton buttonAsset={buttonAssets.btnCancel} onClick={handleCancelChanges} />
+            <IconButton buttonAsset={buttonAssets.btnSaveCustView} />
+            <div className="radioButtons">
+              <span>View columns:</span>
+              <label>
+                <input type="radio" value="1" name="columnCount" />1 Column
+              </label>
+              <label>
+                <input type="radio" value="2" name="columnCount" />2 Columns
+              </label>
+            </div>
+            <IconButton buttonAsset={buttonAssets.btnHistTemp} />
+            <IconButton buttonAsset={buttonAssets.btnEvoGlobalTemp} />
+            <IconButton buttonAsset={buttonAssets.btnAtmCo2} />
+            <IconButton buttonAsset={buttonAssets.btnCountryCo2} />
+            <IconButton buttonAsset={buttonAssets.btnSectorCo2} />
+          </>
+        ) : (
+          <IconButton buttonAsset={buttonAssets.btnNewCustView} onClick={handleCreateNew} />
+        )}
       </div>
       <div className="savedViews"></div>
-      <div className="viewArea">
-        {state
-          ? state.map((_state, index) => {
-              return (
-                <Rnd
-                  style={style}
-                  size={{ width: _state.width, height: _state.height }}
-                  position={{ x: _state.x, y: _state.y }}
-                  onDragStop={(e, d) => {
-                    const changedState = { ..._state, x: d.x, y: d.y }
-                    const newState = state.map((s, i) => (i === index ? changedState : s))
-                    setState(newState)
-                  }}
-                  onResizeStop={(e, direction, ref, delta, position) => {
-                    const changedState = {
-                      ..._state,
-                      width: ref.style.width,
-                      height: ref.style.height,
-                    }
-                    const newState = state.map((s, i) => (i === index ? changedState : s))
-                    setState(newState)
-                  }}
-                >
-                  {GetVisuByNumber(_state.visu)}
-                </Rnd>
-              )
-            })
-          : null}
-      </div>
+      <div className="viewArea"></div>
     </div>
   )
 }

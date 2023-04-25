@@ -6,6 +6,7 @@ import iconEvoGlobalTemp from "./evo_global_temp.svg"
 import iconHistTemp from "./hist_temp.svg"
 import iconSaveCustView from "./save_custview.svg"
 import iconSectorCo2 from "./sector_co2.svg"
+import iconCancel from "./cancel.svg"
 import logoText from "./cc_logo_text.svg"
 import logoNoText from "./cc_logo_no_text.svg"
 
@@ -23,6 +24,7 @@ export const imageAssets = {
     histTemp: iconHistTemp,
     saveCustView: iconSaveCustView,
     sectorCo2: iconSectorCo2,
+    cancel: iconCancel,
   },
 }
 
@@ -66,5 +68,10 @@ export const buttonAssets = {
     icon: iconSectorCo2,
     altText: "sectorco2",
     buttonText: "CO2 Emissions by Sector",
+  },
+  btnCancel: {
+    icon: iconCancel,
+    altText: "cancel",
+    buttonText: "Cancel changes",
   },
 }

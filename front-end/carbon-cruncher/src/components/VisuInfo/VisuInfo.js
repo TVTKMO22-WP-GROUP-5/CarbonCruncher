@@ -1,6 +1,9 @@
 import React from "react"
 import styles from "./VisuInfo.module.css"
 
+/**
+ * Visuinfo shows visualization related description and links
+ */
 export const VisuInfo = ({ info }) => {
   return (
     <div className={styles.container}>
