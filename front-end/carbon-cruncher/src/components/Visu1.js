@@ -69,6 +69,7 @@ const Visu1 = () => {
         label: "Global (NH+SH)/2",
         data: (timePeriod === "monthly" ? monthlyData : annualData)?.global,
         borderColor: "red",
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
         borderWidth: 1,
         fill: false,
         pointRadius: 0,
@@ -78,6 +79,7 @@ const Visu1 = () => {
         label: "Northern Hemisphere",
         data: (timePeriod === "monthly" ? monthlyData : annualData)?.northernHemisphere,
         borderColor: "green",
+        backgroundColor: "rgba(0, 255, 0, 0.5)",
         borderWidth: 1,
         fill: false,
         pointRadius: 0,
@@ -87,6 +89,7 @@ const Visu1 = () => {
         label: "Southern Hemisphere",
         data: (timePeriod === "monthly" ? monthlyData : annualData)?.southernHemisphere,
         borderColor: "orange",
+        backgroundColor: "rgba(255, 255, 0, 0.5)",
         borderWidth: 1,
         fill: false,
         pointRadius: 0,
@@ -99,6 +102,7 @@ const Visu1 = () => {
               label: "Northern Hemisphere 2,000 year temperature reconstruction",
               data: annualData?.reconstruction,
               borderColor: "blue",
+              backgroundColor: "rgba(0, 0, 255, 0.5)",
               borderWidth: 1,
               fill: false,
               pointRadius: 0,
@@ -110,6 +114,12 @@ const Visu1 = () => {
   }
 
   const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
     scales: {
       x: {
         type: "time",
@@ -118,13 +128,13 @@ const Visu1 = () => {
         },
         title: {
           display: true,
-          text: "Years",
+          text: "Year",
         },
       },
       y: {
         title: {
           display: true,
-          text: "Temperature Anomaly (°C)",
+          text: "Temperature Anomaly [°C]",
         },
       },
     },

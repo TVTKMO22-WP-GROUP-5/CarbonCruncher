@@ -97,6 +97,7 @@ export const Visu4 = () => {
       datasets.push({
         label: countryNameWithSpaces,
         data: chartData.map((d) => d[element]),
+        borderColor: GenerateColorFromName(countryNameWithSpaces),
         backgroundColor: GenerateColorFromName(countryNameWithSpaces),
       })
 
