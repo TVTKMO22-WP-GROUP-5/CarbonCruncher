@@ -18,9 +18,6 @@ import { Line } from 'react-chartjs-2';
 import { GET_VISU3_GLOBAL_URL, GET_VISU3_EVENT_URL, GET_VISU_INFO } from "../utilities/Config"
 import { VisuInfo } from "./VisuInfo/VisuInfo"
 import axios from "axios"
-import {
-  GenerateColorFromName,
-} from "../utilities/Utilities"
 
 ChartJS.register(
   CategoryScale,
@@ -32,54 +29,148 @@ ChartJS.register(
   Legend
 );
 
-const options = {
-  type: 'line',
-  options: {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
+ const config = {
+  spanGaps: true,
+  responsive: true,
+  interaction: {
+    mode: 'index',
+    intersect: false,
+  },
+  scales: {
+    x: {
+      type: "time",
+      time: {
+        unit: "year",
+      },
+      display: true,
+      title: {
+        display: true,
+        text: "Year",
+      },
     },
-    stacked: false,
-    scales: {
-      'left-y-axis': {
-        type: 'linear',
+    y: {
+      display: true,
+      title: {
         display: true,
         position: 'left',
+        text: "Carbon",
       },
-      'right-y-axis': {
-        type: 'linear',
+    },
+    y1: {
+      display: true,
+      title: {
         display: true,
         position: 'right',
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
+        text: "Temperature",
       },
-    }
+    },
   },
+} 
 
-}
 
 
-export const Visu3 = () => {
-  /*   const [globalData, setGlobalData] = useState ([]);
-    const [co2Data, setco2Data] = useState([]);
-    const [eventData, setEventData] = useState([]); */
+const Visu3 = () => {
   const [combinedData, setCombinedData] = useState(null)
-
 
   useEffect(() => {
     const getData = async () => {
       const dataRes = await axios.get(GET_VISU3_GLOBAL_URL)
       const dataRes2 = await axios.get(GET_VISU3_EVENT_URL)
       const infoRes = await axios.get(GET_VISU_INFO + "?visunumber=3")
-      parseData(dataRes.data, infoRes.data)
+      parseData(dataRes.data, dataRes2.data, infoRes.data)
     }
     getData()
   }, [])
 
+  const parseData = (chart, chart2, info) => {
+   
+    
+    const globalData = chart.map((d) => ({      
+      year: new Date (d.yearKbp),
+      tempChange: d.global_temp_change,
+      carbonChange: d.co2_ppm,
+    }))
+    const eventData = chart2.map((d) => ({
+      yearAgo: new Date(d.yearsAgo),
+      description: d.description,
+    }))
+
+      let datasets = []
+
+      datasets.push({
+        label: "Temperature change",
+        data: globalData,
+        backgroundColor: "rgb(220,0,0,0.5)",
+        borderColor: "rgb(220,0,0)",
+        borderWidth: 3,
+        pointRadius: 0,
+        yAxisID: "y1",
+        parsing: {
+          xAxisKey: "year",
+          yAxisKey: "tempChange",
+        },
+      })
+  
+      datasets.push({
+        label: "Carbon change",
+        data: globalData,
+        backgroundColor: "rgb(0,0,220,0.5)",
+        borderColor: "rgb(0,0,220)",
+        borderWidth: 3,
+        pointRadius: 0,
+        yAxisID: "y",
+        parsing: {
+          xAxisKey: "year",
+          yAxisKey: "carbonChange",
+        },
+      })
+  
+/*        datasets.push({
+        label: "Events",
+        data: eventData,
+        backgroundColor: "#3bc1ff",
+        borderColor: "#2987b2",
+        borderWidth: 3,
+        pointStyle: 'triangle',
+        pointRadius: 5,
+        parsing: {
+          xAxisKey: "yearAgo",
+          yAxisKey: "description",
+        },
+      })  */
+    
+    const resultData = {
+      chartData: {
+        datasets,
+      },
+      info: info,
+    }
+    setCombinedData(resultData)
+  }
+
+
+  if (!combinedData) {
+    return (
+      <div className={styles.loading}>
+        <Spinner />
+        <p className="">Loading data...</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.info}>
+        {combinedData.info.map((i) => (
+          <VisuInfo info={i} />
+        ))}
+      </div>
+      <Line options={config} data={combinedData.chartData}></Line>
+    </div>
+  )
+};
+//this seemed to work, sigh :(
+/* 
   const parseData = (chart, info) => {
     // horizonal axis of chart
     const labels = chart.map((d) => d['yearKbp']);
@@ -119,27 +210,8 @@ export const Visu3 = () => {
     setCombinedData(combData)
 
   };
+*/
 
-  if (!combinedData) {
-    return (
-      <div className={styles.loading}>
-        <Spinner />
-        <p className="">Loading data...</p>
-      </div>
-    )
-  }
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.info}>
-        {combinedData.info.map((i) => (
-          <VisuInfo info={i} />
-        ))}
-      </div>
-      <Line options={options} data={combinedData.chart}></Line>
-    </div>
-  )
-};
 
 //old code just in case something goes horribly wrong
 /*
