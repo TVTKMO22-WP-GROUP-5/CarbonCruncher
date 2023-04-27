@@ -58,7 +58,6 @@ const options = {
         //   console.log(ticks)
         //   if (new Date(value).getFullYear % 100 === 0) return "$" + value
         // },
-        color: "red",
         xmin: 1000,
         max: 2020,
         // beginAtZero: true,
