@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styles from "./Visu3.css"
 import { Spinner } from "./Spinner/Spinner"
-//lines 4-25 copy pasted from: https://react-chartjs-2.js.org/examples/multiaxis-line-chart/
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,7 +29,6 @@ ChartJS.register(
 );
 
  const config = {
-  spanGaps: true,
   responsive: true,
   interaction: {
     mode: 'index',
@@ -51,17 +49,19 @@ ChartJS.register(
     y: {
       display: true,
       title: {
+        type: "linear",
         display: true,
-        position: 'left',
-        text: "Carbon",
+        position: "right",
+        text: 'Temperature'
       },
     },
     y1: {
       display: true,
       title: {
+        type: "linear",
         display: true,
-        position: 'right',
-        text: "Temperature",
+        position: "left",
+        text: 'Carbon',
       },
     },
   },
@@ -84,11 +84,10 @@ const Visu3 = () => {
 
   const parseData = (chart, chart2, info) => {
    
-    
     const globalData = chart.map((d) => ({      
-      year: new Date (d.yearKbp),
-      tempChange: d.global_temp_change,
-      carbonChange: d.co2_ppm,
+      year: new Date (2100-d.yearKbp,0,1),
+      tempChange: d.globalTempChange,
+      carbonChange: d.co2Ppm,
     }))
     const eventData = chart2.map((d) => ({
       yearAgo: new Date(d.yearsAgo),
@@ -100,11 +99,11 @@ const Visu3 = () => {
       datasets.push({
         label: "Temperature change",
         data: globalData,
-        backgroundColor: "rgb(220,0,0,0.5)",
-        borderColor: "rgb(220,0,0)",
+        borderColor: "rgb(200, 0, 0)",
+        backgroundColor: "rgb(200, 0, 0, 0.5)",
         borderWidth: 3,
         pointRadius: 0,
-        yAxisID: "y1",
+        yAxisID: 'y',
         parsing: {
           xAxisKey: "year",
           yAxisKey: "tempChange",
@@ -114,11 +113,11 @@ const Visu3 = () => {
       datasets.push({
         label: "Carbon change",
         data: globalData,
-        backgroundColor: "rgb(0,0,220,0.5)",
-        borderColor: "rgb(0,0,220)",
+        borderColor: "rgb(0, 100, 200)",
+        backgroundColor: "rgb(0, 100, 200, 0.5)",
         borderWidth: 3,
         pointRadius: 0,
-        yAxisID: "y",
+        yAxisID: 'y1',
         parsing: {
           xAxisKey: "year",
           yAxisKey: "carbonChange",
@@ -128,8 +127,8 @@ const Visu3 = () => {
 /*        datasets.push({
         label: "Events",
         data: eventData,
-        backgroundColor: "#3bc1ff",
-        borderColor: "#2987b2",
+        borderColor: "rgb(0, 200, 200)",
+        backgroundColor: "rgb(0, 200, 200, 0.5)",
         borderWidth: 3,
         pointStyle: 'triangle',
         pointRadius: 5,
@@ -169,7 +168,7 @@ const Visu3 = () => {
     </div>
   )
 };
-//this seemed to work, sigh :(
+//this seemed to work best so far, sigh :(
 /* 
   const parseData = (chart, info) => {
     // horizonal axis of chart
