@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./Visu5.css"
 import { Spinner } from "./Spinner/Spinner"
 //lines 4-25 copy pasted from: https://react-chartjs-2.js.org/examples/multiaxis-line-chart/
@@ -13,11 +13,14 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, getElementAtEvent } from 'react-chartjs-2';
 //import faker from 'faker'; // not needed in this project
 import { GET_VISU5_URL, GET_VISU_INFO } from "../utilities/Config"
 import { VisuInfo } from "./VisuInfo/VisuInfo"
 import axios from "axios"
+import {
+    GenerateColorFromName,
+} from "../utilities/Utilities"
 
 ChartJS.register(
     CategoryScale,
@@ -29,27 +32,22 @@ ChartJS.register(
     Legend
 );
 
+
 const options = {
-    
+
     //data: data,
     options: {
         responsive: true,
-        
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-        }
     },
 
 }
 
 
 export const Visu5 = () => {
-    /*const [sectorData, setSectorData] = useState([]);
-    const [subData, setSubData] = useState([]);*/
     const [sectorData, setSectorData] = useState(null)
+    const [subData, setSubData] = useState({})
 
+    const chartRef = useRef();
 
     useEffect(() => {
         const getData = async () => {
@@ -61,34 +59,35 @@ export const Visu5 = () => {
     }, [])
 
     const parseData = (chart, info) => {
-        // horizonal axis of chart
-        const labels = chart.map((d) => d['sector']);
-        //const labels = ['Red', 'Orange', 'Yellow', 'Green',]
+        const labels = chart.map((d) => d.sector);
+        //const color = GenerateColorFromName(labels)
+        let datasets = []
 
-        const sectordata = {
-            label: 'Sectors',
-            data: chart.map((data) => data['emissionsSharePer']),
+        datasets.push({
+            //label: labels,
+            data: chart.map((data) => data.emissionsSharePer),
             backgroundColor: [
                 'rgb(255, 200, 80)',
                 'rgb(200, 0, 0)',
                 'rgb(0, 0, 200)',
                 'rgb(0, 200, 0)'
-              ],
-              borderWidth: 3,
+            ],
+            // backgroundColor: GenerateColorFromName(labels) , // olis kiva jos sais toimimaan
+            borderWidth: 3,
 
-              
-        }
 
-/*         const subData = {
-            label: 'Carbon data',
-            data: chart.map((data) => data['co2Ppm']),
-            yAxisID: 'right-y-axis',
-            borderColor: "rgb(0, 100, 200)",
-            backgroundColor: "rgb(0, 100, 200, 0.5)",
-            pointRadius: 0,
-        } */
+        })
 
-        const datasets = [sectordata /* subData */]
+        /*         const subData = {
+                    label: 'Carbon data',
+                    data: chart.map((data) => data['co2Ppm']),
+                    yAxisID: 'right-y-axis',
+                    borderColor: "rgb(0, 100, 200)",
+                    backgroundColor: "rgb(0, 100, 200, 0.5)",
+                    pointRadius: 0,
+                } */
+
+        //const datasets = [sectordata]
         const combData = {
             chart: {
                 labels,
@@ -98,10 +97,17 @@ export const Visu5 = () => {
         }
 
         setSectorData(combData)
-
+        setSubData({
+            labels,
+            datasets: [{}],
+        })
 
     };
 
+    const handleClick = (event) => {
+        console.log(getElementAtEvent(chartRef.current, event));
+      }
+    
 
     if (!sectorData) {
         return (
@@ -120,7 +126,8 @@ export const Visu5 = () => {
                 ))}
             </div>
             <div className={styles.pie}>
-            <Doughnut options={options} data={sectorData.chart} /* onClick={onClick} */></Doughnut>
+
+                <Doughnut ref={chartRef} options={options} data={sectorData.chart} onClick={handleClick}></Doughnut>
             </div>
         </div>
     )
