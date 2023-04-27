@@ -93,26 +93,28 @@ const chartData = {
       : []),
   ],
 };
-
+//define the chart options such as responsive, maintainAspectRatio, scales, etc.
 const chartOptions = {
-scales: {
-x: {
-type: 'time',
-time: {
-unit: 'year',
-},
-title: {
-display: true,
-text: 'Years',
-},
-},
-y: {
-title: {
-display: true,
-text: 'Temperature Anomaly (°C)',
-},
-},
-},
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    x: {
+      type: 'time',
+      time: {
+        unit: 'year',
+      },
+      title: {
+        display: true,
+        text: 'Years',
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Temperature Anomaly (°C)',
+      },
+    },
+  },
 };
 //return the component with the data and options defined above 
 return (
@@ -128,11 +130,11 @@ return (
 <input type="radio" id="annual" name="timePeriod" value="annual" checked={timePeriod === 'annual'} onChange={handleChange} />
 <label htmlFor="annual">Annual</label>
 </div>
-<div className="visu-chart">
+<div className="visu-chart" style={{ width: '100%', height: '500px' }}>
 {(timePeriod === 'monthly' ? monthlyData : annualData) ? <Line data={chartData} options={chartOptions} /> : <p>Loading data...</p>}
 </div>
 </div>
 );
 };
-
+//export the component
 export default Visu1;
