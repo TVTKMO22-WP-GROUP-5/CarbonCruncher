@@ -3,19 +3,17 @@
 /*#region General CSS*/
 html,
 body {
+  /*Box model stuff*/
   width: 100%;
-  min-width: 600px;
   height: 100%;
-
   margin: 0;
-
+  /*Typography stuff*/
   font-family: "Roboto", sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
-
 #root {
   height: 100%;
 }
@@ -28,11 +26,11 @@ body {
 /*#region Loginpage*/
 
 .loginPage {
+  /*Display stuff*/
   display: flex;
   flex-direction: column;
-
+  /*Box model stuff*/
   min-height: 100%;
-  color: #f5f5f5;
   background: rgb(60, 122, 119);
   background: linear-gradient(
     270deg,
@@ -40,39 +38,49 @@ body {
     rgba(60, 122, 119, 1) 50%,
     rgba(19, 17, 95, 1) 100%
   );
+  /*Typography stuff*/
+  color: #f5f5f5;
 }
 
 .loginPage img {
+  /*Box model stuff*/
   width: 400px;
   height: 400px;
 }
 
 .loginTitleText {
+  /*Typography stuff*/
   text-align: center;
   text-shadow: 2px 2px 5px #000000;
 }
 
 .loginTitleText > h1 {
+  /*Box model stuff*/
+  margin-bottom: 10px;
+  margin-top: 80px;
+  /*Typography stuff*/
   font-family: "Roboto Serif";
   font-size: 64px;
-  margin-top: 80px;
-  margin-bottom: 10px;
 }
 
 .loginTitleText > h2 {
+  /*Box model stuff*/
   margin-top: 10px;
+  /*Typography stuff*/
   font-size: 36px;
   font-weight: 400;
 }
 
 .loginPage input {
-  text-indent: 0.5em;
+  /*Box model stuff*/
   height: 2em;
-  font-size: 1.5em;
-  color: #f5f5f5;
-  background-color: #1f817c;
   border-style: none;
   border-radius: 5px;
+  background-color: #1f817c;
+  /*Typography stuff*/
+  font-size: 1.5em;
+  text-indent: 0.5em;
+  color: #f5f5f5;
 }
 
 .loginPage input:focus {
@@ -80,17 +88,20 @@ body {
 }
 
 .loginPage input::placeholder {
+  /*Typography stuff*/
   font-size: inherit;
   color: rgba(255, 255, 255, 0.6);
 }
 
 .loginPage button {
-  background-color: rgba(60, 122, 119, 0);
+  /*Box model stuff*/
+  height: 2em;
   border-style: none;
   border-radius: 5px;
+  background-color: rgba(60, 122, 119, 0);
+  /*Typography stuff*/
   font-size: 1.5em;
   color: #f5f5f5;
-  height: 2em;
 }
 
 .loginPage button:active {
@@ -98,9 +109,10 @@ body {
 }
 
 .loginPage a {
+  /*Typography stuff*/
   font-size: 2em;
-  color: #ffffff;
   text-decoration: none;
+  color: #ffffff;
 }
 
 .loginPage a:active {
@@ -108,52 +120,67 @@ body {
 }
 
 .loginLogoForm {
-  gap: 40px;
+  /*Display stuff*/
   display: flex;
   flex-direction: row;
   justify-content: center;
+  /*Miscellaneous*/
+  gap: 40px;
 }
 
 .loginView {
+  /*Display stuff*/
   display: flex;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0);
-  height: 500px;
   justify-content: center;
+  /*Box model stuff*/
+  height: 500px;
+  background-color: rgba(0, 0, 0, 0);
+  /*Typography stuff*/
   text-align: center;
 }
 
 .loginForm {
+  /*Display stuff*/
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  /*Box model stuff*/
   margin-bottom: 50px;
+  /*Miscellaneous*/
+  gap: 10px;
 }
 
 .registerView {
+  /*Display stuff*/
   display: flex;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0);
-  height: 500px;
   justify-content: center;
+  /*Box model stuff*/
+  height: 500px;
+  background-color: rgba(0, 0, 0, 0);
+  /*Typography stuff*/
   text-align: center;
 }
 
 .registerForm {
+  /*Display stuff*/
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  /*Box model stuff*/
   margin-bottom: 50px;
+  /*Miscellaneous*/
+  gap: 10px;
 }
 
 .registerView a {
+  /*Typography stuff*/
   font-size: 1em;
-  color: #ffffff;
   text-decoration: none;
+  color: #ffffff;
 }
 
 .registerView a:active {
@@ -161,25 +188,30 @@ body {
 }
 
 .registerView .tooltip {
-  position: relative;
+  /*Display stuff*/
   display: inline-block;
+  /*Positioning stuff*/
+  position: relative;
+  /*Box model stuff*/
   margin-bottom: 20px;
 }
 
 .registerView .tooltip .tooltipText {
-  visibility: hidden;
-  width: 200px;
-  background-color: #075a52;
-  color: #fff;
-  text-align: left;
-  border-radius: 6px;
-  padding: 5px 10px;
-
-  /* Position the tooltip */
+  /*Positioning stuff*/
   position: absolute;
   left: 5em;
   top: -12em;
   z-index: 1;
+  /*Box model stuff*/
+  width: 200px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background-color: #075a52;
+  /*Typography stuff*/
+  text-align: left;
+  color: #fff;
+  /*Miscellaneous*/
+  visibility: hidden;
 }
 
 .tooltip:hover .tooltipText {
@@ -190,33 +222,68 @@ body {
 /*#region Mainpage*/
 
 .mainPage {
+  /*Display stuff*/
   display: flex;
-  /* flex: 1 1 auto; */
-  overflow-y: auto;
   flex-direction: column;
   align-items: center;
-
+  /*Box model stuff*/
   min-height: calc(100% - 80px);
-
   background: rgb(60, 122, 119);
   background: linear-gradient(180deg, rgba(60, 122, 119, 1) 0%, rgba(237, 200, 71, 1) 100%);
-  /* background-attachment: fixed; */
+  /*Miscellaneous*/
+  overflow-y: auto;
 }
 
 .mainPage > img {
+  /*Positioning stuff*/
   position: absolute;
-
-  width: 200px;
-  top: 20px;
   left: 0px;
+  top: 20px;
+  /*Box model stuff*/
+  width: 200px;
 }
 
 .userCustomView,
 .tempCo2View,
 .emissionView {
+  /*Box model stuff*/
   width: calc((100% - 200px * 2));
-  min-height: 100%;
+  height: calc(100vh - 80px);
+  background-color: #f5f5f5;
+  /*Miscellaneous*/
+  overflow-y: scroll;
+  padding: 10px;
+}
 
+.viewButtons {
+  /*Display stuff*/
+  display: flex;
+  flex-direction: column;
+  /*Positioning stuff*/
+  position: absolute;
+  left: 20px;
+  top: 220px;
+  /*Miscellaneous*/
+  gap: 10px;
+}
+
+.radioButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.viewArea {
+  display: flex;
+  flex-direction: row;
+  min-height: calc(100vh - 80px);
+  background-color: #f5f5f5;
+  grid-template-columns: auto auto;
+}
+
+.viewItem {
+  border-right: 1px dashed #000000;
+  border-bottom: 1px dashed #000000;
   background-color: #f5f5f5;
 }
 /*#endregion*/
@@ -228,6 +295,21 @@ body {
   .tempCo2View,
   .emissionView {
     width: 100%;
+  }
+
+  .viewButtons {
+    position: inherit;
+    justify-content: center;
+    margin-top: 10px;
+    top: 100px;
+    left: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .radioButtons {
+    display: none;
   }
 
   #logo {
