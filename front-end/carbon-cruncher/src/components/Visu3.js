@@ -36,14 +36,14 @@ ChartJS.register(
   },
   scales: {
     x: {
-      type: "time",
+      type: "linear",
       time: {
         unit: "year",
       },
       display: true,
       title: {
         display: true,
-        text: "Year",
+        text: "Years ago",
       },
     },
     y: {
@@ -85,14 +85,15 @@ const Visu3 = () => {
   const parseData = (chart, chart2, info) => {
    
     const globalData = chart.map((d) => ({      
-      year: new Date (2100-d.yearKbp,0,1),
+      year: -d.yearKbp*1000,
       tempChange: d.globalTempChange,
       carbonChange: d.co2Ppm,
     }))
     const eventData = chart2.map((d) => ({
-      yearAgo: new Date(d.yearsAgo),
+      yearAgo: -d.yearsAgo,
       description: d.description,
     }))
+    //const yearLabels = globalData.map((d) => d.year).concat(eventData.map((d) => d.yearAgo))
 
       let datasets = []
 
@@ -124,19 +125,20 @@ const Visu3 = () => {
         },
       })
   
-/*        datasets.push({
+        datasets.push({
         label: "Events",
         data: eventData,
-        borderColor: "rgb(0, 200, 200)",
-        backgroundColor: "rgb(0, 200, 200, 0.5)",
+        showLine:false,
+        borderColor: "rgb(255,140,0)",
+        backgroundColor: "rgb(255,140,0, 0.5)",
         borderWidth: 3,
         pointStyle: 'triangle',
-        pointRadius: 5,
+        pointRadius: 10,
         parsing: {
           xAxisKey: "yearAgo",
           yAxisKey: "description",
         },
-      })  */
+      })  
     
     const resultData = {
       chartData: {
