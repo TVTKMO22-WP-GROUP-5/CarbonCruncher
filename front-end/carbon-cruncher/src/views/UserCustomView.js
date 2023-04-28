@@ -150,7 +150,6 @@ export const UserCustomView = () => {
         },
       }
       const res = await axios.post(VISUALIZATION_URL, databaseString, config)
-      console.log(res)
     } catch (error) {
       console.log(error)
     }

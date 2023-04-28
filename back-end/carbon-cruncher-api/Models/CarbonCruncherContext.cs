@@ -259,7 +259,10 @@ public partial class CarbonCruncherContext : DbContext
             entity.ToTable("visu_user_visuals");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ColumnView).HasColumnName("column_view");
+            entity.Property(e => e.VisuConfig)
+                .HasMaxLength(200)    
+                .IsUnicode(false)
+                .HasColumnName("visu_config");
             entity.Property(e => e.UrlHeader)
                 .HasMaxLength(10)
                 .IsUnicode(false)
