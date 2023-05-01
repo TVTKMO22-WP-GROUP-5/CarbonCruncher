@@ -13,9 +13,7 @@ const jwtFromStorage = window.localStorage.getItem("appToken")
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
   const [token, setToken] = React.useState(jwtFromStorage)
-  const [user, setUser] = useState(
-    jwtFromStorage === null ? null : jwtDecode(jwtFromStorage)[NAME_CLAIM]
-  )
+  const [user, setUser] = useState(jwtFromStorage === null ? null : jwtDecode(jwtFromStorage)[NAME_CLAIM])
   /**
    * User login method
    * @param {string} usernick
@@ -61,7 +59,7 @@ export const AuthProvider = ({ children }) => {
       console.log(response)
       navigate("/")
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
 
