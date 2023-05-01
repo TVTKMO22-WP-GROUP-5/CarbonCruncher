@@ -7,6 +7,8 @@ import iconHistTemp from "./hist_temp.svg"
 import iconSaveCustView from "./save_custview.svg"
 import iconSectorCo2 from "./sector_co2.svg"
 import iconCancel from "./cancel.svg"
+import iconCustom from "./custom.svg"
+import iconClipboard from "./clipboard.svg"
 import logoText from "./cc_logo_text.svg"
 import logoNoText from "./cc_logo_no_text.svg"
 
@@ -25,6 +27,8 @@ export const imageAssets = {
     saveCustView: iconSaveCustView,
     sectorCo2: iconSectorCo2,
     cancel: iconCancel,
+    custom: iconCustom,
+    clipboard: iconClipboard,
   },
 }
 
@@ -73,5 +77,10 @@ export const buttonAssets = {
     icon: iconCancel,
     altText: "cancel",
     buttonText: "Cancel changes",
+  },
+  btnCustom: {
+    icon: iconCustom,
+    altText: "custom",
+    buttonText: "text",
   },
 }

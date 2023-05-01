@@ -1,5 +1,7 @@
 const LOCAL_API = true
+const LOCAL_FRONT = true
 const API_BASE_URL = LOCAL_API ? "https://localhost:5001/api" : "https://carbon-cruncher.azurewebsites.net/api"
+export const FRONT_BASE_URL = LOCAL_FRONT ? "http://localhost:3000" : "https://carbon-cruncher-client.azurewebsites.net"
 export const LOGIN_USER_URL = `${API_BASE_URL}/user/login`
 export const REGISTER_USER_URL = `${API_BASE_URL}/user/register`
 export const DELETE_USER_URL = `${API_BASE_URL}/user`

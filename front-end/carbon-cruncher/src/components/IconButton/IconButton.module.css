@@ -12,6 +12,7 @@
   background-color: #abc4a2;
   /*Miscellaneous*/
   gap: 10px;
+  font-size: 12px;
 }
 
 .iconButton:hover {
@@ -24,10 +25,10 @@
 
 .iconButtonText {
   /*Box model stuff*/
-  width: 80%;
+  width: 50%;
   margin: 0px;
   /*Typography stuff*/
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
 }
 
