@@ -15,7 +15,7 @@ Anssi Kulotie on ohjelmistokehityksen opiskelija, joka työskentelee päätoimis
 
 Miikka Niska on ohjelmistokehityksen opiskelija, jolla on jonkin verran aiempaa työkokemusta web-ohjelmoinnista. Miikka on vastannut ER-diagrammin ja MS SQL:n suunnittelusta sekä toteuttanut kontrollerin Visualisaatio 2:lle ja Visualisaatio 3 ja 5-komponentit. Lisäksi hän on vastannut projektin tietokannan suunnittelusta. 
 
-Esa Salminen on ohjelmistokehityksen opiskelija, jolla on aiempaa kokemusta C#:lla toteutetusta back-endistä töiden ja omien projektien kautta. Esa toimii projektin vetäjänä ja vastaa projektin yleisestä johtamisesta ja koordinoinnista. Lisäksi hän on vastannut rajapinnan käyttäjätesteistä, front-end testeistä, muutamasta kontrollerikomponentista sekä visualisaatio 4:stä.
+Esa Salminen on ohjelmistokehityksen opiskelija, jolla on aiempaa kokemusta C#:lla toteutetusta back-endistä töiden ja omien projektien kautta. Esa toimii projektin vetäjänä ja vastaa projektin yleisestä johtamisesta ja koordinoinnista. Lisäksi hän on vastannut rajapinnan käyttäjätesteistä, front-end testeistä, muutamasta kontrollerikomponentista sekä Visualisaatio 4:stä.
 
 ## Käyttöliittymän toteutus
 
