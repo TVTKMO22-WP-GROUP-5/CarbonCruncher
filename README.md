@@ -1,4 +1,4 @@
-# CarbonCruncher
+# CarbonCruncher – Climate Data Visualizations
 ## TVT22KMO Group 5 
 
 #### Github-tunnus/oikea nimi
