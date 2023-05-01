@@ -2,40 +2,12 @@ import React from "react"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Line } from "react-chartjs-2"
-import {
-  Chart as ChartJS,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js"
-import {
-  GET_VISU2_ICECORE_URL,
-  GET_VISU2_MONTHLY_URL,
-  GET_VISU2_ANNUAL_URL,
-  GET_VISU_INFO,
-} from "../utilities/Config"
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from "chart.js"
+import { GET_VISU2_ICECORE_URL, GET_VISU2_MONTHLY_URL, GET_VISU2_ANNUAL_URL, GET_VISU_INFO } from "../utilities/Config"
 import { Spinner } from "./Spinner/Spinner"
 import { VisuInfo } from "./VisuInfo/VisuInfo"
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend)
-
-/*
-
-x: {
-        ticks: {
-          // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-          callback: function(val, index) {
-            // Hide every 2nd tick label
-            return index % 2 === 0 ? this.getLabelForValue(val) : '';
-          },
-          color: 'red',
-        }
-
-*/
 
 const options = {
   spanGaps: true,
@@ -52,20 +24,8 @@ const options = {
         text: "Year",
       },
       ticks: {
-        // callback: function (value, index, ticks) {
-        //   console.log(value)
-        //   console.log(index)
-        //   console.log(ticks)
-        //   if (new Date(value).getFullYear % 100 === 0) return "$" + value
-        // },
         xmin: 1000,
         max: 2020,
-        // beginAtZero: true,
-        // maxTicksLimit: maxSize / stepSize + 1, // +1 for zero
-        // stepSize: stepSize,
-        // max: maxSize,
-        // xmin: 0,
-        // autoSkip: false,
       },
     },
     y: {
@@ -107,15 +67,9 @@ const Visu2 = () => {
       time: new Date(d.year, 0, 1),
       annualAvg: d.mean,
     }))
-    const iceCore1 = iceCoreData
-      .filter((d) => d.icecoreId === 1)
-      .map((d) => ({ time: new Date(d.year, 0, 1), co2Ppm: d.co2Ppm }))
-    const iceCore2 = iceCoreData
-      .filter((d) => d.icecoreId === 2)
-      .map((d) => ({ time: new Date(d.year, 0, 1), co2Ppm: d.co2Ppm }))
-    const iceCore3 = iceCoreData
-      .filter((d) => d.icecoreId === 3)
-      .map((d) => ({ time: new Date(d.year, 0, 1), co2Ppm: d.co2Ppm }))
+    const iceCore1 = iceCoreData.filter((d) => d.icecoreId === 1).map((d) => ({ time: new Date(d.year, 0, 1), co2Ppm: d.co2Ppm }))
+    const iceCore2 = iceCoreData.filter((d) => d.icecoreId === 2).map((d) => ({ time: new Date(d.year, 0, 1), co2Ppm: d.co2Ppm }))
+    const iceCore3 = iceCoreData.filter((d) => d.icecoreId === 3).map((d) => ({ time: new Date(d.year, 0, 1), co2Ppm: d.co2Ppm }))
 
     let datasets = []
 

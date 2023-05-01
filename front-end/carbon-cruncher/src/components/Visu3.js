@@ -2,59 +2,54 @@ import React from "react"
 import { useEffect, useState } from "react"
 import styles from "./Visu3.css"
 import { Spinner } from "./Spinner/Spinner"
-//lines 4-25 copy pasted from: https://react-chartjs-2.js.org/examples/multiaxis-line-chart/
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js"
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"
 import { Line } from "react-chartjs-2"
-//import faker from 'faker'; // not needed in this project
 import { GET_VISU3_GLOBAL_URL, GET_VISU3_EVENT_URL, GET_VISU_INFO } from "../utilities/Config"
 import { VisuInfo } from "./VisuInfo/VisuInfo"
 import axios from "axios"
-import { GenerateColorFromName } from "../utilities/Utilities"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const options = {
-  type: "line",
-  options: {
-    responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    stacked: false,
-    scales: {
-      "left-y-axis": {
-        type: "linear",
-        display: true,
-        position: "left",
+const config = {
+  responsive: true,
+  interaction: {
+    mode: "index",
+    intersect: false,
+  },
+  scales: {
+    x: {
+      type: "linear",
+      time: {
+        unit: "year",
       },
-      "right-y-axis": {
+      display: true,
+      title: {
+        display: true,
+        text: "Years ago",
+      },
+    },
+    y: {
+      display: true,
+      title: {
         type: "linear",
         display: true,
         position: "right",
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
+        text: "Temperature",
+      },
+    },
+    y1: {
+      display: true,
+      title: {
+        type: "linear",
+        display: true,
+        position: "left",
+        text: "Carbon",
       },
     },
   },
 }
 
-export const Visu3 = () => {
-  /*   const [globalData, setGlobalData] = useState ([]);
-    const [co2Data, setco2Data] = useState([]);
-    const [eventData, setEventData] = useState([]); */
+const Visu3 = () => {
   const [combinedData, setCombinedData] = useState(null)
 
   useEffect(() => {
@@ -62,47 +57,79 @@ export const Visu3 = () => {
       const dataRes = await axios.get(GET_VISU3_GLOBAL_URL)
       const dataRes2 = await axios.get(GET_VISU3_EVENT_URL)
       const infoRes = await axios.get(GET_VISU_INFO + "?visunumber=3")
-      parseData(dataRes.data, infoRes.data)
+      parseData(dataRes.data, dataRes2.data, infoRes.data)
     }
     getData()
   }, [])
 
-  const parseData = (chart, info) => {
-    // horizonal axis of chart
-    const labels = chart.map((d) => d["yearKbp"])
+  const parseData = (chart, chart2, info) => {
+    const globalData = chart.map((d) => ({
+      year: d.yearKbp * 1000,
+      tempChange: d.globalTempChange,
+      carbonChange: d.co2Ppm,
+    }))
+    const eventData = chart2.map((d) => ({
+      yearAgo: d.yearsAgo,
+      description: d.description,
+    }))
+    // const combinedData = globalData.map((d, i) => ({
+    //   ...d,
+    //   ...eventData[i],
+    //   yearCombined: d.year + eventData[i].yearAgo,
+    // }))
 
-    const globalData = {
-      label: "global Temperature Change",
-      data: chart.map((data) => data["globalTempChange"]),
-      yAxisID: "left-y-axis",
-      borderColor: "rgb(200, 0, 0)",
-      backgroundColor: "rgb(200, 0, 0, 0.5)",
-      pointRadius: 0,
-    }
+    // let datasets = []
 
-    const co2Data = {
-      label: "Carbon data",
-      data: chart.map((data) => data["co2Ppm"]),
-      yAxisID: "right-y-axis",
-      borderColor: "rgb(0, 100, 200)",
-      backgroundColor: "rgb(0, 100, 200, 0.5)",
-      pointRadius: 0,
-    }
+    // datasets.push({
+    //   label: "Temperature change",
+    //   data: combinedData,
+    //   borderColor: "rgb(200, 0, 0)",
+    //   backgroundColor: "rgb(200, 0, 0, 0.5)",
+    //   borderWidth: 3,
+    //   pointRadius: 0,
+    //   yAxisID: "y",
+    //   parsing: {
+    //     xAxisKey: "yearCombined",
+    //     yAxisKey: "tempChange",
+    //   },
+    // })
 
-    const eventData = {
-      label: "Events",
-      data: 280,
-    }
-    const datasets = [globalData, co2Data, eventData]
-    const combData = {
-      chart: {
-        labels,
-        datasets,
-      },
-      info: info,
-    }
+    // datasets.push({
+    //   label: "Carbon change",
+    //   data: combinedData,
+    //   borderColor: "rgb(0, 100, 200)",
+    //   backgroundColor: "rgb(0, 100, 200, 0.5)",
+    //   borderWidth: 3,
+    //   pointRadius: 0,
+    //   yAxisID: "y1",
+    //   parsing: {
+    //     xAxisKey: "yearCombined",
+    //     yAxisKey: "carbonChange",
+    //   },
+    // })
 
-    setCombinedData(combData)
+    // datasets.push({
+    //   label: "Events",
+    //   data: combinedData,
+    //   showLine: false,
+    //   borderColor: "rgb(255,140,0)",
+    //   backgroundColor: "rgb(255,140,0, 0.5)",
+    //   borderWidth: 3,
+    //   pointStyle: "triangle",
+    //   pointRadius: 10,
+    //   parsing: {
+    //     xAxisKey: "yearCombined",
+    //     yAxisKey: "description",
+    //   },
+    // })
+
+    // const resultData = {
+    //   chartData: {
+    //     datasets,
+    //   },
+    //   info: info,
+    // }
+    // setCombinedData(resultData)
   }
 
   if (!combinedData) {
@@ -121,7 +148,7 @@ export const Visu3 = () => {
           <VisuInfo info={i} />
         ))}
       </div>
-      <Line options={options} data={combinedData.chart}></Line>
+      <Line options={config} data={combinedData.chartData}></Line>
     </div>
   )
 }

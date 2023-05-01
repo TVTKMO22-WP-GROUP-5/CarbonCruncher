@@ -5,26 +5,25 @@ import { AuthContext } from "../components/AuthProvider"
 import { buttonAssets } from "../assets/Assets"
 import IconButton from "../components/IconButton/IconButton"
 import { imageAssets } from "../assets/Assets"
-import Visu1 from "../components/Visu1"
-import Visu2 from "../components/Visu2"
-import Visu3 from "../components/Visu3"
-import { Visu4 } from "../components/Visu4/Visu4"
+import { GetColumnGrid, VisuToConfigString, ConfigStringToVisu } from "../utilities/Utilities"
 import { FRONT_BASE_URL, VISUALIZATION_URL } from "../utilities/Config"
 
-const emptyView = {
-  urlHeader: null,
-  view: {
-    viewName: null,
-    columnCount: 1,
-    visus: [],
-  },
+const GetEmptyView = () => {
+  return {
+    urlHeader: null,
+    view: {
+      viewName: null,
+      columnCount: 1,
+      visus: [],
+    },
+  }
 }
 
 export const UserCustomView = () => {
   const [isEdit, setIsEdit] = useState(false)
-  const [reload, setReload] = useState(false) // change state to trigger user view reload
+  const [reload, setReload] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
-  const [currentView, setCurrentView] = useState(emptyView)
+  const [currentView, setCurrentView] = useState(GetEmptyView())
   const [userViews, setUserViews] = useState([])
   const { user, token } = React.useContext(AuthContext)
 
@@ -55,8 +54,13 @@ export const UserCustomView = () => {
           }
           loadedUserViews.push(loadedUserView)
         })
-        setUserViews(loadedUserViews)
-        setCurrentView(loadedUserViews[0])
+        if (loadedUserViews.length > 0) {
+          setUserViews(loadedUserViews)
+          setCurrentView(loadedUserViews[0])
+        } else {
+          setUserViews([])
+          setCurrentView(GetEmptyView())
+        }
       } catch (error) {
         console.log(error)
       }
@@ -66,62 +70,11 @@ export const UserCustomView = () => {
   }, [reload])
 
   /**
-   * Get visualization element with number
-   */
-  const GetVisuByNumber = (number) => {
-    switch (number) {
-      case 1:
-        return <Visu1 />
-      case 2:
-        return <Visu2 />
-      case 3:
-        return <Visu3 />
-      case 4:
-        return <Visu4 />
-      case 5:
-      default:
-        return null
-    }
-  }
-
-  /**
-   * Converts config string to component
-   * state which can be stored to usestate variable
-   * String format: "Temperature visualizations#1|1|2|3;CO2 visualizations#2|4|4|4|4|5;etc...
-   *                "NameOfTheVisualization#ColumnCount|Visunumber|Visunumber|Visunumber
-   */
-  const ConfigStringToVisu = (configString) => {
-    const viewName = configString.split("#")[0]
-    const columnCount = parseInt(configString.split("#")[1].split("|")[0])
-    const visus = configString
-      .split("#")[1]
-      .split("|")
-      .slice(1)
-      .map((v) => parseInt(v))
-    const view = {
-      viewName,
-      columnCount,
-      visus,
-    }
-    return view
-  }
-
-  /**
-   * Converts component state to config
-   * string which can be stored to database
-   */
-  const VisuToConfigString = (viewName, view) => {
-    console.log(view)
-    const returnString = `${viewName}#${view.columnCount}|${view.visus.join("|")};`
-    return returnString
-  }
-
-  /**
    * Handle create new view -click
    */
   const HandleCreateNew = () => {
     setIsEdit(true)
-    setCurrentView(emptyView)
+    setCurrentView(GetEmptyView())
   }
 
   /**
@@ -130,7 +83,13 @@ export const UserCustomView = () => {
   const HandleCancelChanges = () => {
     if (isEdit && !isSaved) {
       if (confirm(`You have unsaved edits in custom view. Confirm cancel with OK.`)) {
-        setCurrentView(userViews[0])
+        if (!userViews.length === 0) {
+          setCurrentView(userViews[0])
+          console.log("userviews[0] set")
+        } else {
+          setCurrentView(GetEmptyView())
+          console.log("emptyview set")
+        }
         setIsEdit(false)
       }
     }
@@ -147,33 +106,6 @@ export const UserCustomView = () => {
   }
 
   /**
-   * Get grid element with 1 or two columns
-   */
-  const GetColumnGrid = (view) => {
-    if (view.columnCount === 1) {
-      return (
-        <div className="viewArea" style={{ gridTemplateColumns: "100%" }}>
-          {view.visus.map((v, i) => (
-            <div className="viewItem" key={i}>
-              {GetVisuByNumber(v)}
-            </div>
-          ))}
-        </div>
-      )
-    } else if (view.columnCount === 2) {
-      return (
-        <div className="viewArea" style={{ gridTemplateColumns: "50% 50%" }}>
-          {view.visus.map((v, i) => (
-            <div className="viewItem" key={i}>
-              {GetVisuByNumber(v)}
-            </div>
-          ))}
-        </div>
-      )
-    } else return null
-  }
-
-  /**
    * Handle view save
    */
   const handleSaveCreatedView = async () => {
@@ -185,16 +117,21 @@ export const UserCustomView = () => {
 
     // Ask name for saved view
     let viewname
+    let nameOk = false
     do {
-      viewname = ""
-      viewname = prompt("Give name to your custom view")
-      if (viewname.length === 0) {
-        alert("Name can not be empty!")
+      viewname = prompt("Give viewname between 1-16 characters")
+      console.log(viewname)
+      if (viewname === null) {
+        alert("Saving canceled")
+        return
       }
-    } while (viewname.length <= 0)
+      if (viewname.length <= 0 || viewname.length > 16) {
+        alert("Name length does not match criteria")
+      } else nameOk = true
+    } while (!nameOk)
 
-    // Parse visu state to configstring and save it to the database
-    const databaseString = VisuToConfigString(viewname, currentView.view)
+    // Remove possible split characters from name and parse visu state to configstring and save it to the database.
+    const databaseString = VisuToConfigString(viewname.replace("#", "").replace("|", "").replace(";", ""), currentView.view)
     try {
       const config = {
         headers: {
@@ -204,9 +141,6 @@ export const UserCustomView = () => {
       }
       await axios.post(VISUALIZATION_URL, databaseString, config)
       setIsEdit(false)
-      //let newCurrentView = currentView.view
-      //newCurrentView.viewName = viewname
-      //setCurrentView({ ...currentView, view: newCurrentView })
       setReload(!reload)
     } catch (error) {
       console.log(error)
@@ -282,16 +216,16 @@ export const UserCustomView = () => {
             <IconButton buttonAsset={buttonAssets.btnNewCustView} onClick={HandleCreateNew} />
             {!isEdit
               ? userViews.map((v, i) => (
-                  <IconButton onClick={() => setCurrentView(userViews[i])} buttonAsset={{ ...buttonAssets.btnCustom, buttonText: v.view.viewName }} no={i + 1} />
+                  <IconButton onClick={() => setCurrentView(userViews[i])} buttonAsset={{ ...buttonAssets.btnCustom, buttonText: v.view.viewName }} no={i + 1} key={i} />
                 ))
               : null}
           </>
         )}
       </div>
       <div className="viewTitle">
-        {!currentView || !currentView.view.viewName ? (
+        {!currentView.view.viewName && isEdit ? (
           <h1>New view (unsaved)</h1>
-        ) : (
+        ) : !currentView.view.viewName && !isEdit ? null : (
           <>
             <img src={imageAssets.icon.clipboard} alt="clipboard" onClick={handleCopyUrlToClipboard} />
             <h1>{currentView.view.viewName}</h1>

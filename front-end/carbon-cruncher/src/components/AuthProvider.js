@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   const handleRegister = async ({ usernick, userpassword }) => {
     // If validation is succesful save token and navigate to first main screen
     try {
-      const response = await axios.post(REGISTER_USER_URL, {
+      await axios.post(REGISTER_USER_URL, {
         usernick,
         userpassword,
       })

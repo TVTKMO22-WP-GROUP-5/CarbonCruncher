@@ -11,15 +11,14 @@ import { LoginView } from "./views/LoginView"
 import { EmissionsView } from "./views/EmissionsView"
 import { UserCustomView } from "./views/UserCustomView"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { VisitorPage } from "./pages/VisitorPage"
+import { VisitorView } from "./views/VisitorView"
 
 function App() {
   const { token } = React.useContext(AuthContext)
   return (
     <Routes>
-      <Route
-        path="/"
-        element={token == null ? <Navigate to="/login" /> : <Navigate to="/tempco2" />}
-      />
+      <Route path="/" element={token == null ? <Navigate to="/login" /> : <Navigate to="/tempco2" />} />
       <Route path="/login" element={<LoginPage />}>
         <Route index element={<LoginView />} />
       </Route>
@@ -39,7 +38,9 @@ function App() {
           <Route index element={<UserCustomView />} />
         </Route>
       </Route>
-      <Route path=":stringId" element={<UserCustomView />} />
+      <Route path=":stringId" element={<VisitorPage />}>
+        <Route index element={<VisitorView />} />
+      </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
