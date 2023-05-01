@@ -83,51 +83,57 @@ const Visu3 = () => {
   }, [])
 
   const parseData = (chart, chart2, info) => {
-   
-    const globalData = chart.map((d) => ({      
-      year: -d.yearKbp*1000,
+
+    const globalData = chart.map((d) => ({
+      year: d.yearKbp * 1000,
       tempChange: d.globalTempChange,
       carbonChange: d.co2Ppm,
     }))
     const eventData = chart2.map((d) => ({
-      yearAgo: -d.yearsAgo,
+      yearAgo: d.yearsAgo,
       description: d.description,
     }))
-    //const yearLabels = globalData.map((d) => d.year).concat(eventData.map((d) => d.yearAgo))
+    const combinedData = globalData.map((d, i) => ({
+      ...d,
+      ...eventData[i],
+      yearCombined: (d.year + eventData[i].yearAgo),
+    }))
+   
+  
 
       let datasets = []
 
       datasets.push({
         label: "Temperature change",
-        data: globalData,
+        data: combinedData,
         borderColor: "rgb(200, 0, 0)",
         backgroundColor: "rgb(200, 0, 0, 0.5)",
         borderWidth: 3,
         pointRadius: 0,
         yAxisID: 'y',
         parsing: {
-          xAxisKey: "year",
+          xAxisKey: "yearCombined",
           yAxisKey: "tempChange",
         },
       })
   
       datasets.push({
         label: "Carbon change",
-        data: globalData,
+        data: combinedData,
         borderColor: "rgb(0, 100, 200)",
         backgroundColor: "rgb(0, 100, 200, 0.5)",
         borderWidth: 3,
         pointRadius: 0,
         yAxisID: 'y1',
         parsing: {
-          xAxisKey: "year",
+          xAxisKey: "yearCombined",
           yAxisKey: "carbonChange",
         },
       })
   
         datasets.push({
         label: "Events",
-        data: eventData,
+        data: combinedData,
         showLine:false,
         borderColor: "rgb(255,140,0)",
         backgroundColor: "rgb(255,140,0, 0.5)",
@@ -135,7 +141,7 @@ const Visu3 = () => {
         pointStyle: 'triangle',
         pointRadius: 10,
         parsing: {
-          xAxisKey: "yearAgo",
+          xAxisKey: "yearCombined",
           yAxisKey: "description",
         },
       })  
