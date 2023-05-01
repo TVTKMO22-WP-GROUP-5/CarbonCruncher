@@ -10,11 +10,20 @@ import axios from "axios"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
+const TooltipTitle = (item) => {}
+
 const config = {
   responsive: true,
   interaction: {
-    mode: "index",
+    mode: "point",
     intersect: false,
+  },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        title: (e) => console.log(e),
+      },
+    },
   },
   scales: {
     x: {
@@ -25,25 +34,41 @@ const config = {
       display: true,
       title: {
         display: true,
-        text: "Years ago",
+        text: "Year",
+      },
+      min: -2000000,
+      max: 100000,
+      ticks: {
+        callback: function (value, index, ticks) {
+          const year = parseFloat(value)
+          if (year < 0) {
+            return `${Math.abs(year).toLocaleString()} BC`
+          } else if (year > 0) {
+            return `${year.toLocaleString()} AD`
+          } else return year
+        },
+        //stepSize: 100000,
       },
     },
     y: {
       display: true,
+      position: "right",
       title: {
         type: "linear",
         display: true,
-        position: "right",
-        text: "Temperature",
+        text: "Temperature [°C]",
+      },
+      grid: {
+        drawOnChartArea: false,
       },
     },
-    y1: {
+    yCarbon: {
       display: true,
+      position: "left",
       title: {
         type: "linear",
         display: true,
-        position: "left",
-        text: "Carbon",
+        text: "CO2 [ppm] ",
       },
     },
   },
@@ -64,72 +89,69 @@ const Visu3 = () => {
 
   const parseData = (chart, chart2, info) => {
     const globalData = chart.map((d) => ({
-      year: d.yearKbp * 1000,
+      year: 2023 - d.yearKbp * 1000,
       tempChange: d.globalTempChange,
       carbonChange: d.co2Ppm,
     }))
     const eventData = chart2.map((d) => ({
-      yearAgo: d.yearsAgo,
+      year: 2023 - d.yearsAgo,
+      value: 280,
       description: d.description,
     }))
-    // const combinedData = globalData.map((d, i) => ({
-    //   ...d,
-    //   ...eventData[i],
-    //   yearCombined: d.year + eventData[i].yearAgo,
-    // }))
 
-    // let datasets = []
+    let datasets = []
 
-    // datasets.push({
-    //   label: "Temperature change",
-    //   data: combinedData,
-    //   borderColor: "rgb(200, 0, 0)",
-    //   backgroundColor: "rgb(200, 0, 0, 0.5)",
-    //   borderWidth: 3,
-    //   pointRadius: 0,
-    //   yAxisID: "y",
-    //   parsing: {
-    //     xAxisKey: "yearCombined",
-    //     yAxisKey: "tempChange",
-    //   },
-    // })
+    datasets.push({
+      label: "Temperature change",
+      data: globalData,
+      borderColor: "rgb(200, 0, 0)",
+      backgroundColor: "rgb(200, 0, 0, 0.5)",
+      borderWidth: 1,
+      pointRadius: 0,
+      yAxisID: "y",
+      parsing: {
+        xAxisKey: "year",
+        yAxisKey: "tempChange",
+      },
+    })
 
-    // datasets.push({
-    //   label: "Carbon change",
-    //   data: combinedData,
-    //   borderColor: "rgb(0, 100, 200)",
-    //   backgroundColor: "rgb(0, 100, 200, 0.5)",
-    //   borderWidth: 3,
-    //   pointRadius: 0,
-    //   yAxisID: "y1",
-    //   parsing: {
-    //     xAxisKey: "yearCombined",
-    //     yAxisKey: "carbonChange",
-    //   },
-    // })
+    datasets.push({
+      label: "Carbon change",
+      data: globalData,
+      borderColor: "rgb(0, 100, 200)",
+      backgroundColor: "rgb(0, 100, 200, 0.5)",
+      borderWidth: 1,
+      pointRadius: 0,
+      yAxisID: "yCarbon",
+      parsing: {
+        xAxisKey: "year",
+        yAxisKey: "carbonChange",
+      },
+    })
 
-    // datasets.push({
-    //   label: "Events",
-    //   data: combinedData,
-    //   showLine: false,
-    //   borderColor: "rgb(255,140,0)",
-    //   backgroundColor: "rgb(255,140,0, 0.5)",
-    //   borderWidth: 3,
-    //   pointStyle: "triangle",
-    //   pointRadius: 10,
-    //   parsing: {
-    //     xAxisKey: "yearCombined",
-    //     yAxisKey: "description",
-    //   },
-    // })
+    datasets.push({
+      label: "Events",
+      data: eventData,
+      showLine: false,
+      borderColor: "rgb(255,140,0)",
+      backgroundColor: "rgb(255,140,0, 0.5)",
+      borderWidth: 3,
+      pointStyle: "triangle",
+      pointRadius: 10,
+      yAxisID: "yCarbon",
+      parsing: {
+        xAxisKey: "year",
+        yAxisKey: "value",
+      },
+    })
 
-    // const resultData = {
-    //   chartData: {
-    //     datasets,
-    //   },
-    //   info: info,
-    // }
-    // setCombinedData(resultData)
+    const resultData = {
+      chartData: {
+        datasets,
+      },
+      info: info,
+    }
+    setCombinedData(resultData)
   }
 
   if (!combinedData) {
@@ -144,8 +166,8 @@ const Visu3 = () => {
   return (
     <div className={styles.container}>
       <div className={styles.info}>
-        {combinedData.info.map((i) => (
-          <VisuInfo info={i} />
+        {combinedData.info.map((i, index) => (
+          <VisuInfo info={i} key={index} />
         ))}
       </div>
       <Line options={config} data={combinedData.chartData}></Line>

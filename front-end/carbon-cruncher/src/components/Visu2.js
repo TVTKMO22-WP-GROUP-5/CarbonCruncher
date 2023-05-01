@@ -23,10 +23,6 @@ const options = {
         display: true,
         text: "Year",
       },
-      ticks: {
-        xmin: 1000,
-        max: 2020,
-      },
     },
     y: {
       display: true,

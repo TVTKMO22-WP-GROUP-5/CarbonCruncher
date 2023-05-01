@@ -25,7 +25,7 @@ export const UserCustomView = () => {
   const [isSaved, setIsSaved] = useState(false)
   const [currentView, setCurrentView] = useState(GetEmptyView())
   const [userViews, setUserViews] = useState([])
-  const { user, token } = React.useContext(AuthContext)
+  const { token } = React.useContext(AuthContext)
 
   // Load users saved visualizations and place the to the state
   useEffect(() => {
@@ -38,7 +38,7 @@ export const UserCustomView = () => {
         },
       }
 
-      // Get users saved views and parse the in the state
+      // Get users saved views and parse them in the state
       try {
         const res = await axios.get(VISUALIZATION_URL, config)
         if (res.data === 0) {
@@ -85,10 +85,8 @@ export const UserCustomView = () => {
       if (confirm(`You have unsaved edits in custom view. Confirm cancel with OK.`)) {
         if (!userViews.length === 0) {
           setCurrentView(userViews[0])
-          console.log("userviews[0] set")
         } else {
           setCurrentView(GetEmptyView())
-          console.log("emptyview set")
         }
         setIsEdit(false)
       }
@@ -116,11 +114,10 @@ export const UserCustomView = () => {
     }
 
     // Ask name for saved view
-    let viewname
+    let viewname = ""
     let nameOk = false
     do {
       viewname = prompt("Give viewname between 1-16 characters")
-      console.log(viewname)
       if (viewname === null) {
         alert("Saving canceled")
         return
@@ -156,6 +153,9 @@ export const UserCustomView = () => {
     setCurrentView({ ...currentView, view: newCurrentView })
   }
 
+  /**
+   * Handle view delete
+   */
   const handleViewDelete = async () => {
     if (!confirm(`Are you sure that you want to delete this view? Press OK to confirm.`)) {
       return
@@ -178,8 +178,10 @@ export const UserCustomView = () => {
     }
   }
 
+  /**
+   * Handle copying the view url to user clipboard
+   */
   const handleCopyUrlToClipboard = () => {
-    //onClick={() => {navigator.clipboard.writeText(this.state.textToCopy)}}
     navigator.clipboard.writeText(FRONT_BASE_URL + "/" + currentView.urlHeader)
     alert("View URL copied to clipboard")
   }
