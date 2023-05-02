@@ -10,21 +10,19 @@ import axios from "axios"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const TooltipTitle = (item) => {}
-
 const config = {
   responsive: true,
   interaction: {
     mode: "point",
     intersect: false,
   },
-  plugins: {
-    tooltip: {
-      callbacks: {
-        title: (e) => console.log(e),
-      },
-    },
-  },
+  // plugins: {
+  //   tooltip: {
+  //     callbacks: {
+  //       title: (e) => console.log(e),
+  //     },
+  //   },
+  // },
   scales: {
     x: {
       type: "linear",
