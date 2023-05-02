@@ -83,7 +83,7 @@ export const UserCustomView = () => {
   const HandleCancelChanges = () => {
     if (isEdit && !isSaved) {
       if (confirm(`You have unsaved edits in custom view. Confirm cancel with OK.`)) {
-        if (!userViews.length === 0) {
+        if (userViews.length > 0) {
           setCurrentView(userViews[0])
         } else {
           setCurrentView(GetEmptyView())
