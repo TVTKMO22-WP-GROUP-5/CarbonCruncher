@@ -28,11 +28,31 @@ ChartJS.register(
   Legend
 );
 
+const footer = (tooltipItems) => {
+  if (!tooltipItems || tooltipItems.length === 0) {
+    return [];
+  }
+  let text = [];
+  tooltipItems.forEach((item) => {
+    if (item.payload && item.payload.description) {
+      text.push(item.payload.description);
+    }
+  });
+  return text;
+};
+
  const config = {
   responsive: true,
   interaction: {
     mode: 'index',
     intersect: false,
+  },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        footer: footer,
+      }
+    }
   },
   scales: {
     x: {
@@ -43,24 +63,38 @@ ChartJS.register(
       display: true,
       title: {
         display: true,
-        text: "Years ago",
+        text: "Year",
+      },
+      min: -2000000,
+      max: 100000,
+      ticks:{
+        callback: function (value){
+          const year = parseFloat(value)
+          if (year < 0){
+            return `${Math.abs(year).toLocaleString()} BC`
+          }
+          else if(year > 0){
+            return `${year.toLocaleString()} AD`
+          }
+          else {
+            return year
+          }
+        },
       },
     },
     y: {
       display: true,
+      position: "right",
       title: {
-        type: "linear",
         display: true,
-        position: "right",
         text: 'Temperature'
       },
     },
     y1: {
       display: true,
+      position: "left",
       title: {
-        type: "linear",
         display: true,
-        position: "left",
         text: 'Carbon',
       },
     },
@@ -68,6 +102,10 @@ ChartJS.register(
 } 
 
 
+
+/* const footer = (tooltipItems) => {
+  return `Description: ${tooltipItems[0].raw.description}`;
+}; */
 
 const Visu3 = () => {
   const [combinedData, setCombinedData] = useState(null)
@@ -85,64 +123,65 @@ const Visu3 = () => {
   const parseData = (chart, chart2, info) => {
 
     const globalData = chart.map((d) => ({
-      year: d.yearKbp * 1000,
+      globalYear: -d.yearKbp * 1000,
       tempChange: d.globalTempChange,
       carbonChange: d.co2Ppm,
     }))
     const eventData = chart2.map((d) => ({
-      yearAgo: d.yearsAgo,
+      yearAgo: -d.yearsAgo,
       description: d.description,
     }))
-    const combinedData = globalData.map((d, i) => ({
+/*     const combinedDataSet = globalData.map((d, i) => ({
       ...d,
       ...eventData[i],
-      yearCombined: (d.year + eventData[i].yearAgo),
-    }))
+      yearCombined: d.globalYear.toString().concat(eventData[i].yearAgo.toString()),
+    })); */
    
-  
-
       let datasets = []
 
       datasets.push({
         label: "Temperature change",
-        data: combinedData,
+        data: globalData,
         borderColor: "rgb(200, 0, 0)",
         backgroundColor: "rgb(200, 0, 0, 0.5)",
         borderWidth: 3,
         pointRadius: 0,
         yAxisID: 'y',
         parsing: {
-          xAxisKey: "yearCombined",
+          xAxisKey: "globalYear",
           yAxisKey: "tempChange",
         },
       })
   
       datasets.push({
         label: "Carbon change",
-        data: combinedData,
+        data: globalData,
         borderColor: "rgb(0, 100, 200)",
         backgroundColor: "rgb(0, 100, 200, 0.5)",
         borderWidth: 3,
         pointRadius: 0,
         yAxisID: 'y1',
         parsing: {
-          xAxisKey: "yearCombined",
+          xAxisKey: "globalYear",
           yAxisKey: "carbonChange",
         },
       })
   
         datasets.push({
         label: "Events",
-        data: combinedData,
-        showLine:false,
+        data: eventData,
+        //showLine:false,
         borderColor: "rgb(255,140,0)",
         backgroundColor: "rgb(255,140,0, 0.5)",
         borderWidth: 3,
         pointStyle: 'triangle',
         pointRadius: 10,
         parsing: {
-          xAxisKey: "yearCombined",
+          xAxisKey: "globalYear",
           yAxisKey: "description",
+        },
+        tooltip: {
+          footer: footer,
         },
       })  
     
@@ -154,7 +193,6 @@ const Visu3 = () => {
     }
     setCombinedData(resultData)
   }
-
 
   if (!combinedData) {
     return (
