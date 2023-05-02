@@ -64,7 +64,7 @@ export const Visu5 = () => {
         let datasets = []
 
         datasets.push({
-            //label: labels,
+            label: chart.map((data) => data.visu5Co2subs.sSectorName),
             data: chart.map((data) => data.emissionsSharePer),
             backgroundColor: [
                 'rgb(255, 200, 80)',
@@ -105,8 +105,13 @@ export const Visu5 = () => {
     };
 
     const handleClick = (event) => {
-        console.log(getElementAtEvent(chartRef.current, event));
-      }
+        const element = getElementAtEvent(chartRef.current, event);
+        if (element.length > 0) {
+            const datasetIndex = element[0].datasetIndex;
+            const label = sectorData.chart.datasets[datasetIndex].label;
+            console.log(label);
+        }
+    }
     
 
     if (!sectorData) {
