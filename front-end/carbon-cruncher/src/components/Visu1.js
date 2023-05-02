@@ -6,6 +6,8 @@ import Chart from "chart.js/auto"
 import { GET_VISU1_ANNUAL_URL, GET_VISU1_MONTHLY_URL, GET_VISU_INFO } from "../utilities/Config"
 import { VisuInfo } from "../components/VisuInfo/VisuInfo"
 import * as dateAdapter from "chartjs-adapter-date-fns"
+import { AddPaddingZeroesToYear } from "../utilities/Utilities"
+import { Spinner } from "./Spinner/Spinner"
 //register date adapter
 Chart.register(dateAdapter)
 
@@ -17,30 +19,35 @@ const Visu1 = () => {
   const [timePeriod, setTimePeriod] = useState("annual")
   //fetch data from the backend
   const fetchData = async (period) => {
-    const response = await fetch(
-      period === "monthly" ? GET_VISU1_MONTHLY_URL : GET_VISU1_ANNUAL_URL
-    )
+    const response = await fetch(period === "monthly" ? GET_VISU1_MONTHLY_URL : GET_VISU1_ANNUAL_URL)
     const responseData = await response.json()
     const parsedData = {
-      global: responseData.map((item) => ({
-        x: new Date(period === "monthly" ? item.timeYearMonth : `${item.timeYear}-01-01`),
-        y: item.anomalyGlobal,
-      })),
-      northernHemisphere: responseData.map((item) => ({
-        x: new Date(period === "monthly" ? item.timeYearMonth : `${item.timeYear}-01-01`),
-        y: item.anomalyNorthern,
-      })),
-      southernHemisphere: responseData.map((item) => ({
-        x: new Date(period === "monthly" ? item.timeYearMonth : `${item.timeYear}-01-01`),
-        y: item.anomalySouthern,
-      })),
+      global: responseData
+        .filter((item) => item.anomalyGlobal !== null)
+        .map((item) => ({
+          x: new Date(timePeriod === "monthly" ? item.timeYearMonth : `${AddPaddingZeroesToYear(item.timeYear)}-01-01`),
+          y: item.anomalyGlobal,
+        })),
+      northernHemisphere: responseData
+        .filter((item) => item.anomalyNorthern !== null)
+        .map((item) => ({
+          x: new Date(timePeriod === "monthly" ? item.timeYearMonth : `${AddPaddingZeroesToYear(item.timeYear)}-01-01`),
+          y: item.anomalyNorthern,
+        })),
+      southernHemisphere: responseData
+        .filter((item) => item.anomalySouthern !== null)
+        .map((item) => ({
+          x: new Date(timePeriod === "monthly" ? item.timeYearMonth : `${AddPaddingZeroesToYear(item.timeYear)}-01-01`),
+          y: item.anomalySouthern,
+        })),
       reconstruction: responseData
         .filter((item) => item.tempReconstruction !== null)
         .map((item) => ({
-          x: new Date(period === "monthly" ? item.timeYearMonth : `${item.timeYear}-01-01`),
+          x: new Date(timePeriod === "monthly" ? item.timeYearMonth : `${AddPaddingZeroesToYear(item.timeYear)}-01-01`),
           y: item.tempReconstruction,
         })),
     }
+
     //set the data based on the time period
     if (period === "monthly") {
       setMonthlyData(parsedData)
@@ -57,6 +64,7 @@ const Visu1 = () => {
     }
     getInfo()
     fetchData(timePeriod)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timePeriod])
   // handle change function
   const handleChange = (event) => {
@@ -117,27 +125,27 @@ const Visu1 = () => {
     //make the chart responsive
     responsive: true,
     //do not maintain aspect ratio
-    maintainAspectRatio: false,
+    //maintainAspectRatio: false,
     scales: {
       x: {
-        type: 'time',
+        type: "time",
         time: {
-          unit: 'year',
+          unit: "year",
         },
         title: {
           display: true,
-          text: 'Years',
+          text: "Year",
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Temperature Anomaly (°C)',
+          text: "Temperature Anomaly [°C]",
         },
       },
     },
-  };
-  
+  }
+
   //return the component with the data and options defined above
   return (
     <div>
@@ -147,16 +155,16 @@ const Visu1 = () => {
         ))}
       </div>
       <div className="visu-controls">
-        <input type="radio" id="monthly" name="timePeriod" value="monthly" checked={timePeriod === 'monthly'} onChange={handleChange} />
+        <input type="radio" id="monthly" name="timePeriod" value="monthly" checked={timePeriod === "monthly"} onChange={handleChange} />
         <label htmlFor="monthly">Monthly</label>
-        <input type="radio" id="annual" name="timePeriod" value="annual" checked={timePeriod === 'annual'} onChange={handleChange} />
+        <input type="radio" id="annual" name="timePeriod" value="annual" checked={timePeriod === "annual"} onChange={handleChange} />
         <label htmlFor="annual">Annual</label>
       </div>
-      <div className="visu-chart" style={{ width: '100%', height: '400px' }}>
-        {(timePeriod === 'monthly' ? monthlyData : annualData) ? <Line data={chartData} options={chartOptions} /> : <p>Loading data...</p>}
+      <div className="visu-chart">
+        {(timePeriod === "monthly" ? monthlyData : annualData) ? <Line data={chartData} options={chartOptions} /> : <Spinner msg={"Loading data..."} />}
       </div>
     </div>
-  );
-        }
+  )
+}
 //export the component
 export default Visu1

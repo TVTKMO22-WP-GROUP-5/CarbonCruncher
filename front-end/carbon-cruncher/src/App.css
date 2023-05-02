@@ -242,7 +242,6 @@ body {
   overflow-y: auto;
 }
 
-
 .mainPage > img,
 .visitorPage > img {
   /*Positioning stuff*/
@@ -330,8 +329,10 @@ body {
 }
 
 .viewTitle {
+  /*Display stuff*/
   display: flex;
   justify-content: center;
+  /*Miscellaneous*/
   gap: 20px;
 }
 /*#endregion*/
@@ -341,7 +342,8 @@ body {
 @media only screen and (max-width: 1200px) {
   .userCustomView,
   .tempCo2View,
-  .emissionView {
+  .emissionView,
+  .visitorView {
     width: 100%;
   }
 

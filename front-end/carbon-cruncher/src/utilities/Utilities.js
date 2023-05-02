@@ -109,3 +109,11 @@ export const VisuToConfigString = (viewName, view) => {
   const returnString = `${viewName}#${view.columnCount}|${view.visus.join("|")};`
   return returnString
 }
+
+export const AddPaddingZeroesToYear = (year) => {
+  let stringyear = `${year}`
+  while (stringyear.length < 4) {
+    stringyear = "0" + stringyear
+  }
+  return stringyear
+}

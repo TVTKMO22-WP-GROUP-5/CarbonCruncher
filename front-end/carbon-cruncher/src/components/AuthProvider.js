@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
   const [token, setToken] = React.useState(jwtFromStorage)
   const [user, setUser] = useState(jwtFromStorage === null ? null : jwtDecode(jwtFromStorage)[NAME_CLAIM])
+
   /**
    * User login method
    * @param {string} usernick
