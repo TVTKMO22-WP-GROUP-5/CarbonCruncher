@@ -110,10 +110,26 @@ export const VisuToConfigString = (viewName, view) => {
   return returnString
 }
 
+/**
+ * Add fill zeros to year reading so that the length is 4 charachters
+ * Example (4) => "0004", (12) => "0012"
+ */
 export const AddPaddingZeroesToYear = (year) => {
   let stringyear = `${year}`
   while (stringyear.length < 4) {
     stringyear = "0" + stringyear
   }
   return stringyear
+}
+
+/**
+ * Format year number with BC when negative year and AD when positive year
+ */
+export const FormatYearsAgoLabel = (yearsAgo) => {
+  const year = parseFloat(yearsAgo)
+  if (year < 0) {
+    return `${Math.abs(year).toLocaleString()} BC`
+  } else if (year > 0) {
+    return `${year.toLocaleString()} AD`
+  } else return year
 }

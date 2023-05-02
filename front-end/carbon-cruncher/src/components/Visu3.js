@@ -1,6 +1,7 @@
 import React from "react"
 import { useEffect, useState } from "react"
 import styles from "./Visu3.css"
+import { FormatYearsAgoLabel } from "../utilities/Utilities"
 import { Spinner } from "./Spinner/Spinner"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"
 import { Line } from "react-chartjs-2"
@@ -13,16 +14,21 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const config = {
   responsive: true,
   interaction: {
-    mode: "point",
-    intersect: false,
+    mode: "nearest",
+    intersect: true,
   },
-  // plugins: {
-  //   tooltip: {
-  //     callbacks: {
-  //       title: (e) => console.log(e),
-  //     },
-  //   },
-  // },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        title: (i) => `${i[0].dataset.label}, Year: ${FormatYearsAgoLabel(i[0].parsed.x)}`,
+        label: (i) => {
+          if (i.datasetIndex === 0) return `  ${i.raw.tempChange.toFixed(2)} [°C]`
+          if (i.datasetIndex === 1) return `  ${i.raw.carbonChange.toFixed(0)} [ppm]`
+          if (i.datasetIndex === 2) return `  ${i.raw.description}`
+        },
+      },
+    },
+  },
   scales: {
     x: {
       type: "linear",
@@ -38,12 +44,7 @@ const config = {
       max: 100000,
       ticks: {
         callback: function (value, index, ticks) {
-          const year = parseFloat(value)
-          if (year < 0) {
-            return `${Math.abs(year).toLocaleString()} BC`
-          } else if (year > 0) {
-            return `${year.toLocaleString()} AD`
-          } else return year
+          return FormatYearsAgoLabel(value)
         },
         //stepSize: 100000,
       },

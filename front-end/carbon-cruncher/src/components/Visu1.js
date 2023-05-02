@@ -124,8 +124,6 @@ const Visu1 = () => {
   const chartOptions = {
     //make the chart responsive
     responsive: true,
-    //do not maintain aspect ratio
-    //maintainAspectRatio: false,
     scales: {
       x: {
         type: "time",
