@@ -1,10 +1,13 @@
 import React from "react"
 import styles from "./VisuInfo.module.css"
 
+/**
+ * Visuinfo shows visualization related description and links
+ */
 export const VisuInfo = ({ info }) => {
   return (
     <div className={styles.container}>
-      <h1>{info.title}</h1>
+      <h1 className={styles.title}>{info.title}</h1>
       {!info.descriptionText ? <></> : <p>{info.descriptionText}</p>}
       <div className={styles.links}>
         {!info.dataLink ? (

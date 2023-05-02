@@ -30,9 +30,7 @@ export const RegisterView = () => {
     } catch (error) {
       switch (error.response.status) {
         case 400:
-          alert(
-            `Error: Credentials break validation rules. Please read the username and password info.`
-          )
+          alert(`Error: Credentials break validation rules. Please read the username and password info.`)
           break
         case 409:
           alert(`Error: Username already exists. Please pick another one.`)
@@ -51,19 +49,13 @@ export const RegisterView = () => {
         <span className="tooltipText">
           A username and a password must be 3-20 characters long.
           <br />
-          <br /> A password must include an upper- and a lowercase letter, a number and a special
-          character.
+          <br /> A password must include an upper- and a lowercase letter, a number and a special character.
         </span>
       </div>
       <form onSubmit={handleSubmit} className="registerForm">
         <input type="text" name="usernick" placeholder="Username" id="registerUserName" />
         <input type="password" name="userpassword" placeholder="Password" id="registerPassword" />
-        <input
-          type="password"
-          name="userpasswordconfirm"
-          placeholder="Confirm Password"
-          id="registerConfirmPassword"
-        />
+        <input type="password" name="userpasswordconfirm" placeholder="Confirm Password" id="registerConfirmPassword" />
         {loading ? (
           <Spinner />
         ) : (

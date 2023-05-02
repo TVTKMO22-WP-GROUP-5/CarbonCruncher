@@ -1,152 +1,178 @@
-import React from "react";
-import { useEffect, useState } from "react";
-//lines 4-25 copy pasted from: https://react-chartjs-2.js.org/examples/multiaxis-line-chart/
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-  } from 'chart.js';
-  import { Line } from 'react-chartjs-2';
-  //import faker from 'faker'; // not needed in this project
+import React from "react"
+import { useEffect, useState } from "react"
+import styles from "./Visu3.css"
+import { Spinner } from "./Spinner/Spinner"
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"
+import { Line } from "react-chartjs-2"
+import { GET_VISU3_GLOBAL_URL, GET_VISU3_EVENT_URL, GET_VISU_INFO } from "../utilities/Config"
+import { VisuInfo } from "./VisuInfo/VisuInfo"
+import axios from "axios"
 
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-  );
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+
+const TooltipTitle = (item) => {}
 
 const config = {
-    type: 'line',
-    options: {
-        responsive: true,
-        interaction: {
-          mode: 'index',
-          intersect: false,
-        },
-        stacked: false,
-        scales: {
-          'left-y-axis': {
-            type: 'linear',
-            display: true,
-            position: 'left',
-          },
-          'right-y-axis': {
-            type: 'linear',
-            display: true,
-            position: 'right',
-    
-            // grid line settings
-            grid: {
-              drawOnChartArea: false, // only want the grid lines for one axis to show up
-            },
-          },
-        }
+  responsive: true,
+  interaction: {
+    mode: "point",
+    intersect: false,
+  },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        title: (e) => console.log(e),
       },
-    
+    },
+  },
+  scales: {
+    x: {
+      type: "linear",
+      time: {
+        unit: "year",
+      },
+      display: true,
+      title: {
+        display: true,
+        text: "Year",
+      },
+      min: -2000000,
+      max: 100000,
+      ticks: {
+        callback: function (value, index, ticks) {
+          const year = parseFloat(value)
+          if (year < 0) {
+            return `${Math.abs(year).toLocaleString()} BC`
+          } else if (year > 0) {
+            return `${year.toLocaleString()} AD`
+          } else return year
+        },
+        //stepSize: 100000,
+      },
+    },
+    y: {
+      display: true,
+      position: "right",
+      title: {
+        type: "linear",
+        display: true,
+        text: "Temperature [°C]",
+      },
+      grid: {
+        drawOnChartArea: false,
+      },
+    },
+    yCarbon: {
+      display: true,
+      position: "left",
+      title: {
+        type: "linear",
+        display: true,
+        text: "CO2 [ppm] ",
+      },
+    },
+  },
 }
-// horizonal axis of chart
-const yearLabels = Array.from(Array(2000+1).keys()).slice(1);
 
-export const Visu3_chart = () => {
-    const [tempData, setTempData] = useState({
-        datasets: [
-     
-/*              {
-                label: "Temperature change",
-                data: [], 
-                yAxisID: 'left-y-axis'
-            },
-    
-             {
-                label: "CO2 change",
-                data: [],
-                yAxisID: 'right-y-axis'
-            }, 
-    
-             {
-                label: "Events",
-                data: [],
-            },   */
-    
-             
-        ]
-    });
-    useEffect(() => {
-        const fetchData=async()=> {
-            const url_1 = "https://carbon-cruncher.azurewebsites.net/api/visu3/global";
-            //const url_2 = "https://carbon-cruncher.azurewebsites.net/api/visu3/event";
-            const dataSet1 = [];
-            const dataSet2 = [];
-            const dataSet3 = [];
-        await fetch(url_1).then((tempData)=> {
-            console.log("data", tempData)
-            const res = tempData.json();
-            return res
-        }).then((res)=> {
-            console.log("result",res)
-            for (const val of res){
-                dataSet1.push(val.globalTempChange);
-                dataSet2.push(val.co2Ppm);
-               // dataSet3.push(val.yearsAgo);
-        }
+const Visu3 = () => {
+  const [combinedData, setCombinedData] = useState(null)
 
-        
-        setTempData ({
-            labels: yearLabels,   
-            datasets: [           
-                {
-                    type: 'line',
-                    label: "Temperature change",
-                    data:dataSet1,
-                    borderColor: "rgb(200, 0, 0)",
-                    backgroundColor: "rgb(200, 0, 0, 0.5)",
-                    pointRadius: 0,
-                    yAxisID:'left-y-axis',
-                    
-                },     
-                 {
-                    type: 'line',
-                    label: "co2 change",
-                    data:dataSet2,
-                    borderColor: "rgb(0, 100, 200)",
-                    backgroundColor: "rgb(0, 100, 200, 0.5)",
-                    pointRadius: 0,
-                    yAxisID:'right-y-axis',
-                },  
-                {
-                    type: 'line',
-                    label: "Events",
-                    data:dataSet3,
-                    borderColor: "rgb(255, 165, 0)",
-                    backgroundColor: "rgb(255, 165, 0, 0.5)",
-                    pointRadius: 0,
-                    showLine:false,
-                    //yAxisID:'right-y-axis',
-                },      
-            ]
-        })
-        console.log("testData", dataSet1)
-        }).catch(e => {
-            console.log("error", e)
-        })  
-        }
-        fetchData();
-    },[])
+  useEffect(() => {
+    const getData = async () => {
+      const dataRes = await axios.get(GET_VISU3_GLOBAL_URL)
+      const dataRes2 = await axios.get(GET_VISU3_EVENT_URL)
+      const infoRes = await axios.get(GET_VISU_INFO + "?visunumber=3")
+      parseData(dataRes.data, dataRes2.data, infoRes.data)
+    }
+    getData()
+  }, [])
 
+  const parseData = (chart, chart2, info) => {
+    const globalData = chart.map((d) => ({
+      year: 2023 - d.yearKbp * 1000,
+      tempChange: d.globalTempChange,
+      carbonChange: d.co2Ppm,
+    }))
+    const eventData = chart2.map((d) => ({
+      year: 2023 - d.yearsAgo,
+      value: 280,
+      description: d.description,
+    }))
+
+    let datasets = []
+
+    datasets.push({
+      label: "Temperature change",
+      data: globalData,
+      borderColor: "rgb(200, 0, 0)",
+      backgroundColor: "rgb(200, 0, 0, 0.5)",
+      borderWidth: 1,
+      pointRadius: 0,
+      yAxisID: "y",
+      parsing: {
+        xAxisKey: "year",
+        yAxisKey: "tempChange",
+      },
+    })
+
+    datasets.push({
+      label: "Carbon change",
+      data: globalData,
+      borderColor: "rgb(0, 100, 200)",
+      backgroundColor: "rgb(0, 100, 200, 0.5)",
+      borderWidth: 1,
+      pointRadius: 0,
+      yAxisID: "yCarbon",
+      parsing: {
+        xAxisKey: "year",
+        yAxisKey: "carbonChange",
+      },
+    })
+
+    datasets.push({
+      label: "Events",
+      data: eventData,
+      showLine: false,
+      borderColor: "rgb(255,140,0)",
+      backgroundColor: "rgb(255,140,0, 0.5)",
+      borderWidth: 3,
+      pointStyle: "triangle",
+      pointRadius: 10,
+      yAxisID: "yCarbon",
+      parsing: {
+        xAxisKey: "year",
+        yAxisKey: "value",
+      },
+    })
+
+    const resultData = {
+      chartData: {
+        datasets,
+      },
+      info: info,
+    }
+    setCombinedData(resultData)
+  }
+
+  if (!combinedData) {
     return (
-    <div style={{width: "1000px", height: "500px"}}>
-     <Line data={tempData} options={config}></Line>;
-    </div>
+      <div className={styles.loading}>
+        <Spinner />
+        <p className="">Loading data...</p>
+      </div>
     )
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.info}>
+        {combinedData.info.map((i, index) => (
+          <VisuInfo info={i} key={index} />
+        ))}
+      </div>
+      <Line options={config} data={combinedData.chartData}></Line>
+    </div>
+  )
 }
 
-export default Visu3_chart
+export default Visu3

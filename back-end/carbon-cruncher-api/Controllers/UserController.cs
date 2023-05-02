@@ -224,12 +224,6 @@ namespace carbon_cruncher_api.Controllers
         [Route("visualization")]
         public ActionResult<string> PostVisualization([FromBody] string visuconfig)
         {
-            // Validate config string // TODO: add condition for bad request
-            if (false)
-            {
-                return BadRequest();
-            }
-
             // Get user object from db
             var currentUser = User?.Identity?.Name;
             VisuUser currentUserObject = _context.VisuUsers.Where(u => u.UserNick.ToLower().Equals(currentUser!.ToLower())).FirstOrDefault()!;
@@ -242,7 +236,7 @@ namespace carbon_cruncher_api.Controllers
             }
             while (_context.VisuUserVisuals.Where(v => v.UrlHeader == generatedUrl).ToList().Count != 0);
 
-            VisuUserVisual visu = new VisuUserVisual() { UserId = currentUserObject!.Id, UrlHeader = generatedUrl, ColumnView = false };
+            VisuUserVisual visu = new VisuUserVisual() { UserId = currentUserObject!.Id, UrlHeader = generatedUrl, VisuConfig = visuconfig };
             currentUserObject.VisuUserVisuals.Add(visu);
             _context.SaveChanges();
             return Ok(generatedUrl);

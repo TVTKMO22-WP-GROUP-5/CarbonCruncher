@@ -11,7 +11,7 @@ public partial class VisuUserVisual
 
     public string UrlHeader { get; set; } = null!;
 
-    public bool ColumnView { get; set; }
+    public string VisuConfig { get; set; } = null!;
 
     public virtual VisuUser User { get; set; } = null!;
 }

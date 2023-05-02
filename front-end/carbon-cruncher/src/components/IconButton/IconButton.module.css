@@ -1,27 +1,34 @@
 .iconButton {
+  /*Display stuff*/
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+  /*Box model stuff*/
   width: 160px;
-  height: 60px;
+  height: 80px;
   padding: 5px;
-  gap: 10px;
-  
-  background-color: #ABC4A2;
-  border: 5px solid #095D51;
+  border: 5px solid #095d51;
   border-radius: 20px;
+  background-color: #abc4a2;
+  /*Miscellaneous*/
+  gap: 10px;
+  font-size: 12px;
 }
 
 .iconButton:hover {
   background-color: #deffd2;
 }
 
+.iconButton:active {
+  scale: 0.98;
+}
+
 .iconButtonText {
-  width: 80%;
+  /*Box model stuff*/
+  width: 50%;
   margin: 0px;
-  
-  font-size: 16px;
+  /*Typography stuff*/
+  font-size: 12px;
   font-weight: bold;
 }
 
@@ -30,7 +37,12 @@
   margin: 0px;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
+  .iconButton {
+    width: 80px;
+    height: 80px;
+  }
+
   .iconButtonText {
     display: none;
   }

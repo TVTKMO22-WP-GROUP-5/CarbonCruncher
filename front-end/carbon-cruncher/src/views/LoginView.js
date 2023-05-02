@@ -37,7 +37,7 @@ export const LoginView = () => {
         <input type="text" name="usernick" placeholder="Username" id="loginUsername" />
         <input type="password" name="userpassword" placeholder="Password" id="loginPassword" />
         {loading ? (
-          <Spinner />
+          <Spinner msg={"Signing in..."} />
         ) : (
           <button type="submit" id="submitLogin">
             Login

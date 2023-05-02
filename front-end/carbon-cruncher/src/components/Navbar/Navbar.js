@@ -1,12 +1,11 @@
 import React from "react"
 import styles from "./Navbar.module.css"
-import { Link } from "react-router-dom"
 import { AuthContext } from "../AuthProvider"
+import { Link } from "react-router-dom"
 import { imageAssets } from "../../assets/Assets"
 
 const Navbar = () => {
   const { onLogout, onDelete, user } = React.useContext(AuthContext)
-
   return (
     <div className={styles.container}>
       <p id="loggedUser" className={styles.user}>

@@ -97,6 +97,7 @@ export const Visu4 = () => {
       datasets.push({
         label: countryNameWithSpaces,
         data: chartData.map((d) => d[element]),
+        borderColor: GenerateColorFromName(countryNameWithSpaces),
         backgroundColor: GenerateColorFromName(countryNameWithSpaces),
       })
 
@@ -157,8 +158,7 @@ export const Visu4 = () => {
   if (!co2data) {
     return (
       <div className={styles.loading}>
-        <Spinner />
-        <p className="">Loading data...</p>
+        <Spinner msg={"Loading data..."} />
       </div>
     )
   }
@@ -167,7 +167,7 @@ export const Visu4 = () => {
     <div className={styles.container}>
       <div className={styles.info}>
         {co2data.info.map((i) => (
-          <VisuInfo info={i} />
+          <VisuInfo info={i} key={i.visuChartNumber} />
         ))}
       </div>
       <Select options={selectCountries} isMulti onChange={handleChange} />
