@@ -114,31 +114,30 @@ const Visu1 = () => {
   }
 
   const chartOptions = {
+    //make the chart responsive
     responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-    },
+    //do not maintain aspect ratio
+    maintainAspectRatio: false,
     scales: {
       x: {
-        type: "time",
+        type: 'time',
         time: {
-          unit: "year",
+          unit: 'year',
         },
         title: {
           display: true,
-          text: "Year",
+          text: 'Years',
         },
       },
       y: {
         title: {
           display: true,
-          text: "Temperature Anomaly [°C]",
+          text: 'Temperature Anomaly (°C)',
         },
       },
     },
-  }
+  };
+  
   //return the component with the data and options defined above
   return (
     <div>
@@ -148,34 +147,16 @@ const Visu1 = () => {
         ))}
       </div>
       <div className="visu-controls">
-        <input
-          type="radio"
-          id="monthly"
-          name="timePeriod"
-          value="monthly"
-          checked={timePeriod === "monthly"}
-          onChange={handleChange}
-        />
+        <input type="radio" id="monthly" name="timePeriod" value="monthly" checked={timePeriod === 'monthly'} onChange={handleChange} />
         <label htmlFor="monthly">Monthly</label>
-        <input
-          type="radio"
-          id="annual"
-          name="timePeriod"
-          value="annual"
-          checked={timePeriod === "annual"}
-          onChange={handleChange}
-        />
+        <input type="radio" id="annual" name="timePeriod" value="annual" checked={timePeriod === 'annual'} onChange={handleChange} />
         <label htmlFor="annual">Annual</label>
       </div>
-      <div className="visu-chart">
-        {(timePeriod === "monthly" ? monthlyData : annualData) ? (
-          <Line data={chartData} options={chartOptions} />
-        ) : (
-          <p>Loading data...</p>
-        )}
+      <div className="visu-chart" style={{ width: '100%', height: '400px' }}>
+        {(timePeriod === 'monthly' ? monthlyData : annualData) ? <Line data={chartData} options={chartOptions} /> : <p>Loading data...</p>}
       </div>
     </div>
-  )
-}
-
+  );
+        }
+//export the component
 export default Visu1
