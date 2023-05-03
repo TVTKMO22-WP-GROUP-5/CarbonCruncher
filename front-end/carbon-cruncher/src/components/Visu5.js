@@ -45,7 +45,7 @@ const options = {
 
 export const Visu5 = () => {
     const [sectorData, setSectorData] = useState(null)
-    const [subData, setSubData] = useState({})
+
 
     const chartRef = useRef();
 
@@ -59,8 +59,9 @@ export const Visu5 = () => {
     }, [])
 
     const parseData = (chart, info) => {
-        const labels = chart.map((d) => d.sector);
-        //const color = GenerateColorFromName(labels)
+        let labels = chart.map((d) => d.sector);
+        //const labelsString = labels.join(',');
+        const colour = labels.map((label) => GenerateColorFromName(label));
         let datasets = []
         const keys = Object.keys(chart[0])
         keys.forEach((sectorData) => {
@@ -71,13 +72,8 @@ export const Visu5 = () => {
             //label: chart.map((data) => data.visu5Co2subs),
 
             data: chart.map((data) => data.emissionsSharePer),
-            backgroundColor: [
-                'rgb(255, 200, 80)',
-                'rgb(200, 0, 0)',
-                'rgb(0, 0, 200)',
-                'rgb(0, 200, 0)'
-            ],
-            //backgroundColor: GenerateColorFromName(labels), // olis kiva jos sais toimimaan
+
+            backgroundColor: colour, 
             borderWidth: 3,
 
 
@@ -85,12 +81,13 @@ export const Visu5 = () => {
 
         chart.forEach((d) => {
             const values = d.visu5Co2subs.map((v) => v.emissionsSharePer);
+            //labels = [...labels, ...d.visu5Co2subs.map((v) => v.sSubsectorName)];
             const name = d.visu5Co2subs.map((v) => v.sSectorName);
-            const colour =`rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+            const colour = name.map((label) => GenerateColorFromName(label));
             datasets.push({
                 label: name,
                 data: values,
-                backgroundColor: colour,//GenerateColorFromName(colour),
+                backgroundColor: colour,
                 borderWidth: 3,
                 hidden:true,
             });
@@ -105,34 +102,47 @@ export const Visu5 = () => {
         }
 
         setSectorData(combData)
-/*         setSubData({
-            labels,
-            datasets: [{}],
-        }) */
+
 
     };
     const handleClick = (event) => {
         const element = getElementAtEvent(chartRef.current, event);
+        if (element.length === 0){
+            return;
+        }
         let dataset= element[0].datasetIndex;
         let index = element[0].index+1;
-        if (dataset !==0){
-            const updatedDatasets = [...sectorData.chart.datasets];
-            updatedDatasets[dataset].hidden = true;
-            dataset=0;
-            updatedDatasets[dataset].hidden = false; // hide the clicked dataset
-           // updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
-            setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}});
-        }
-        else {
         const updatedDatasets = [...sectorData.chart.datasets];
-        updatedDatasets[dataset].hidden = true; // hide the clicked dataset
-        updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
-        setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}});
+        if (dataset !== 0) {
+          // switch to the first sector
+          updatedDatasets[dataset].hidden = true;
+          dataset = 0;
+          updatedDatasets[dataset].hidden = false;
+          const newData = updatedDatasets[dataset].data;
+          const newLabels = newData.map((d, i) => sectorData.chart.labels[i]);
+          setSectorData({
+            ...sectorData,
+            chart: {
+              ...sectorData.chart,
+              labels: newLabels,
+              datasets: updatedDatasets,
+            },
+          });
+        } else {
+          // switch to another sector
+          updatedDatasets[dataset].hidden = true;
+          updatedDatasets[(index) % updatedDatasets.length].hidden = false;
+          const newData = updatedDatasets[(index) % updatedDatasets.length].data;
+          const newLabels = newData.map((d, i) => sectorData.chart.labels[i]);
+          setSectorData({
+            ...sectorData,
+            chart: {
+              ...sectorData.chart,
+              labels: newLabels,
+              datasets: updatedDatasets,
+            },
+          });
         }
-/*         const updatedDatasets = [...sectorData.chart.datasets];
-        updatedDatasets[dataset].hidden = true; // hide the clicked dataset
-        updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
-        setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}}); */
       }
       
       //Older code, where i tried to create new ones instead of just show and hide
