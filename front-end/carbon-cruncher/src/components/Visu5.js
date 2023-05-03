@@ -32,16 +32,13 @@ ChartJS.register(
     Legend
 );
 
-
 const options = {
     responsive: true,
     //maintainAspectRatio: false,
 }
 
-
 export const Visu5 = () => {
     const [sectorData, setSectorData] = useState(null)
-
 
     const chartRef = useRef();
 
@@ -61,13 +58,10 @@ export const Visu5 = () => {
         let datasets = []
 
         datasets.push({
-            labels: chart.map((d) => d.sector),
-            
+            labels: chart.map((d) => d.sector),           
             data: chart.map((data) => data.emissionsSharePer),
-
             backgroundColor: colour, 
             borderWidth: 3,
-
         })
 
         chart.forEach((d) => {
@@ -83,7 +77,7 @@ export const Visu5 = () => {
             });
         });
 
-        const combData = {
+        const setData = {
             chart: {
                 labels,
                 datasets,
@@ -91,8 +85,7 @@ export const Visu5 = () => {
             info: info,
         }
 
-        setSectorData(combData)
-
+        setSectorData(setData)
 
     };
     const handleClick = (event) => {
@@ -109,12 +102,15 @@ export const Visu5 = () => {
           dataset = 0;
           updatedDatasets[dataset].hidden = false;
           const newLabels =updatedDatasets[dataset].labels;
+          const bgColour = newLabels.map((label) => GenerateColorFromName(label));
           setSectorData({
             ...sectorData,
             chart: {
-              ...sectorData.chart,
-              labels: newLabels,
-              datasets: updatedDatasets,
+                labels: newLabels,
+                datasets: updatedDatasets.map((dataset) => ({
+                    ...dataset,
+                    backgroundColor:  bgColour,
+                })),
             },
           });
         } else {
@@ -122,48 +118,19 @@ export const Visu5 = () => {
           updatedDatasets[dataset].hidden = true; //hide the current dataset
           updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the new dataset
           const newLabels = updatedDatasets[(index) % updatedDatasets.length].labels;
+          const bgColour = newLabels.map((label) => GenerateColorFromName(label));
           setSectorData({
             ...sectorData,
             chart: {
-              ...sectorData.chart,
-              labels: newLabels,
-              datasets: updatedDatasets,
+                labels: newLabels,
+                datasets: updatedDatasets.map((dataset) => ({
+                    ...dataset,
+                    backgroundColor: bgColour,
+                })),
             },
-          });
+        });
         }
       }
-      
-      //Older code, where i tried to create new ones instead of just show and hide
-/*     const handleClick = (event) => {
-        const element = getElementAtEvent(chartRef.current, event);
-      
-        if (element.length > 0) {
-            const chartData = chartRef.current.data;
-            const index = element[0].index;
-            const sector = chartData.labels[index];
-            const sectorData = chartData.datasets[0].data[index];
-            const visu5Co2subs = chartData.datasets[index].hidden ? chartData.datasets[0].visu5Co2subs : chartData.datasets[index].visu5Co2subs;
-      
-          const subNames = visu5Co2subs.map((d) => d.sSectorName);
-          const subEmissions = visu5Co2subs.map((d) => d.emissionsSharePer);
-      
-          const newChartData = {
-            labels: subNames,
-            datasets: [
-              {
-                data: subEmissions,
-                backgroundColor: chartData.datasets[0].backgroundColor,
-                hoverBackgroundColor: chartData.datasets[0].hoverBackgroundColor,
-                visu5Co2subs: visu5Co2subs
-              },
-            ],
-          };
-      
-          chartRef.current.data = newChartData;
-          chartRef.current.update();
-        }
-      }; */
-
 
     if (!sectorData) {
         return (
@@ -193,6 +160,5 @@ export const Visu5 = () => {
         </div>
     )
 };
-
 
 export default Visu5
