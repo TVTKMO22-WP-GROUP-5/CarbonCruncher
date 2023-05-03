@@ -1,4 +1,4 @@
-# CarbonCruncher – Climate Data Visualizations
+# Carbon Cruncher – Climate Data Visualizations
 WEB-sovellusprojekti ilmastonmuutoksen kuvaamisesta erilaisten visualisointinäkymien kautta
 
 ## Esittely
