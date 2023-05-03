@@ -1,11 +1,6 @@
-.container {
-    padding: 10px;
-}
-
-.info {
-    display: flex;
-}
-.pie{
-    width: 20px;
-    height: 20px;
-}
+.chartStyle {
+    min-width: 400px;
+    min-height: 400px;
+    width: 100%;
+    height: 100%;
+  }

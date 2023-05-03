@@ -34,12 +34,8 @@ ChartJS.register(
 
 
 const options = {
-
-    //data: data,
-    options: {
-        responsive: true,
-    },
-
+    responsive: true,
+    //maintainAspectRatio: false,
 }
 
 
@@ -59,33 +55,27 @@ export const Visu5 = () => {
     }, [])
 
     const parseData = (chart, info) => {
-        let labels = chart.map((d) => d.sector);
+        const labels = chart.map((d) => d.sector);
         //const labelsString = labels.join(',');
         const colour = labels.map((label) => GenerateColorFromName(label));
         let datasets = []
-        const keys = Object.keys(chart[0])
-        keys.forEach((sectorData) => {
-
-        })
 
         datasets.push({
-            //label: chart.map((data) => data.visu5Co2subs),
-
+            labels: chart.map((d) => d.sector),
+            
             data: chart.map((data) => data.emissionsSharePer),
 
             backgroundColor: colour, 
             borderWidth: 3,
 
-
         })
 
         chart.forEach((d) => {
             const values = d.visu5Co2subs.map((v) => v.emissionsSharePer);
-            //labels = [...labels, ...d.visu5Co2subs.map((v) => v.sSubsectorName)];
             const name = d.visu5Co2subs.map((v) => v.sSectorName);
             const colour = name.map((label) => GenerateColorFromName(label));
             datasets.push({
-                label: name,
+                labels: name,
                 data: values,
                 backgroundColor: colour,
                 borderWidth: 3,
@@ -118,8 +108,7 @@ export const Visu5 = () => {
           updatedDatasets[dataset].hidden = true;
           dataset = 0;
           updatedDatasets[dataset].hidden = false;
-          const newData = updatedDatasets[dataset].data;
-          const newLabels = newData.map((d, i) => sectorData.chart.labels[i]);
+          const newLabels =updatedDatasets[dataset].labels;
           setSectorData({
             ...sectorData,
             chart: {
@@ -130,10 +119,9 @@ export const Visu5 = () => {
           });
         } else {
           // switch to another sector
-          updatedDatasets[dataset].hidden = true;
-          updatedDatasets[(index) % updatedDatasets.length].hidden = false;
-          const newData = updatedDatasets[(index) % updatedDatasets.length].data;
-          const newLabels = newData.map((d, i) => sectorData.chart.labels[i]);
+          updatedDatasets[dataset].hidden = true; //hide the current dataset
+          updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the new dataset
+          const newLabels = updatedDatasets[(index) % updatedDatasets.length].labels;
           setSectorData({
             ...sectorData,
             chart: {
@@ -193,7 +181,7 @@ export const Visu5 = () => {
                     <VisuInfo info={i} />
                 ))}
             </div>
-            <div className={styles.pie}>
+            <div className={styles.chartStyle}>
 
                 <Doughnut
                     ref={chartRef}
