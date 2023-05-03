@@ -62,9 +62,14 @@ export const Visu5 = () => {
         const labels = chart.map((d) => d.sector);
         //const color = GenerateColorFromName(labels)
         let datasets = []
+        const keys = Object.keys(chart[0])
+        keys.forEach((sectorData) => {
+
+        })
 
         datasets.push({
-            label: chart.map((data) => data.visu5Co2subs.sSectorName),
+            //label: chart.map((data) => data.visu5Co2subs),
+
             data: chart.map((data) => data.emissionsSharePer),
             backgroundColor: [
                 'rgb(255, 200, 80)',
@@ -72,22 +77,25 @@ export const Visu5 = () => {
                 'rgb(0, 0, 200)',
                 'rgb(0, 200, 0)'
             ],
-            // backgroundColor: GenerateColorFromName(labels) , // olis kiva jos sais toimimaan
+            //backgroundColor: GenerateColorFromName(labels), // olis kiva jos sais toimimaan
             borderWidth: 3,
 
 
         })
 
-        /*         const subData = {
-                    label: 'Carbon data',
-                    data: chart.map((data) => data['co2Ppm']),
-                    yAxisID: 'right-y-axis',
-                    borderColor: "rgb(0, 100, 200)",
-                    backgroundColor: "rgb(0, 100, 200, 0.5)",
-                    pointRadius: 0,
-                } */
+        chart.forEach((d) => {
+            const values = d.visu5Co2subs.map((v) => v.emissionsSharePer);
+            const name = d.visu5Co2subs.map((v) => v.sSectorName);
+            const colour =`rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+            datasets.push({
+                label: name,
+                data: values,
+                backgroundColor: colour,//GenerateColorFromName(colour),
+                borderWidth: 3,
+                hidden:true,
+            });
+        });
 
-        //const datasets = [sectordata]
         const combData = {
             chart: {
                 labels,
@@ -103,16 +111,46 @@ export const Visu5 = () => {
         })
 
     };
-
     const handleClick = (event) => {
         const element = getElementAtEvent(chartRef.current, event);
+        const index = element[0].index+1;
+        const updatedDatasets = [...sectorData.chart.datasets];
+        updatedDatasets[index].hidden = true; // hide the clicked dataset
+        updatedDatasets[(index + 1) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
+        setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}});
+      }
+      
+      //Older code, where i tried to create new ones instead of just show and hide
+/*     const handleClick = (event) => {
+        const element = getElementAtEvent(chartRef.current, event);
+      
         if (element.length > 0) {
-            const datasetIndex = element[0].datasetIndex;
-            const label = sectorData.chart.datasets[datasetIndex].label;
-            console.log(label);
+            const chartData = chartRef.current.data;
+            const index = element[0].index;
+            const sector = chartData.labels[index];
+            const sectorData = chartData.datasets[0].data[index];
+            const visu5Co2subs = chartData.datasets[index].hidden ? chartData.datasets[0].visu5Co2subs : chartData.datasets[index].visu5Co2subs;
+      
+          const subNames = visu5Co2subs.map((d) => d.sSectorName);
+          const subEmissions = visu5Co2subs.map((d) => d.emissionsSharePer);
+      
+          const newChartData = {
+            labels: subNames,
+            datasets: [
+              {
+                data: subEmissions,
+                backgroundColor: chartData.datasets[0].backgroundColor,
+                hoverBackgroundColor: chartData.datasets[0].hoverBackgroundColor,
+                visu5Co2subs: visu5Co2subs
+              },
+            ],
+          };
+      
+          chartRef.current.data = newChartData;
+          chartRef.current.update();
         }
-    }
-    
+      }; */
+
 
     if (!sectorData) {
         return (
@@ -132,7 +170,12 @@ export const Visu5 = () => {
             </div>
             <div className={styles.pie}>
 
-                <Doughnut ref={chartRef} options={options} data={sectorData.chart} onClick={handleClick}></Doughnut>
+                <Doughnut
+                    ref={chartRef}
+                    options={options}
+                    data={sectorData.chart}
+                    onClick={handleClick}
+                ></Doughnut>
             </div>
         </div>
     )
