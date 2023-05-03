@@ -3,6 +3,9 @@ import { Link } from "react-router-dom"
 import { AuthContext } from "../components/AuthProvider"
 import { Spinner } from "../components/Spinner/Spinner"
 
+/**
+ * View for user registration
+ */
 export const RegisterView = () => {
   const { onRegister } = React.useContext(AuthContext)
   const [loading, setLoading] = useState(false)

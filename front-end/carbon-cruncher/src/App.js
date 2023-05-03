@@ -14,6 +14,9 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import { VisitorPage } from "./pages/VisitorPage"
 import { VisitorView } from "./views/VisitorView"
 
+/**
+ * Main application
+ */
 function App() {
   const { token } = React.useContext(AuthContext)
   return (

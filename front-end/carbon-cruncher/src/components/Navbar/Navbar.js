@@ -4,19 +4,16 @@ import { AuthContext } from "../AuthProvider"
 import { Link } from "react-router-dom"
 import { imageAssets } from "../../assets/Assets"
 
+/**
+ * Webapp navigation bar
+ */
 const Navbar = () => {
   const { onLogout, onDelete, user } = React.useContext(AuthContext)
   return (
     <div className={styles.container}>
       <p id="loggedUser" className={styles.user}>
         {user}
-        <img
-          src={imageAssets.icon.deleteIcon}
-          alt="delete"
-          id="deleteUser"
-          className={styles.delete}
-          onClick={onDelete}
-        ></img>
+        <img src={imageAssets.icon.deleteIcon} alt="delete" id="deleteUser" className={styles.delete} onClick={onDelete}></img>
       </p>
       <div className={styles.linkContainer}>
         <Link className={styles.link} to="/tempco2">

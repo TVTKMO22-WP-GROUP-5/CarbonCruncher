@@ -1,4 +1,8 @@
 import styles from "./IconButton.module.css"
+
+/**
+ * Reusable button that takes assets and onclick handler as props
+ */
 const IconButton = ({ buttonAsset, onClick, no }) => {
   return (
     <div className={styles.iconButton} onClick={onClick}>

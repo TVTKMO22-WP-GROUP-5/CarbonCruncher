@@ -19,6 +19,9 @@ const GetEmptyView = () => {
   }
 }
 
+/**
+ * View shows tools for user to make customizes views
+ */
 export const UserCustomView = () => {
   const [isEdit, setIsEdit] = useState(false)
   const [reload, setReload] = useState(false)

@@ -14,6 +14,3 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 )
-
-// https://www.robinwieruch.de/react-router-authentication/
-// Good router tutorial: https://www.youtube.com/watch?v=Ul3y1LXxzdU

@@ -6,7 +6,7 @@ import { Spinner } from "../components/Spinner/Spinner"
 import { ConfigStringToVisu, GetColumnGrid } from "../utilities/Utilities"
 
 /**
- * Visitor view to watch shared url charts
+ * Visitor view to watch shared url charts as non-authenticated user
  */
 export const VisitorView = () => {
   const [view, setView] = useState(null)

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 describe("Carbon Cruncher app", function () {
   beforeEach(function () {
     cy.visit("http://localhost:3000")
@@ -12,8 +13,13 @@ describe("Carbon Cruncher app", function () {
     cy.get("#loginUsername").type("testiukko")
     cy.get("#loginPassword").type("Testi123!")
     cy.get("#submitLogin").click()
+    let called
     cy.on("window:alert", (t) => {
       expect(t).to.contains("Invalid credentials")
+      called = true
+    })
+    cy.should(() => {
+      expect(called).to.be.true
     })
   })
 
@@ -25,8 +31,13 @@ describe("Carbon Cruncher app", function () {
     cy.get("#registerPassword").type("Testi123!")
     cy.get("#registerConfirmPassword").type("Tesi123!")
     cy.get("#submitRegistration").click()
+    let called
     cy.on("window:alert", (t) => {
       expect(t).to.contains("Password and password confirmation did not match")
+      called = true
+    })
+    cy.should(() => {
+      expect(called).to.be.true
     })
   })
 
@@ -38,8 +49,13 @@ describe("Carbon Cruncher app", function () {
     cy.get("#registerPassword").type("Testi123!")
     cy.get("#registerConfirmPassword").type("Testi123!")
     cy.get("#submitRegistration").click()
+    let called
     cy.on("window:alert", (t) => {
       expect(t).to.contains("User testiukko was created succesfully")
+      called = true
+    })
+    cy.should(() => {
+      expect(called).to.be.true
     })
   })
 
@@ -64,8 +80,13 @@ describe("Carbon Cruncher app", function () {
     cy.get("#loginUsername").type("testiukko")
     cy.get("#loginPassword").type("Testi123!")
     cy.get("#submitLogin").click()
+    let called
     cy.on("window:alert", (t) => {
       expect(t).to.contains("Invalid credentials")
+      called = true
+    })
+    cy.should(() => {
+      expect(called).to.be.true
     })
     cy.contains("Carbon Cruncher")
     cy.contains("Climate Data Visualizations")
