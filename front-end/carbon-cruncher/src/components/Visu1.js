@@ -8,6 +8,8 @@ import { VisuInfo } from "../components/VisuInfo/VisuInfo"
 import * as dateAdapter from "chartjs-adapter-date-fns"
 import { AddPaddingZeroesToYear } from "../utilities/Utilities"
 import { Spinner } from "./Spinner/Spinner"
+import styles from "./Visu1.css"
+
 //register date adapter
 Chart.register(dateAdapter)
 
@@ -124,6 +126,7 @@ const Visu1 = () => {
   const chartOptions = {
     //make the chart responsive
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         type: "time",
@@ -153,16 +156,39 @@ const Visu1 = () => {
         ))}
       </div>
       <div className="visu-controls">
-        <input type="radio" id="monthly" name="timePeriod" value="monthly" checked={timePeriod === "monthly"} onChange={handleChange} />
+        <input
+          type="radio"
+          id="monthly"
+          name="timePeriod"
+          value="monthly"
+          checked={timePeriod === "monthly"}
+          onChange={handleChange}
+        />
         <label htmlFor="monthly">Monthly</label>
-        <input type="radio" id="annual" name="timePeriod" value="annual" checked={timePeriod === "annual"} onChange={handleChange} />
+        <input
+          type="radio"
+          id="annual"
+          name="timePeriod"
+          value="annual"
+          checked={timePeriod === "annual"}
+          onChange={handleChange}
+        />
         <label htmlFor="annual">Annual</label>
       </div>
       <div className="visu-chart">
-        {(timePeriod === "monthly" ? monthlyData : annualData) ? <Line data={chartData} options={chartOptions} /> : <Spinner msg={"Loading data..."} />}
+      <div
+        className={styles.chartContainer}
+        style={{ height: "60vh" }} //set the height of the chart
+      >
+        {(timePeriod === "monthly" ? monthlyData : annualData) ? (
+          <Line data={chartData} options={chartOptions} />
+        ) : (
+          <Spinner msg={"Loading data..."} />
+        )}
       </div>
     </div>
-  )
+  </div>
+);
 }
 //export the component
 export default Visu1
