@@ -105,19 +105,34 @@ export const Visu5 = () => {
         }
 
         setSectorData(combData)
-        setSubData({
+/*         setSubData({
             labels,
             datasets: [{}],
-        })
+        }) */
 
     };
     const handleClick = (event) => {
         const element = getElementAtEvent(chartRef.current, event);
-        const index = element[0].index+1;
+        let dataset= element[0].datasetIndex;
+        let index = element[0].index+1;
+        if (dataset !==0){
+            const updatedDatasets = [...sectorData.chart.datasets];
+            updatedDatasets[dataset].hidden = true;
+            dataset=0;
+            updatedDatasets[dataset].hidden = false; // hide the clicked dataset
+           // updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
+            setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}});
+        }
+        else {
         const updatedDatasets = [...sectorData.chart.datasets];
-        updatedDatasets[index].hidden = true; // hide the clicked dataset
-        updatedDatasets[(index + 1) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
+        updatedDatasets[dataset].hidden = true; // hide the clicked dataset
+        updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
         setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}});
+        }
+/*         const updatedDatasets = [...sectorData.chart.datasets];
+        updatedDatasets[dataset].hidden = true; // hide the clicked dataset
+        updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the next dataset in a circular manner
+        setSectorData({...sectorData, chart: {...sectorData.chart, datasets: updatedDatasets}}); */
       }
       
       //Older code, where i tried to create new ones instead of just show and hide
