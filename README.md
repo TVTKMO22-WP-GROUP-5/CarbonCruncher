@@ -27,7 +27,7 @@ Rekisteröinnin ja kirjautumisen lisäksi käyttäjätunnuksen voi poistaa ja sa
 
 Käyttäjätunnuksen rekisteröinti tapahtuu klikkaamalla ”Sign up!” -painiketta etusivulla (kuva 1), josta käyttäjä ohjataan rekisteröitymissivulle. Rekisteröitymisen jälkeen käyttäjä ohjataan takaisin kirjautumiseen, jonka jälkeen avautuu ensimmäinen visualisointinäkymä ja sivuston yläpalkista on valittavana kaikki kolme erilaista näkymää.
 
-Ensimmäinen näkymä sisältää lämpötilan ja C02-pitoisuuden visualisoinnit, toinen näkymä päästölähteiden visualisoinnit ja kolmas on käyttäjän muokkaama näkymä (kuva 2).
+Ensimmäinen näkymä sisältää lämpötilan ja C02-pitoisuuden visualisoinnit, toinen näkymä päästölähteiden visualisoinnit ja kolmas on käyttäjän muokkaama näkymä (kuva 2). Käyttäjä pystyy jakamaan muokkaamansa näkymän myös muille julkisella osoitteella, johon pääsee ilman kirjautumista.
 Yläpalkin oikeasta reunasta käyttäjä pääsee kirjautumaan ulos ja käyttäjänimen vieressä olevasta roskakori-ikonista käyttäjä pääsee poistamaan käyttäjätunnuksensa.
 
 ![Custom View](https://user-images.githubusercontent.com/115356463/235734456-276f0601-e945-498e-8a67-dceab0d5c41e.PNG)
