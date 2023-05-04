@@ -32,13 +32,11 @@ ChartJS.register(
     Legend
 );
 
-const options = {
-    responsive: true,
-    //maintainAspectRatio: false,
-}
-
 export const Visu5 = () => {
     const [sectorData, setSectorData] = useState(null)
+    const [subSectorData, setSubSectorData] = useState(null)
+    const [showData, setShowData] = useState(null)
+    const [info, setInfo] = useState(null)
 
     const chartRef = useRef();
 
@@ -51,86 +49,62 @@ export const Visu5 = () => {
         getData()
     }, [])
 
-    const parseData = (chart, info) => {
-        const labels = chart.map((d) => d.sector);
-        //const labelsString = labels.join(',');
-        const colour = labels.map((label) => GenerateColorFromName(label));
-        let datasets = []
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+    }
 
-        datasets.push({
-            labels: chart.map((d) => d.sector),           
-            data: chart.map((data) => data.emissionsSharePer),
-            backgroundColor: colour, 
-            borderWidth: 3,
+    const parseData = (chart, info) => {
+        // main sector parse
+        const mainLabels = chart.map((d) => d.sector)
+        const mainDataset = [
+            {
+                label: "Main Sector",
+                data: chart.map((d) => d.emissionsSharePer),
+                backgroundColor: chart.map((d) => GenerateColorFromName(d.sector)),
+            },
+        ]
+
+        const newShowData = {
+            name: "main",
+            labels: mainLabels,
+            datasets: mainDataset,
+        }
+
+        // sub sector parse
+        let subSectors = []
+        chart.forEach((ss) => {
+            const ssDataset = {
+                label: ss.sector,
+                data: ss.visu5Co2subs.map((d) => d.emissionsSharePer),
+                backgroundColor: ss.visu5Co2subs.map((d) => GenerateColorFromName(d.sSectorName)),
+            }
+
+            subSectors.push({
+                name: "sub",
+                labels: ss.visu5Co2subs.map((d) => d.sSectorName),
+                datasets: [ssDataset],
+            })
         })
 
-        chart.forEach((d) => {
-            const values = d.visu5Co2subs.map((v) => v.emissionsSharePer);
-            const name = d.visu5Co2subs.map((v) => v.sSectorName);
-            const colour = name.map((label) => GenerateColorFromName(label));
-            datasets.push({
-                labels: name,
-                data: values,
-                backgroundColor: colour,
-                borderWidth: 3,
-                hidden:true,
-            });
-        });
+        setSubSectorData(subSectors)
+        setSectorData(newShowData)
+        setShowData(newShowData)
+        setInfo(info)
+    }
 
-        const setData = {
-            chart: {
-                labels,
-                datasets,
-            },
-            info: info,
-        }
-
-        setSectorData(setData)
-
-    };
     const handleClick = (event) => {
-        const element = getElementAtEvent(chartRef.current, event);
-        if (element.length === 0){
-            return;
+        const element = getElementAtEvent(chartRef.current, event)
+        if (element.length === 0) {
+            return
         }
-        let dataset= element[0].datasetIndex;
-        let index = element[0].index+1;
-        const updatedDatasets = [...sectorData.chart.datasets];
-        if (dataset !== 0) {
-          // switch to the first sector
-          updatedDatasets[dataset].hidden = true;
-          dataset = 0;
-          updatedDatasets[dataset].hidden = false;
-          const newLabels =updatedDatasets[dataset].labels;
-          const bgColour = newLabels.map((label) => GenerateColorFromName(label));
-          setSectorData({
-            ...sectorData,
-            chart: {
-                labels: newLabels,
-                datasets: updatedDatasets.map((dataset) => ({
-                    ...dataset,
-                    backgroundColor:  bgColour,
-                })),
-            },
-          });
-        } else {
-          // switch to another sector
-          updatedDatasets[dataset].hidden = true; //hide the current dataset
-          updatedDatasets[(index) % updatedDatasets.length].hidden = false; // show the new dataset
-          const newLabels = updatedDatasets[(index) % updatedDatasets.length].labels;
-          const bgColour = newLabels.map((label) => GenerateColorFromName(label));
-          setSectorData({
-            ...sectorData,
-            chart: {
-                labels: newLabels,
-                datasets: updatedDatasets.map((dataset) => ({
-                    ...dataset,
-                    backgroundColor: bgColour,
-                })),
-            },
-        });
+        if (showData.name === "main") {
+            setShowData(subSectorData[element[0].index])
         }
-      }
+        else {
+            setShowData(sectorData)
+        }
+    }
 
     if (!sectorData) {
         return (
@@ -144,16 +118,16 @@ export const Visu5 = () => {
     return (
         <div className={styles.container}>
             <div className={styles.info}>
-                {sectorData.info.map((i) => (
+                {info.map((i) => (
                     <VisuInfo info={i} />
                 ))}
             </div>
-            <div className={styles.chartStyle}>
-
+            <div className={styles.chartStyle}
+                style={{ height: "60em" }}>
                 <Doughnut
                     ref={chartRef}
                     options={options}
-                    data={sectorData.chart}
+                    data={showData}
                     onClick={handleClick}
                 ></Doughnut>
             </div>
