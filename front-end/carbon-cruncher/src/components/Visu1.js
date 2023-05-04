@@ -178,7 +178,7 @@ const Visu1 = () => {
       <div className="visu-chart">
       <div
         className={styles.chartContainer}
-        style={{ height: "60vh" }} //set the height of the chart
+        style={{ height: "40em" }} //set the height of the chart
       >
         {(timePeriod === "monthly" ? monthlyData : annualData) ? (
           <Line data={chartData} options={chartOptions} />
