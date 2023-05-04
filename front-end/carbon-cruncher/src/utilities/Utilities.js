@@ -2,6 +2,7 @@ import Visu1 from "../components/Visu1"
 import Visu2 from "../components/Visu2"
 import Visu3 from "../components/Visu3"
 import { Visu4 } from "../components/Visu4/Visu4"
+import Visu5 from "../components/Visu5"
 
 /**
  * Generate a color from a string
@@ -74,6 +75,7 @@ export const GetVisuByNumber = (number) => {
     case 4:
       return <Visu4 />
     case 5:
+      return <Visu5 />
     default:
       return null
   }
