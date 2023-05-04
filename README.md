@@ -47,5 +47,7 @@ Projektin kehityst√§ hallinnoitiin ja dokumentoitiin GitHubissa. GitHubissa yll√
 
 Linkki projektin API-dokumentaatioon: https://saes.stoplight.io/docs/carbon-cruncher/gidasjqewjmst-carbon-cruncher-api
 
+Linkki sovellukseen: https://carbon-cruncher-client.azurewebsites.net/
+
 
 
