@@ -2,24 +2,11 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import styles from "./Visu4.module.css"
 import { Spinner } from "../Spinner/Spinner"
-import {
-  GenerateColorFromName,
-  CapitalizeFirstLetter,
-  AddSpaceBetweenCapitalizedWords,
-} from "../../utilities/Utilities"
+import { GenerateColorFromName, CapitalizeFirstLetter, AddSpaceBetweenCapitalizedWords } from "../../utilities/Utilities"
 import { GET_VISU4_URL, GET_VISU_INFO } from "../../utilities/Config"
 import Select from "react-select"
 import { Line } from "react-chartjs-2"
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js"
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"
 import { VisuInfo } from "../VisuInfo/VisuInfo"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
@@ -53,6 +40,9 @@ const options = {
   },
 }
 
+/**
+ * Visualization for country spesific CO2 emission data
+ */
 export const Visu4 = () => {
   const [co2data, setco2data] = useState(null)
   const [filteredData, setFilteredData] = useState({})
@@ -97,6 +87,7 @@ export const Visu4 = () => {
       datasets.push({
         label: countryNameWithSpaces,
         data: chartData.map((d) => d[element]),
+        borderColor: GenerateColorFromName(countryNameWithSpaces),
         backgroundColor: GenerateColorFromName(countryNameWithSpaces),
       })
 
@@ -141,8 +132,11 @@ export const Visu4 = () => {
         label: countryNameWithSpaces,
         data: co2data.chartData.datasets.find((d) => d.label === countryNameWithSpaces).data,
         backgroundColor: color,
+        borderWidth: 1,
         borderColor: color,
-        pointRadius: 1,
+        pointRadius: 0,
+        pointHitRadius: 0,
+        fill: false,
       })
     })
 
@@ -157,8 +151,7 @@ export const Visu4 = () => {
   if (!co2data) {
     return (
       <div className={styles.loading}>
-        <Spinner />
-        <p className="">Loading data...</p>
+        <Spinner msg={"Loading data..."} />
       </div>
     )
   }
@@ -167,7 +160,7 @@ export const Visu4 = () => {
     <div className={styles.container}>
       <div className={styles.info}>
         {co2data.info.map((i) => (
-          <VisuInfo info={i} />
+          <VisuInfo info={i} key={i.visuChartNumber} />
         ))}
       </div>
       <Select options={selectCountries} isMulti onChange={handleChange} />

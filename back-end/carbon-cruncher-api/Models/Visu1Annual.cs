@@ -9,11 +9,11 @@ public partial class Visu1Annual
 
     public int TimeYear { get; set; }
 
-    public double AnomalyGlobal { get; set; }
+    public double? AnomalyGlobal { get; set; }
 
-    public double AnomalyNorthern { get; set; }
+    public double? AnomalyNorthern { get; set; }
 
-    public double AnomalySouthern { get; set; }
+    public double? AnomalySouthern { get; set; }
 
     public double? TempReconstruction { get; set; }
 }

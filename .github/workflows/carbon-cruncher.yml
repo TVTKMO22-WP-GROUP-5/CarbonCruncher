@@ -9,7 +9,6 @@ env:
   AZURE_WEBAPP_NAME: carbon-cruncher
   AZURE_WEBAPP_PACKAGE_PATH: .\publish
   CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 6.0.x
   WORKING_DIRECTORY: back-end/carbon-cruncher-api
 jobs:
   build:
@@ -19,7 +18,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+        dotnet-version: 6.0.x
     - name: Restore
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
     - name: Build

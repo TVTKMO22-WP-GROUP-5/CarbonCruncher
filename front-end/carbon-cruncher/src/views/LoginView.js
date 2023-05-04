@@ -3,6 +3,9 @@ import { Link } from "react-router-dom"
 import { AuthContext } from "../components/AuthProvider"
 import { Spinner } from "../components/Spinner/Spinner"
 
+/**
+ * Login view
+ */
 export const LoginView = () => {
   const { onLogin } = React.useContext(AuthContext)
   const [loading, setLoading] = useState(false)
@@ -19,9 +22,7 @@ export const LoginView = () => {
     } catch (error) {
       switch (error.response.status) {
         case 401:
-          alert(
-            `Error: ${error.response.status} ${error.response.statusText}. Invalid credentials.`
-          )
+          alert(`Error: ${error.response.status} ${error.response.statusText}. Invalid credentials.`)
           break
         default:
           alert(`Error: ${error.response.status} ${error.response.statusText}`)
@@ -37,7 +38,7 @@ export const LoginView = () => {
         <input type="text" name="usernick" placeholder="Username" id="loginUsername" />
         <input type="password" name="userpassword" placeholder="Password" id="loginPassword" />
         {loading ? (
-          <Spinner />
+          <Spinner msg={"Signing in..."} />
         ) : (
           <button type="submit" id="submitLogin">
             Login
@@ -45,7 +46,9 @@ export const LoginView = () => {
         )}
       </form>
       <p>Don't have an account yet?</p>
-      <Link to="/register">Sign up!</Link>
+      <Link to="/register" id="registerUser">
+        Sign up!
+      </Link>
     </div>
   )
 }

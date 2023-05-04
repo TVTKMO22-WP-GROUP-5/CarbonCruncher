@@ -9,7 +9,7 @@ namespace carbon_cruncher_api.Validators
         {
             RuleFor(visual => visual.UserId).NotNull();
             RuleFor(visual => visual.UrlHeader).Length(10);
-            RuleFor(visual => visual.ColumnView).NotNull();
+            RuleFor(visual => visual.VisuConfig).NotNull();
         }
     }
 }

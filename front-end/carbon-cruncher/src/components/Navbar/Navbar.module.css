@@ -1,27 +1,39 @@
 .container {
+  /*Display stuff*/
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-
+  justify-content: space-between;
+  /*Box model stuff*/
   width: calc(100% - 200px * 2);
   height: 80px;
-  gap: 20px;
-  /* padding: 0px 20px; */
-
+  padding: 0px 20px;
   background-color: rgba(0, 0, 0, 0);
+  /*Miscellaneous*/
+  gap: 20px;
 }
 
-.container p {
+.user {
   color: #ffffff;
 }
 
+.delete {
+  height: 30px;
+}
+
+.delete:hover {
+  cursor: pointer;
+}
+
 .linkContainer {
+  /*Display stuff*/
   display: flex;
-  width: 70%;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  /*Box model stuff*/
+  width: 70%;
+  /*Miscellaneous*/
   gap: 30px;
 }
 
@@ -29,9 +41,10 @@
 .link:link,
 .link:visited,
 .link:active {
+  /*Typography stuff*/
   font-size: 1.1rem;
-  color: #ffffff;
   text-decoration: none;
+  color: #ffffff;
 }
 
 .link:hover {
